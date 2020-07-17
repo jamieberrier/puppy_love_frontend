@@ -102,7 +102,7 @@ The application we will create during the project build series is a "Syllabus Sh
 
 
 - [x] 4. **TEST:** Confirm data at your Rails endpoints! (ex: `http://seeda.com/api/v1/syllabuses`)
-- [ ] 5. Build out your associated models using this same process. **REMEMBER: Focus on building vertically for MVP** this means only starting with 2 or 3 models before moving on to the frontend.
+- [x] 5. Build out your associated models using this same process. **REMEMBER: Focus on building vertically for MVP** this means only starting with 2 or 3 models before moving on to the frontend.
 
 
 ### PART 3: DOM Manipulation, Events, and Fetch using Rails API
@@ -115,8 +115,8 @@ The application we will create during the project build series is a "Syllabus Sh
 
 - [x] 1. Create separate directory for frontend
 - [x] 2. Create `index.html` file with script tag connecting your `index.js`. Ex: `<script type="text/javascript" src="index.js"></script>`
-- [ ] 3. Create `index.js`, `console.log("in index.js")`, and check for the logged message in your dev tools to confirm the `index.html` <> `index.js` connection was established.
-- [ ] 4. Initialize a `git` repo for frontend repository.
+- [x] 3. Create `index.js`, `console.log("in index.js")`, and check for the logged message in your dev tools to confirm the `index.html` <> `index.js` connection was established.
+- [x] 4. Initialize a `git` repo for frontend repository.
 
 **Connect your API to your frontend!**
 
