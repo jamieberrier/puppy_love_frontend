@@ -3,9 +3,9 @@ console.log("in index.js");
 const endPoint = "http://localhost:3000/api/v1/posts"
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('LOADED');
-    getPosts()
-  });
+  console.log('LOADED');
+  getPosts()
+});
 
 // GET request
 function getPosts() {
@@ -14,21 +14,48 @@ function getPosts() {
   .then(posts => {
     console.log(posts)
     posts.data.forEach(post => {
-      const postMarkup = `
-      <div class="box" data-id=${post.id}>
-        <figure class="image is-256x256">
-          <img src=${post.attributes.picture}>
-        </figure>
-        <nav class="level is-mobile">
-          <div class="level-left">
-            <p class="level-item">Likes: ${post.attributes.num_of_likes}</p>
-          </div>
-          <div class="level-right">
-          <p class="level-item"><strong>I Want One!</strong></p>
-          </div>
-        </nav>
-      </div>`;
-      document.querySelector('#post-container').innerHTML += postMarkup
+      renderPost(post)
     })
-  })
+  });
+}
+
+function renderPost(post) {
+  const postContainer = document.getElementById("post-container");
+  // create box
+  const postBox = document.createElement("div");
+  postBox.setAttribute("class", "box");
+  postBox.setAttribute("data-id", post.id);
+  // picture
+  const figure = document.createElement("figure");
+  figure.setAttribute("class", "image is-256x256")
+  const postImage = document.createElement("img");
+  postImage.src = post.attributes.picture;
+  //postImage.setAttribute("class", "image is-256x256");
+  figure.appendChild(postImage);
+  postBox.appendChild(figure);
+  // create level for Likes & I Want One
+  const level = document.createElement("nav");
+  level.setAttribute("class", "level is-mobile");
+  // left
+  const left = document.createElement("div");
+  left.setAttribute("class", "level-left")
+  // likes
+  const postLikes = document.createElement('p');
+  postLikes.setAttribute("class", "level-item")
+  postLikes.innerText = `${post.attributes.num_of_likes} Likes`;
+  left.appendChild(postLikes);
+  level.appendChild(left);
+  // right
+  const right = document.createElement("div");
+  right.setAttribute("class", "level-right")
+  // I Want One
+  const wantOne = document.createElement('p');
+  wantOne.setAttribute("class", "level-item")
+  wantOne.innerText = "I Want One!";
+  right.appendChild(wantOne);
+  level.appendChild(right);
+  // add level
+  postBox.appendChild(level);
+  // add box
+  postContainer.appendChild(postBox);
 }
