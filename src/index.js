@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     getPosts()
   });
 
-/* GET request */
+// GET request
 function getPosts() {
   fetch(endPoint)
   .then(res => res.json())
@@ -15,12 +15,19 @@ function getPosts() {
     console.log(posts)
     posts.data.forEach(post => {
       const postMarkup = `
-      <div data-id=${post.id}>
-        <img src=${post.attributes.picture} height="300" width="350">
-        <h3>Breed: ${post.attributes.breed.name}</h3>
-        <p>Likes: ${post.attributes.num_of_likes}</p>
-      </div>
-      <br><br>`;
+      <div class="box" data-id=${post.id}>
+        <figure class="image is-256x256">
+          <img src=${post.attributes.picture}>
+        </figure>
+        <nav class="level is-mobile">
+          <div class="level-left">
+            <p class="level-item">Likes: ${post.attributes.num_of_likes}</p>
+          </div>
+          <div class="level-right">
+          <p class="level-item"><strong>I Want One!</strong></p>
+          </div>
+        </nav>
+      </div>`;
       document.querySelector('#post-container').innerHTML += postMarkup
     })
   })
