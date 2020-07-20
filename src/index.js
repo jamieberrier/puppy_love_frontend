@@ -5,7 +5,6 @@ const FULL_HEART = '♥'
 const endPoint = "http://localhost:3000/api/v1/posts"
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('LOADED'); // take out
   getPosts()
 });
 
@@ -14,7 +13,6 @@ function getPosts() {
   fetch(endPoint)
   .then(res => res.json())
   .then(posts => {
-    console.log(posts) // take out
     posts.data.forEach(post => {
       const newPost = new Post(post);
       newPost.renderPost();
@@ -65,7 +63,6 @@ function updateLikes(postId, likes) {
   return fetch(`${endPoint}/${postId}`, configObj)
   .then(response => response.json())
   .then(postObject => {
-    console.log(postObject.data.attributes.num_of_likes)
     const box = document.getElementById(postObject.data.id)
     box.children[1].firstElementChild.children[1].innerText = postObject.data.attributes.num_of_likes
   })
