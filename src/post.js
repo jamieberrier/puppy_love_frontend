@@ -11,7 +11,7 @@ class Post {
     // create box
     const postBox = document.createElement("div");
     postBox.setAttribute("class", "box");
-    postBox.setAttribute("data-id", this.id);
+    postBox.setAttribute("id", this.id);
     // picture
     const figure = document.createElement("figure");
     figure.setAttribute("class", "image is-256x256")
@@ -22,17 +22,19 @@ class Post {
     // create level for Likes & I Want One
     const level = document.createElement("nav");
     level.setAttribute("class", "level is-mobile");
+    level.setAttribute("id", "level")
     // left
     const left = document.createElement("div");
     left.setAttribute("class", "level-left")
     // heart
     //<i class="far fa-heart"></i>
-    const heart = document.createElement("i");
-    // const heart = document.createElement("span");
-    heart.setAttribute("class", "level-item far fa-heart")
-    // heart.setAttribute("class", "level-item far like-glyph")
+    //const heart = document.createElement("i");
+    const heart = document.createElement("span");
+    //heart.setAttribute("class", "level-item far fa-heart")
+    heart.setAttribute("class", "like-glyph like")
     heart.setAttribute("data-id", this.id)
-    //heart.innerHTML = '&#x2661';
+    heart.innerHTML = '&#x2661';
+    heart.addEventListener("click", likePost)
     left.appendChild(heart)
     // likes
     const postLikes = document.createElement('p');
@@ -45,9 +47,10 @@ class Post {
     right.setAttribute("class", "level-right")
     // I Want One
     const wantOne = document.createElement('p');
-    wantOne.setAttribute("class", "level-item")
+    wantOne.setAttribute("class", "level-item like")
     wantOne.setAttribute("data-id", this.id)
     wantOne.innerText = "I Want One!";
+    wantOne.addEventListener("click", wantDog)
     right.appendChild(wantOne);
     level.appendChild(right);
     // add level
