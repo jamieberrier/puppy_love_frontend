@@ -1,4 +1,6 @@
-console.log("in index.js");
+// Defining text characters for the empty and full heart
+const EMPTY_HEART = '♡'
+const FULL_HEART = '♥'
 
 const endPoint = "http://localhost:3000/api/v1/posts"
 
@@ -30,7 +32,6 @@ function renderPost(post) {
   figure.setAttribute("class", "image is-256x256")
   const postImage = document.createElement("img");
   postImage.src = post.attributes.picture;
-  //postImage.setAttribute("class", "image is-256x256");
   figure.appendChild(postImage);
   postBox.appendChild(figure);
   // create level for Likes & I Want One
@@ -39,10 +40,15 @@ function renderPost(post) {
   // left
   const left = document.createElement("div");
   left.setAttribute("class", "level-left")
+  // heart
+  const heart = document.createElement("span");
+  heart.setAttribute("class", "level-item like-glyph")
+  heart.innerHTML = '&#x2661';
+  left.appendChild(heart)
   // likes
   const postLikes = document.createElement('p');
   postLikes.setAttribute("class", "level-item")
-  postLikes.innerText = `${post.attributes.num_of_likes} Likes`;
+  postLikes.innerText = post.attributes.num_of_likes;
   left.appendChild(postLikes);
   level.appendChild(left);
   // right
