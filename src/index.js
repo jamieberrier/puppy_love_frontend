@@ -32,7 +32,7 @@ function likePost(event) {
     // Change the heart to a full heart
     heart.innerText = FULL_HEART
     // Add the .activated-heart class to make the heart appear red
-    heart.setAttribute("class", "activated-heart")
+    heart.setAttribute("class", "like activated-heart")
     // increase post num_of_likes
     likes += 1
     updateLikes(postId, likes)
@@ -41,7 +41,10 @@ function likePost(event) {
     heart.innerText = EMPTY_HEART
     // Remove the .activated-heart class
     heart.removeAttribute("class", "activated-heart")
+    heart.setAttribute("class", "like")
     // decrease post num_of_likes
+    likes -= 1
+    updateLikes(postId, likes)
   }
 }
 
