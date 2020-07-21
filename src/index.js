@@ -1,14 +1,143 @@
 // Defining text characters for the empty and full heart
-const EMPTY_HEART = '♡'
-const FULL_HEART = '♥'
+const EMPTY_HEART = '♡';
+const FULL_HEART = '♥';
 
-const endPoint = "http://localhost:3000/api/v1/posts"
-const dogBreedEndPoint = "https://dog.ceo/api/breeds/list/all"
+const endPoint = "http://localhost:3000/api/v1/posts";
+const dogBreedEndPoint = "https://dog.ceo/api/breeds/list/all";
+
+let addPost = false;
 
 document.addEventListener('DOMContentLoaded', () => {
+  const addBtn = document.getElementById("new-post-btn")
+  addBtn.addEventListener("click", renderNewPostForm)
+
   getPosts()
-  getBreeds()
+  //getBreeds()
 });
+
+// show form to create a new post
+function renderNewPostForm() {
+  const addBtn = document.getElementById("new-post-btn")
+  const newPostContainer = document.getElementById("new-post-container")
+  const newPostForm = document.getElementById("new-post-form")
+
+  addPost = !addPost;
+
+  if (addPost) {
+    // hide add button
+    addBtn.setAttribute("class", "is-hidden")
+    // show form container
+    newPostContainer.setAttribute("class", "container is-fluid has-text-centered mb-4")
+    // breed field
+    const breedField = document.createElement("div")
+    breedField.setAttribute("class", "field")
+    // breed label
+    const breedLabel = document.createElement("label")
+    breedLabel.setAttribute("class", "label heading")
+    breedLabel.innerText = "Select Dog Breed"
+    breedField.appendChild(breedLabel)
+    // breed control
+    const breedControl = document.createElement("div")
+    breedControl.setAttribute("class", "control")
+    breedField.appendChild(breedControl)
+    // select breed
+    const selectBreed = document.createElement("div")
+    selectBreed.setAttribute("class", "select")
+    //selectBreed.setAttribute("id", "select-breed")
+    const select = document.createElement("select")
+    select.setAttribute("id", "breeds")
+    // select placeholder
+    const option = document.createElement("option")
+    option.setAttribute("value", "")
+    option.setAttribute("disabled", "true")
+    option.setAttribute("selected", "true")
+    option.setAttribute("hidden", "true")
+    option.innerHTML = "Select Dog Breed"
+    select.appendChild(option)
+    // fetch options from Breed
+    populateBreedSelect()
+    //const option = document.createElement("option")
+    //option.innerHTML = "select"
+    //select.appendChild(option)
+    selectBreed.appendChild(select)
+    breedField.appendChild(selectBreed)
+    newPostForm.appendChild(breedField)
+    // picture field
+    const pictureField = document.createElement("div")
+    pictureField.setAttribute("class", "field")
+    // picture label
+    const pictureLabel = document.createElement("label")
+    pictureLabel.setAttribute("class", "label heading")
+    pictureLabel.innerText = "Picture"
+    pictureField.appendChild(pictureLabel)
+    // picture control
+    const pictureControl = document.createElement("div")
+    pictureControl.setAttribute("class", "control")
+    pictureField.appendChild(pictureControl)
+    // picture input
+    const pictureInput = document.createElement("input")
+    pictureInput.setAttribute("class", "input")
+    pictureInput.setAttribute("id", "input-picture")
+    pictureInput.setAttribute("type", "text")
+    pictureInput.setAttribute("placeholder", "Enter Picture URL")
+    pictureControl.appendChild(pictureInput)
+    newPostForm.appendChild(pictureField)
+    // submit field
+    const submitField = document.createElement("div")
+    submitField.setAttribute("class", "field")
+    // submit control
+    const submitControl = document.createElement("div")
+    submitControl.setAttribute("class", "control")
+    submitField.appendChild(submitControl)
+    // submit button
+    const submitBtn = document.createElement("button")
+    submitBtn.setAttribute("class", "button is-danger is-light")
+    submitBtn.setAttribute("type", "submit")
+    submitBtn.innerText = "Create Love"
+    submitControl.appendChild(submitBtn)
+    newPostForm.appendChild(submitField)
+    // submit
+    newPostForm.addEventListener("submit", addNewPost)
+  }
+}
+
+// POST request
+function addNewPost(event) {
+  event.preventDefault()
+  console.log(event)
+  const newPostContainer = document.getElementById("new-post-container")
+  const addBtn = document.getElementById("new-post-btn")
+  // hide form container
+  newPostContainer.setAttribute("class", "is-hidden")
+  // show add button
+  addBtn.setAttribute("class", "button is-danger is-outlined")
+  //debugger
+  const picture = document.querySelector("#input-picture").value
+  const breedId = parseInt(document.querySelector("#breeds").value)
+
+  let bodyData = {
+    picture: picture,
+    breed_id: breedId,
+    num_of_likes: 0
+  };
+
+  let configObj = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify(bodyData)
+  };
+
+  return fetch(endPoint, configObj)
+  .then(response => response.json())
+  .then(post => {
+    const newPost = new Post(post.data);
+    newPost.renderPost();
+    alert("Puppy Love Added!")
+  })
+}
 
 // GET request
 function getPosts() {
@@ -22,6 +151,24 @@ function getPosts() {
   });
 }
 
+// GET request
+// populates select with dog breeds
+function populateBreedSelect() {
+  fetch("http://localhost:3000/api/v1/breeds")
+  .then(response => response.json())
+  .then(breeds => {
+    const select = document.querySelector("select")
+    for (const breed of breeds.data) {
+      const option = document.createElement("option")
+      option.setAttribute("id", `${breed.id}`)
+      option.setAttribute("value", `${breed.id}`)
+      option.innerHTML = `${breed.attributes.name}`
+      select.appendChild(option)
+    }
+  })
+}
+
+/*
 function getBreeds() {
   fetch(dogBreedEndPoint)
   .then(response => response.json())
@@ -52,7 +199,7 @@ function createDogBreeds(breeds) {
     }
   }
 }
-
+*/
 function likePost(event) {
   // preventDefault action
   event.preventDefault()
@@ -81,6 +228,7 @@ function likePost(event) {
   }
 }
 
+// updates the number of likes for a post
 function updateLikes(postId, likes) {
   let bodyData = {
     id: postId,
