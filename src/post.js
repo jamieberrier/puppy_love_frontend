@@ -47,7 +47,7 @@ class Post {
     right.setAttribute("class", "level-right")
     // I Want One
     const wantOne = document.createElement('p');
-    wantOne.setAttribute("class", "level-item like")
+    wantOne.setAttribute("class", "has-text-danger level-item like")
     wantOne.setAttribute("data-id", this.id)
     wantOne.innerText = "I Want One!";
     wantOne.addEventListener("click", wantDog)
