@@ -11,10 +11,24 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 </head>
 <body>
+  <!-- header -->
   <section class="section">
     <div class="content has-text-centered">
       <h1 class="heading is-size-1">Puppy Love</h1>
+      <!-- new post button -->
+      <button id="new-post-btn" class="button is-danger is-outlined">Add Puppy Love!</button>
     </div>
+    <!-- create new post form -->
+    <div id="new-post-container" class="section is-hidden">
+      <form id="new-post-form">
+        <div class="field">
+          <div class="control">
+            <h3 class="heading has-text-danger is-size-4">Add Puppy Love!</h3>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- posts -->
     <div id="post-container" class="container is-fluid has-text-centered">
 
     </div>
