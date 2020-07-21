@@ -8,7 +8,7 @@ const dogBreedEndPoint = "https://dog.ceo/api/breeds/list/all";
 let addPost = false;
 
 document.addEventListener('DOMContentLoaded', () => {
-  const addBtn = document.getElementById("new-post-btn")
+  const addBtn = document.querySelector("#new-post-btn")
   addBtn.addEventListener("click", renderNewPostForm)
 
   getPosts()
@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // show form to create a new post
 function renderNewPostForm() {
-  const addBtn = document.getElementById("new-post-btn")
-  const newPostContainer = document.getElementById("new-post-container")
-  const newPostForm = document.getElementById("new-post-form")
+  const addBtn = document.querySelector("#new-post-btn")
+  const newPostContainer = document.querySelector("#new-post-container")
+  const newPostForm = document.querySelector("#new-post-form")
 
   addPost = !addPost;
 
@@ -105,8 +105,8 @@ function renderNewPostForm() {
 function addNewPost(event) {
   event.preventDefault()
   console.log(event)
-  const newPostContainer = document.getElementById("new-post-container")
-  const addBtn = document.getElementById("new-post-btn")
+  const newPostContainer = document.querySelector("#new-post-container")
+  const addBtn = document.querySelector("#new-post-btn")
   // hide form container
   newPostContainer.setAttribute("class", "is-hidden")
   // show add button
@@ -246,9 +246,9 @@ function updateLikes(postId, likes) {
 
   return fetch(`${endPoint}/${postId}`, configObj)
   .then(response => response.json())
-  .then(postObject => {
-    const box = document.getElementById(postObject.data.id)
-    box.children[1].firstElementChild.children[1].innerText = postObject.data.attributes.num_of_likes
+  .then(post => {
+    const box = document.getElementById(post.data.id)
+    box.children[1].firstElementChild.children[1].innerText = post.data.attributes.num_of_likes
   })
 }
 
