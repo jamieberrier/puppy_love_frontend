@@ -56,6 +56,6 @@ class Post {
     // add level
     postBox.appendChild(level);
     // add box
-    postContainer.appendChild(postBox);
+    postContainer.prepend(postBox);
   }
 }
