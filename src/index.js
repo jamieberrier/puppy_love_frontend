@@ -104,7 +104,7 @@ function renderNewPostForm() {
 // POST request
 function addNewPost(event) {
   event.preventDefault()
-  console.log(event)
+
   const newPostContainer = document.querySelector("#new-post-container")
   const addBtn = document.querySelector("#new-post-btn")
   // hide form container
@@ -113,11 +113,11 @@ function addNewPost(event) {
   addBtn.setAttribute("class", "button is-danger is-outlined")
   //debugger
   const picture = document.querySelector("#input-picture").value
-  const breedId = parseInt(document.querySelector("#breeds").value)
+  const breed_id = parseInt(document.querySelector("#breeds").value)
 
   let bodyData = {
-    picture: picture,
-    breed_id: breedId,
+    picture,
+    breed_id,
     num_of_likes: 0
   };
 
@@ -133,9 +133,13 @@ function addNewPost(event) {
   return fetch(endPoint, configObj)
   .then(response => response.json())
   .then(post => {
-    const newPost = new Post(post.data);
-    newPost.renderPost();
-    alert("Puppy Love Added!")
+    //if (post.errors) {
+      //alert(post.errors)
+    //} else {
+      const newPost = new Post(post.data);
+      newPost.renderPost();
+      alert("Puppy Love Added!")
+    //}
   })
 }
 
