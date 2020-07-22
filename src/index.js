@@ -111,7 +111,7 @@ function addNewPost(event) {
   newPostContainer.setAttribute("class", "is-hidden")
   // show add button
   addBtn.setAttribute("class", "button is-danger is-outlined")
-  //debugger
+
   const picture = document.querySelector("#input-picture").value
   const breed_id = parseInt(document.querySelector("#breeds").value)
 
@@ -133,13 +133,9 @@ function addNewPost(event) {
   return fetch(endPoint, configObj)
   .then(response => response.json())
   .then(post => {
-    //if (post.errors) {
-      //alert(post.errors)
-    //} else {
-      const newPost = new Post(post.data);
-      newPost.renderPost();
-      alert("Puppy Love Added!")
-    //}
+    const newPost = new Post(post.data);
+    newPost.renderPost();
+    alert("Puppy Love Added!")
   })
 }
 
