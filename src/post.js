@@ -50,7 +50,8 @@ class Post {
     // I Want One
     const wantOne = document.createElement('p');
     wantOne.setAttribute("class", "has-text-danger level-item like")
-    wantOne.setAttribute("data-id", this.id)
+    wantOne.setAttribute("id", `want-one-${this.id}`)
+    wantOne.setAttribute("data-post-id", this.id)
     wantOne.setAttribute("data-breed", this.breed.name)
     wantOne.innerText = "I Want One!";
     wantOne.style = "text-decoration: underline"
