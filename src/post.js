@@ -1,9 +1,11 @@
 class Post {
   constructor(data) {
     this.id = data.id;
-    this.breed_id = data.attributes.breed.id;
+    this.breed = data.attributes.breed;
     this.num_of_likes = data.attributes.num_of_likes;
     this.picture = data.attributes.picture;
+    // store posts in an array for future use
+    Post.all.push(this);
   }
 
   renderPost() {
@@ -49,13 +51,23 @@ class Post {
     const wantOne = document.createElement('p');
     wantOne.setAttribute("class", "has-text-danger level-item like")
     wantOne.setAttribute("data-id", this.id)
+    wantOne.setAttribute("data-breed", this.breed.name)
     wantOne.innerText = "I Want One!";
+    wantOne.style = "text-decoration: underline"
     wantOne.addEventListener("click", wantDog)
     right.appendChild(wantOne);
     level.appendChild(right);
-    // add level
+    // add level to box
     postBox.appendChild(level);
-    // add box
+    // add box to top of container
     postContainer.prepend(postBox);
+    // return post
+    return postBox
+  }
+
+  static findById(id) {
+    return this.all.find(post => post.id === id);
   }
 }
+
+Post.all = [];
