@@ -282,9 +282,12 @@ function updateLikes(postId, likes) {
 }
 
 function wantDog(event) {
-  // change text color & cursor
-  event.target.setAttribute("class", "has-text-primary level-item wait")
-  const postId = event.target.dataset.id
+  // change cursor to wait
+  const page = document.querySelector("html")
+  page.style.cursor = "wait"
+  // change text color
+  event.target.setAttribute("class", "has-text-primary level-item")
+  const postId = event.target.dataset.postId
   const breed = event.target.dataset.breed
   // fetch available dogs from rescuegroups.org api
   fetchAdoptions(breed, postId)
@@ -292,8 +295,10 @@ function wantDog(event) {
 
 // fetch available dogs from rescuegroups.org api
 function fetchAdoptions(breed, postId) {
-  const wantOne = document.querySelector("p.wait")
+  const wantOne = document.querySelector(`#want-one-${postId}`)
+  const page = document.querySelector("html")
   const box = document.getElementById(`${postId}`)
+  // create container for adoptable dogs
   const adoptContainer = document.createElement("div")
   adoptContainer.setAttribute("id", `adoption-container-${postId}`)
   adoptContainer.setAttribute("class", "container")
@@ -332,34 +337,39 @@ function fetchAdoptions(breed, postId) {
   return fetch ("https://api.rescuegroups.org/v5/public/animals/search/available/dogs?&fields[organizations]=adoptionUrl", configObj)
   .then(response => response.json())
   .then(dogs => {
-    wantOne.setAttribute("class", "has-text-danger level-item")
-    const matchedDogs = dogs.data.filter(dog => dog.attributes.breedString.includes(`${breed}`))
-    //renderMatchedDogs(matchedDogs)
-    if (matchedDogs.length > 0) {
-      matchedDogs.forEach(dog => {
-        adoptHeader.innerText = `Adoptable ${breed}s`
-        box.appendChild(adoptContainer)
+    // change back text color & cursor
+    wantOne.setAttribute("class", "has-text-danger level-item like")
+    page.style.cursor = "auto"
+    // get adoptable dogs that match breed in picture
+    const adoptableDogs = dogs.data.filter(dog => dog.attributes.breedString.includes(`${breed}`))
+    // if adoptable dog(s) found
+    if (adoptableDogs.length > 0) {
+      // set header
+      adoptHeader.innerText = `Adoptable ${breed}s`
+      // add adoption div to post
+      box.appendChild(adoptContainer)
+      // get org info then render each adoptable dog
+      adoptableDogs.forEach(dog => {
+        // get organization id
         const orgId = dog.relationships.orgs.data[0].id
-        fetchOrgUrl(orgId, dog, postId)
+        // get organization info from rescuegroups.org api
+        fetchOrgInfo(orgId, dog, postId)
       })
-      // dogs.data[0].attributes.breedString
-      // => "Pit Bull Terrier / Labrador Retriever / Mixed (short coat)"
-    } else {
+    } else { // no adoptable dog(s) found
+      // set header
       adoptHeader.innerText = ` No Adoptable ${breed}s`
+      // add adoption div to post
       box.appendChild(adoptContainer)
     }
   })
-  .catch(error => alert(error.message))
-}
-/*
-function renderMatchedDogs(dogs) {  
-  dogs.forEach(dog => {
-    const orgId = dog.relationships.orgs.data[0].id
-    fetchOrgUrl(orgId, dog)
+  .catch(error => {
+    console.log("inside fetchAdoptions")
+    alert(error.message)
   })
 }
-*/
-function fetchOrgUrl(orgId, dog, postId) {
+
+// GET organization info fromn rescuegroups.org api
+function fetchOrgInfo(orgId, dog, postId) {
   let configObj = {
     method: "GET",
     headers: {
@@ -373,13 +383,16 @@ function fetchOrgUrl(orgId, dog, postId) {
   .then(org => {
     const orgName = org.data[0].attributes.name
     const orgUrl = org.data[0].attributes.url
-    renderDog(dog, orgName, orgUrl, postId)
+    renderAdoptableDog(dog, orgName, orgUrl, postId)
   })
-  .catch(error => alert(error.message))
+  .catch(error => {
+    console.log("inside fetchOrg")
+    alert(error.message)
+  })
 }
 
- // generate html for each adoptable dog and append to adoptContainer
-function renderDog(dog, orgName, url, postId) {
+// generate html for each adoptable dog and append to adoptContainer
+function renderAdoptableDog(dog, orgName, url, postId) {
   const adoptContainer = document.querySelector(`#adoption-container-${postId}`)
   const dogDiv = document.createElement("article")
   dogDiv.setAttribute("class", "media")
@@ -414,12 +427,12 @@ function renderDog(dog, orgName, url, postId) {
   // // delete button
   //const deleteBtn = document.createElement("button")
   //deleteBtn.setAttribute("class", "delete")
+  //deleteBtn.addEventListener("click", removeDog)
   //mediaRight.appendChild(deleteBtn)
   //dogDiv.appendChild(mediaRight)
   adoptContainer.appendChild(dogDiv)
 }
-/*
-ATTRIBUTES
+/* DOG.ATTRIBUTES
 activityLevel: "Slightly Active"
 adoptionFeeString: "225.00"
 adultSexesOk: "All"
@@ -481,4 +494,26 @@ updatedDate: "2020-07-13T16:55:25Z"
 videoCount: 3
 videoUrlCount: 3
 vocalLevel: "Quiet"
+*/
+
+/* org.data[0].attributes
+about: "Honoring Hope and Faith Rescue, Inc. (HHFR) is a 501(c)3 non-profit, all-breed dog rescue committed to saving the lives of the abused, abandoned, neglected and forgotten. We are a volunteer-based foster program that is dedicated to finding happy and forever homes for our rescued dogs. We rely 100% on donations to provide monetary support for boarding expenses, vet and medical care, and operational support. Help us make a difference in a deserving dogâs life."
+adoptionProcess: "Adoption Application, Meet / Greet, Adoption or Foster-to-Adopt Contract.  Home Ownership or Rental Pet Agreement with appropriate deposit and size/breed restrictions."
+city: "Houston"
+citystate: "Houston, TX"
+coordinates: "29.9145, -95.6531"
+country: "United States"
+email: "HHFRescue@gmail.com"
+isCommonapplicationAccepted: false
+lat: 29.9145
+lon: -95.6531
+meetPets: ["Adoption events will be posted on our social media accounts."]
+name: "Honoring Hope and Faith Rescue, Inc."
+phone: "(866) 774-4673"
+postalcode: "77095"
+serveAreas: "Houston, Conroe, Galveston, League City, Pearland, Sugar Land, Cypress, Katy, Harris County, Fort Bend County, Galveston County, Montgomery County, Brazoria County, Minnesota"
+services: "Adoption, spay/neuter"
+state: "TX"
+type: "Rescue"
+url: "http://www.HHFRescue.org"
 */
