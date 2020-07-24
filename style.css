@@ -2,6 +2,10 @@
   cursor: pointer;
 }
 
+.wait {
+  cursor: wait;
+}
+
 .activated-heart {
   color: red;
 }

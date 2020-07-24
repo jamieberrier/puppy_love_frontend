@@ -10,10 +10,40 @@ let addPost = false;
 document.addEventListener('DOMContentLoaded', () => {
   const addBtn = document.querySelector("#new-post-btn")
   addBtn.addEventListener("click", renderNewPostForm)
-
+  // fetch and load posts
   getPosts()
   //getBreeds()
 });
+
+// GET request
+function getPosts() {
+  fetch(endPoint)
+  .then(response => response.json())
+  .then(posts => {
+    posts.data.forEach(post => {
+      const newPost = new Post(post);
+      newPost.renderPost();
+    })
+  });
+}
+
+// GET request
+// populates select with dog breeds
+function populateBreedSelect() {
+  fetch("http://localhost:3000/api/v1/breeds")
+  .then(response => response.json())
+  .then(breeds => {
+    const select = document.querySelector("select")
+    for (const breed of breeds.data) {
+      const option = document.createElement("option")
+      //option.setAttribute("class", "option")
+      option.setAttribute("id", `${breed.id}`)
+      option.setAttribute("value", `${breed.id}`)
+      option.innerHTML = `${breed.attributes.name}`
+      select.appendChild(option)
+    }
+  })
+}
 
 // show form to create a new post
 function renderNewPostForm() {
@@ -26,8 +56,23 @@ function renderNewPostForm() {
   if (addPost) {
     // hide add button
     addBtn.setAttribute("class", "is-hidden")
+    //addBtn.style.display = "none";
     // show form container
     newPostContainer.setAttribute("class", "container is-fluid has-text-centered mb-4")
+    //newPostContainer.style.display = "block";
+    // header field
+    const headerField = document.createElement("div")
+    headerField.setAttribute("class", "field")
+    // header control
+    const headerControl = document.createElement("div")
+    headerControl.setAttribute("class", "control")
+    headerField.appendChild(headerControl)
+    // header
+    const header = document.createElement("h3")
+    header.setAttribute("class", "heading has-text-danger is-size-4")
+    header.innerText = "Add Puppy Love!"
+    headerControl.appendChild(header)
+    newPostForm.appendChild(headerField)
     // breed field
     const breedField = document.createElement("div")
     breedField.setAttribute("class", "field")
@@ -43,7 +88,6 @@ function renderNewPostForm() {
     // select breed
     const selectBreed = document.createElement("div")
     selectBreed.setAttribute("class", "select")
-    //selectBreed.setAttribute("id", "select-breed")
     const select = document.createElement("select")
     select.setAttribute("id", "breeds")
     // select placeholder
@@ -56,9 +100,6 @@ function renderNewPostForm() {
     select.appendChild(option)
     // fetch options from Breed
     populateBreedSelect()
-    //const option = document.createElement("option")
-    //option.innerHTML = "select"
-    //select.appendChild(option)
     selectBreed.appendChild(select)
     breedField.appendChild(selectBreed)
     newPostForm.appendChild(breedField)
@@ -97,7 +138,10 @@ function renderNewPostForm() {
     submitControl.appendChild(submitBtn)
     newPostForm.appendChild(submitField)
     // submit
-    newPostForm.addEventListener("submit", addNewPost)
+    newPostContainer.addEventListener("submit", addNewPost)
+  } else {
+    //newPostContainer.style.display = "none";
+    newPostContainer.setAttribute("class", "is-hidden")
   }
 }
 
@@ -109,8 +153,11 @@ function addNewPost(event) {
   const addBtn = document.querySelector("#new-post-btn")
   // hide form container
   newPostContainer.setAttribute("class", "is-hidden")
+  //newPostContainer.style.display = "none";
   // show add button
   addBtn.setAttribute("class", "button is-danger is-outlined")
+  //addBtn.style.display = "block";
+  //addBtn.style = "text-align:center";
 
   const picture = document.querySelector("#input-picture").value
   const breed_id = parseInt(document.querySelector("#breeds").value)
@@ -133,38 +180,20 @@ function addNewPost(event) {
   return fetch(endPoint, configObj)
   .then(response => response.json())
   .then(post => {
-    const newPost = new Post(post.data);
-    newPost.renderPost();
-    alert("Puppy Love Added!")
-  })
-}
-
-// GET request
-function getPosts() {
-  fetch(endPoint)
-  .then(response => response.json())
-  .then(posts => {
-    posts.data.forEach(post => {
-      const newPost = new Post(post);
+    console.log(post)
+    
+    if (post.errors) {
+      alert(post.errors)
+    } else {
+      const newPost = new Post(post.data);
       newPost.renderPost();
-    })
-  });
-}
-
-// GET request
-// populates select with dog breeds
-function populateBreedSelect() {
-  fetch("http://localhost:3000/api/v1/breeds")
-  .then(response => response.json())
-  .then(breeds => {
-    const select = document.querySelector("select")
-    for (const breed of breeds.data) {
-      const option = document.createElement("option")
-      option.setAttribute("id", `${breed.id}`)
-      option.setAttribute("value", `${breed.id}`)
-      option.innerHTML = `${breed.attributes.name}`
-      select.appendChild(option)
+      alert("Puppy Love Added!")
+      // reset form
+      document.querySelector("#new-post-form").reset();
     }
+  })
+  .catch(error => {
+    alert(error.message)
   })
 }
 
@@ -253,10 +282,179 @@ function updateLikes(postId, likes) {
 }
 
 function wantDog(event) {
-  const dogBreedId = event.target.dataset.id
-  const box = document.getElementById(`${dogBreedId}`)
-  const adoptContainer = document.createElement("div")
-  adoptContainer.innerText = "Dogs Available for Adoption"
+  // change text color & cursor
+  event.target.setAttribute("class", "has-text-primary level-item wait")
+  const postId = event.target.dataset.id
+  const breed = event.target.dataset.breed
   // fetch available dogs from rescuegroups.org api
-  box.appendChild(adoptContainer)
+  fetchAdoptions(breed, postId)
 }
+
+// fetch available dogs from rescuegroups.org api
+function fetchAdoptions(breed, postId) {
+  const wantOne = document.querySelector("p.wait")
+  const box = document.getElementById(`${postId}`)
+  const adoptContainer = document.createElement("div")
+  adoptContainer.setAttribute("id", `adoption-container-${postId}`)
+  adoptContainer.setAttribute("class", "heading is-size-5")
+  
+  //FIELD
+  // // SCHEMA - ATTRIBUTE
+  // // animals - pictureThumbnailUrl
+  // // animals - breedString
+  // //organizations - adoptionUrl
+
+  //let filters = [fieldName => "animalSpecies", 
+  //operation => "equals",
+  //criteria => "dog"]
+
+  //let bodyData = {
+    //"filters": [
+      //{
+      //  "fieldName": "breedString",
+      //  "operation": "contains",
+      //  "criteria": "Terrier"
+      //}              
+    //]
+  //};
+
+  let configObj = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+      "Authorization": "uzRpR0sN"
+    }
+    //body: JSON.stringify(bodyData)
+  };
+  return fetch ("https://api.rescuegroups.org/v5/public/animals/search/available/dogs?&fields[organizations]=adoptionUrl", configObj)
+  .then(response => response.json())
+  .then(dogs => {
+    wantOne.setAttribute("class", "has-text-danger level-item")
+    const matchedDogs = dogs.data.filter(dog => dog.attributes.breedString.includes(`${breed}`))
+    //renderMatchedDogs(matchedDogs)
+    if (matchedDogs.length > 0) {
+      matchedDogs.forEach(dog => {
+        adoptContainer.innerText = `Adoptable ${breed}s`
+        box.appendChild(adoptContainer)
+        const orgId = dog.relationships.orgs.data[0].id
+        fetchOrgUrl(orgId, dog, postId)
+      })
+      // dogs.data[0].attributes.breedString
+      // => "Pit Bull Terrier / Labrador Retriever / Mixed (short coat)"
+    } else {
+      adoptContainer.innerText = ` No Adoptable ${breed}s`
+      box.appendChild(adoptContainer)
+    }
+  })
+  .catch(error => alert(error.message))
+}
+/*
+function renderMatchedDogs(dogs) {  
+  dogs.forEach(dog => {
+    const orgId = dog.relationships.orgs.data[0].id
+    fetchOrgUrl(orgId, dog)
+  })
+}
+*/
+function fetchOrgUrl(orgId, dog, postId) {
+  let configObj = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+      "Authorization": "uzRpR0sN"
+    }
+  };
+
+  fetch (`https://api.rescuegroups.org/v5/public/orgs/${orgId}`, configObj)
+  .then(response => response.json())
+  .then(org => {
+    const orgName = org.data[0].attributes.name
+    const orgUrl = org.data[0].attributes.url
+    renderDog(dog, orgName, orgUrl, postId)
+  })
+  .catch(error => alert(error.message))
+}
+
+function renderDog(dog, orgName, url, postId) {
+  // returning 1st adoption container
+  // get all adoption containers and loop through for postId??
+  const adoptContainer = document.querySelector(`#adoption-container-${postId}`)
+  //debugger
+  // generate html for each dog and append to adoptContainer
+  const dogDiv = document.createElement("div")
+  //const figure = document.createElement("figure");
+  //figure.setAttribute("class", "image image is-64x64")
+  const pic = document.createElement("img")
+  pic.src = dog.attributes.pictureThumbnailUrl
+  //figure.appendChild(pic)
+  dogDiv.appendChild(pic)
+  const orgUrl = document.createElement("a")
+  orgUrl.setAttribute("href", `${url}`)
+  orgUrl.innerText = orgName
+  dogDiv.appendChild(orgUrl)
+  adoptContainer.appendChild(dogDiv)
+}
+/*
+ATTRIBUTES
+activityLevel: "Slightly Active"
+adoptionFeeString: "225.00"
+adultSexesOk: "All"
+ageGroup: "Senior"
+ageString: "11 Years 2 Months"
+availableDate: "2016-06-01T00:00:00Z"
+birthDate: "2009-04-16T00:00:00Z"
+breedPrimary: "American Bulldog"
+breedPrimaryId: 80
+breedSecondary: "Boxer"
+breedSecondaryId: 104
+breedString: "American Bulldog / Boxer / Mixed (short coat)"
+coatLength: "Short"
+createdDate: "2016-05-22T22:44:01Z"
+descriptionHtml: "<p>↵<span style="font-family: arial, helvetica, sans-serif;">Moody is an 11&nbsp;year old, American Bulldog/Boxer mix. He weighs 90 lbs and is literally a gentle giant!&nbsp;</span>↵</p>↵↵<p>↵<span style="font-family: arial, helvetica, sans-serif;">I honestly can&#39;t find anything negative&nbsp;to say about this dog.&nbsp; Ok maybe he&#39;s a bit over-zealous when he drinks water, but really that is all I can think of!!&nbsp; He has all the positive qualities you would want in a dog. Calm, fun, polite, trained, friendly, etc.&nbsp;</span>↵</p>↵↵<p>↵<span style="font-family: arial, helvetica, sans-serif;">Don&#39;t let his exterior fool you - Moody is a big hunk of love!&nbsp; He has never met a stranger - child or adult.&nbsp; He loves to be with you and is content just laying in the same room with you.&nbsp; He walks great on a leash (doesn&#39;t pull) and is very calm and gentle.&nbsp; He rides great in the car</span>↵↵<span style="font-family: arial, helvetica, sans-serif;">&nbsp;and really just wants some love and a soft bed. Moody takes treats nicely and has all the best qualities&nbsp;of an older dog&nbsp; - house trained, crate trained, calm, easy to have around.&nbsp; He sleeps nicely in his crate at night but we are at the point I trust him to be left out.&nbsp;&nbsp;</span>↵</p>↵↵<p><font face="arial, helvetica, sans-serif">He sits nicely during&nbsp;his baths. He also takes correction very well and is a dog that likes to please.&nbsp; He is great with kids and won&#39;t knock them over because he is really very calm. Probably a no cat household would be best as well.&nbsp; He would be happiest as an only dog.&nbsp; He will do ok with a calm, submissive dog that respects his things and space.&nbsp;</font></p>↵↵<p><font face="arial, helvetica, sans-serif">Look past his exterior and you will find a loving, wonderful dog that is looking for his special&nbsp;family or person. Moody is healthy, up to date on all shots, heartworm negative and neutered. He was found in Moody Park - hence his name - but he is anything but moody :)&nbsp;</font></p>↵↵<p>↵<span style="font-family: arial, helvetica, sans-serif;">You can submit an application to adopt Moody at www.hhfrescue.org.&nbsp;</span>↵</p><img src="https://tracker.rescuegroups.org/pet?10032851" width="0" height="0" alt="" />"
+descriptionText: "↵Moody is an 11&nbsp;year old, American Bulldog/Boxer mix. He weighs 90 lbs and is literally a gentle giant!&nbsp;↵↵↵↵I honestly can&#39;t find anything negative&nbsp;to say about this dog.&nbsp; Ok maybe he&#39;s a bit over-zealous when he drinks water, but really that is all I can think of!!&nbsp; He has all the positive qualities you would want in a dog. Calm, fun, polite, trained, friendly, etc.&nbsp;↵↵↵↵Don&#39;t let his exterior fool you - Moody is a big hunk of love!&nbsp; He has never met a stranger - child or adult.&nbsp; He loves to be with you and is content just laying in the same room with you.&nbsp; He walks great on a leash (doesn&#39;t pull) and is very calm and gentle.&nbsp; He rides great in the car↵↵&nbsp;and really just wants some love and a soft bed. Moody takes treats nicely and has all the best qualities&nbsp;of an older dog&nbsp; - house trained, crate trained, calm, easy to have around.&nbsp; He sleeps nicely in his crate at night but we are at the point I trust him to be left out.&nbsp;&nbsp;↵↵↵He sits nicely during&nbsp;his baths. He also takes correction very well and is a dog that likes to please.&nbsp; He is great with kids and won&#39;t knock them over because he is really very calm. Probably a no cat household would be best as well.&nbsp; He would be happiest as an only dog.&nbsp; He will do ok with a calm, submissive dog that respects his things and space.&nbsp;↵↵Look past his exterior and you will find a loving, wonderful dog that is looking for his special&nbsp;family or person. Moody is healthy, up to date on all shots, heartworm negative and neutered. He was found in Moody Park - hence his name - but he is anything but moody :)&nbsp;↵↵↵You can submit an application to adopt Moody at www.hhfrescue.org.&nbsp;↵"
+distinguishingMarks: "cropped ear"
+earType: "Cropped"
+energyLevel: "Moderate"
+exerciseNeeds: "Moderate"
+eyeColor: "Gold"
+fenceNeeds: "6 foot"
+groomingNeeds: "Low"
+indoorOutdoor: "Indoor Only"
+isAdoptionPending: false
+isBirthDateExact: false
+isBreedMixed: true
+isCatsOk: false
+isCourtesyListing: false
+isCurrentVaccinations: true
+isDeclawed: false
+isDogsOk: true
+isFound: false
+isHousetrained: true
+isKidsOk: true
+isNeedingFoster: true
+isSpecialNeeds: false
+isSponsorable: false
+isYardRequired: true
+name: "Moody"
+newPeopleReaction: "Friendly"
+obedienceTraining: "Has Basic Training"
+ownerExperience: "Breed"
+pictureCount: 17
+pictureThumbnailUrl: "https://s3.amazonaws.com/filestore.rescuegroups.org/8115/pictures/animals/10032/10032851/56281570_100x100.jpg"
+priority: 10
+qualities: (15) ["affectionate", "apartment", "cratetrained", "eagerToPlease", "eventempered", "fetches", "gentle", "doesWellInCar", "goofy", "intelligent", "leashtrained", "noLargeDogs", "obedient", "playful", "playsToys"]
+rescueId: "16-0006"
+sex: "Male"
+sheddingLevel: "Moderate"
+sizeCurrent: 90
+sizeGroup: "Large"
+sizePotential: 90
+sizeUOM: "Pounds"
+slug: "adopt-moody-american-bulldog-dog"
+tailType: "Long"
+trackerimageUrl: "https://tracker.rescuegroups.org/pet?10032851"
+updatedDate: "2020-07-13T16:55:25Z"
+videoCount: 3
+videoUrlCount: 3
+vocalLevel: "Quiet"
+*/
