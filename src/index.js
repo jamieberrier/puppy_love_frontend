@@ -296,7 +296,10 @@ function fetchAdoptions(breed, postId) {
   const box = document.getElementById(`${postId}`)
   const adoptContainer = document.createElement("div")
   adoptContainer.setAttribute("id", `adoption-container-${postId}`)
-  adoptContainer.setAttribute("class", "heading is-size-5")
+  adoptContainer.setAttribute("class", "container")
+  const adoptHeader = document.createElement("h3")
+  adoptHeader.setAttribute("class", "heading is-size-5")
+  adoptContainer.appendChild(adoptHeader)
   
   //FIELD
   // // SCHEMA - ATTRIBUTE
@@ -334,7 +337,7 @@ function fetchAdoptions(breed, postId) {
     //renderMatchedDogs(matchedDogs)
     if (matchedDogs.length > 0) {
       matchedDogs.forEach(dog => {
-        adoptContainer.innerText = `Adoptable ${breed}s`
+        adoptHeader.innerText = `Adoptable ${breed}s`
         box.appendChild(adoptContainer)
         const orgId = dog.relationships.orgs.data[0].id
         fetchOrgUrl(orgId, dog, postId)
@@ -342,7 +345,7 @@ function fetchAdoptions(breed, postId) {
       // dogs.data[0].attributes.breedString
       // => "Pit Bull Terrier / Labrador Retriever / Mixed (short coat)"
     } else {
-      adoptContainer.innerText = ` No Adoptable ${breed}s`
+      adoptHeader.innerText = ` No Adoptable ${breed}s`
       box.appendChild(adoptContainer)
     }
   })
@@ -375,23 +378,44 @@ function fetchOrgUrl(orgId, dog, postId) {
   .catch(error => alert(error.message))
 }
 
+ // generate html for each adoptable dog and append to adoptContainer
 function renderDog(dog, orgName, url, postId) {
-  // returning 1st adoption container
-  // get all adoption containers and loop through for postId??
   const adoptContainer = document.querySelector(`#adoption-container-${postId}`)
-  //debugger
-  // generate html for each dog and append to adoptContainer
-  const dogDiv = document.createElement("div")
-  //const figure = document.createElement("figure");
-  //figure.setAttribute("class", "image image is-64x64")
+  const dogDiv = document.createElement("article")
+  dogDiv.setAttribute("class", "media")
+  // media-left
+  const figure = document.createElement("figure");
+  figure.setAttribute("class", "media-left")
+  const picP = document.createElement("p")
+  picP.setAttribute("class", "image is-64x64")
   const pic = document.createElement("img")
   pic.src = dog.attributes.pictureThumbnailUrl
-  //figure.appendChild(pic)
-  dogDiv.appendChild(pic)
+  picP.appendChild(pic)
+  figure.appendChild(picP)
+  dogDiv.appendChild(figure)
+  // media-content
+  const mediaContent = document.createElement("div")
+  mediaContent.setAttribute("class", "media-content")
+  const content = document.createElement("div")
+  content.setAttribute("class", "content")
+  // <p> for org url
+  const orgP = document.createElement("p")
+  // <a> for org url
   const orgUrl = document.createElement("a")
   orgUrl.setAttribute("href", `${url}`)
   orgUrl.innerText = orgName
-  dogDiv.appendChild(orgUrl)
+  orgP.appendChild(orgUrl)
+  content.appendChild(orgP)
+  mediaContent.appendChild(content)
+  dogDiv.appendChild(mediaContent)
+  // media-right
+  //const mediaRight = document.createElement("div")
+  //mediaRight.setAttribute("class", "media-right")
+  // // delete button
+  //const deleteBtn = document.createElement("button")
+  //deleteBtn.setAttribute("class", "delete")
+  //mediaRight.appendChild(deleteBtn)
+  //dogDiv.appendChild(mediaRight)
   adoptContainer.appendChild(dogDiv)
 }
 /*
