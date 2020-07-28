@@ -9,11 +9,11 @@ class Post {
   }
 
   renderPost() {
-    const postContainer = document.getElementById("post-container");
+    const postContainer = document.querySelector("#post-container");
     // create box
     const postBox = document.createElement("div");
     postBox.setAttribute("class", "box");
-    postBox.setAttribute("id", this.id);
+    postBox.setAttribute("id", `box-${this.id}`);
     // picture
     const figure = document.createElement("figure");
     figure.setAttribute("class", "image is-256x256")
@@ -88,9 +88,10 @@ class Post {
     return fetch(`${endPoint}/${this.id}`, configObj)
     .then(response => response.json())
     .then(post => {
-      const box = document.getElementById(post.data.id)
+      const box = document.querySelector(`#box-${post.data.id}`)
       box.children[1].firstElementChild.children[1].innerText = post.data.attributes.num_of_likes
     })
+    .catch(error => console.log(error.message))
   }
 }
 
