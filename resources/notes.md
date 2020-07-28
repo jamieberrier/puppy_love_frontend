@@ -1,5 +1,6 @@
 ## TO DO
 - Modal new post form
+- display thank you alert after rendering new post
 
 ## TO DONE
 - Change getElementById to querySelector where possible
