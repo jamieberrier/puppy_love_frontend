@@ -1,13 +1,15 @@
 ## TO DO
-- Modal new post form
 - display thank you alert after rendering new post
+- view by breed filter
+- Modal new post form
 
 ## TO DONE
-- Change getElementById to querySelector where possible
+- Change getElementById to querySelector
 
 ## QUESTIONS / ISSUES
--  Is it a project requirement to display the has_many in the DOM?
--  .catch not displaying validation errors
+- Want to populate breeds table with external API
+- Is it a project requirement to display the has_many in the DOM?
+- .catch not displaying validation errors
   ``` javascript
   // function addNewPost(event) 
   // ...
@@ -28,8 +30,7 @@
     alert(error.message)
   })
   ```
-- hide/show form
-  - After creating new post, "Add New Post" button doesn't respond to click. Responds after 2nd click, but displays 2 forms
+- how to upload image/video
 
 ### RESCUEGROUPS API
 #### DOG.ATTRIBUTES
