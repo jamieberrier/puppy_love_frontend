@@ -47,93 +47,18 @@ function populateBreedSelect() {
 function renderNewPostForm() {
   const addBtn = document.querySelector("#new-post-btn")
   const newPostContainer = document.querySelector("#new-post-container")
-  const newPostForm = document.querySelector("#new-post-form")
   
   // hide add new post button
   addBtn.setAttribute("class", "is-hidden")
   // show new post form container
   newPostContainer.setAttribute("class", "container is-fluid has-text-centered mb-4")
-  // header field
-  const headerField = document.createElement("div")
-  headerField.setAttribute("class", "field")
-  // header control
-  const headerControl = document.createElement("div")
-  headerControl.setAttribute("class", "control")
-  headerField.appendChild(headerControl)
-  // header
-  const header = document.createElement("h3")
-  header.setAttribute("class", "heading has-text-danger is-size-4")
-  header.innerText = "Add Puppy Love!"
-  headerControl.appendChild(header)
-  newPostForm.appendChild(headerField)
-  // breed field
-  const breedField = document.createElement("div")
-  breedField.setAttribute("class", "field")
-  // breed label
-  const breedLabel = document.createElement("label")
-  breedLabel.setAttribute("class", "label heading")
-  breedLabel.innerText = "Select Dog Breed"
-  breedField.appendChild(breedLabel)
-  // breed control
-  const breedControl = document.createElement("div")
-  breedControl.setAttribute("class", "control")
-  breedField.appendChild(breedControl)
-  // select breed
-  const selectBreed = document.createElement("div")
-  selectBreed.setAttribute("class", "select")
-  const select = document.createElement("select")
-  select.setAttribute("id", "breeds")
-  // select placeholder
-  const option = document.createElement("option")
-  option.setAttribute("value", "")
-  option.setAttribute("disabled", "true")
-  option.setAttribute("selected", "true")
-  option.setAttribute("hidden", "true")
-  option.innerHTML = "Select Dog Breed"
-  select.appendChild(option)
   // fetch options from Breed
   populateBreedSelect()
-  selectBreed.appendChild(select)
-  breedField.appendChild(selectBreed)
-  newPostForm.appendChild(breedField)
-  // picture field
-  const pictureField = document.createElement("div")
-  pictureField.setAttribute("class", "field")
-  // picture label
-  const pictureLabel = document.createElement("label")
-  pictureLabel.setAttribute("class", "label heading")
-  pictureLabel.innerText = "Picture"
-  pictureField.appendChild(pictureLabel)
-  // picture control
-  const pictureControl = document.createElement("div")
-  pictureControl.setAttribute("class", "control")
-  pictureField.appendChild(pictureControl)
-  // picture input
-  const pictureInput = document.createElement("input")
-  pictureInput.setAttribute("class", "input")
-  pictureInput.setAttribute("id", "input-picture")
-  pictureInput.setAttribute("type", "text")
-  pictureInput.setAttribute("placeholder", "Enter Picture URL")
-  pictureControl.appendChild(pictureInput)
-  newPostForm.appendChild(pictureField)
-  // submit field
-  const submitField = document.createElement("div")
-  submitField.setAttribute("class", "field")
-  // submit control
-  const submitControl = document.createElement("div")
-  submitControl.setAttribute("class", "control")
-  submitField.appendChild(submitControl)
-  // submit button
-  const submitBtn = document.createElement("button")
-  submitBtn.setAttribute("class", "button is-danger is-light")
-  submitBtn.setAttribute("type", "submit")
-  submitBtn.innerText = "Create Love"
-  submitControl.appendChild(submitBtn)
-  newPostForm.appendChild(submitField)
-  // submit event listener
-  newPostForm.addEventListener("submit", createPostHandler)
+  // add submit event listener
+  newPostContainer.addEventListener("submit", createPostHandler)
 }
 
+// new post submit event handler
 function createPostHandler(event) {
   event.preventDefault()
 
@@ -163,8 +88,7 @@ function addPostFetch(picture, breed_id) {
   return fetch(endPoint, configObj)
   .then(response => response.json())
   .then(post => {
-    console.log(post)
-    
+    // catch isn't catching validation errors, so handling here
     if (post.errors) {
       alert(post.errors)
     } else {
@@ -172,11 +96,9 @@ function addPostFetch(picture, breed_id) {
       const addBtn = document.querySelector("#new-post-btn")
       // hide form container
       newPostContainer.setAttribute("class", "is-hidden")
-      //newPostContainer.style.display = "none";
       // show add button
       addBtn.setAttribute("class", "button is-danger is-outlined")
-      //addBtn.style.display = "block";
-      //addBtn.style = "text-align:center";
+      // create confirmation
       alert("Thanks For The Love!")
       const newPost = new Post(post.data);
       newPost.renderPost();

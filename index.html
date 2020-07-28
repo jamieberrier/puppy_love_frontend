@@ -23,7 +23,36 @@
     <!-- create new post form -->
     <div id="new-post-container" class="container is-fluid has-text-centered mb-4 is-hidden">
       <form id="new-post-form">
-      
+        <div class="field">
+          <div class="control">
+            <h3 class="heading has-text-danger is-size-4">Add Puppy Love!</h3>
+          </div>
+        </div>
+        <!-- select dog breed -->
+        <div class="field">
+          <label class="label heading">Select Dog Breed</label>
+          <div class="control">
+            <div class="select">
+              <select id="breeds">
+                <option value="" disabled="true" selected="true" hidden="true">Select Dog Breed</option>
+                <!-- filled dynamically -->
+              </select>
+            </div>
+          </div>
+        </div>
+        <!-- picture -->
+        <div class="field">
+          <label class="label heading">Picture</label>
+          <div class="control">
+            <input class="input" id="input-picture" type="text" placeholder="Enter Picture URL">
+          </div>
+        </div>
+        <!-- submit -->
+        <div class="field">
+          <div class="control">
+            <button class="button is-danger is-light" type="submit">Create Love</button>
+          </div>
+        </div>
       </form>
     </div>
     <!-- posts -->
