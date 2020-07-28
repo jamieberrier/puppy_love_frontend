@@ -1,6 +1,6 @@
 class Post {
   constructor(data) {
-    this.id = data.id;
+    this.id = parseInt(data.id);
     this.breed = data.attributes.breed;
     this.num_of_likes = data.attributes.num_of_likes;
     this.picture = data.attributes.picture;
@@ -68,6 +68,29 @@ class Post {
 
   static findById(id) {
     return this.all.find(post => post.id === id);
+  }
+
+  updateLikes(num_of_likes) {
+    let bodyData = {
+      id: this.id,
+      num_of_likes
+    };
+  
+    let configObj = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(bodyData)
+    };
+  
+    return fetch(`${endPoint}/${this.id}`, configObj)
+    .then(response => response.json())
+    .then(post => {
+      const box = document.getElementById(post.data.id)
+      box.children[1].firstElementChild.children[1].innerText = post.data.attributes.num_of_likes
+    })
   }
 }
 
