@@ -88,7 +88,7 @@ function addPostFetch(picture, breed_id) {
   return fetch(endPoint, configObj)
   .then(response => response.json())
   .then(post => {
-    // catch isn't catching validation errors, so handling here
+    // handle validation errors
     if (post.errors) {
       alert(post.errors)
     } else {
