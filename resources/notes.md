@@ -1,35 +1,17 @@
 ## TO DO
-- display thank you alert after rendering new post
 - view by breed filter
+- display thank you alert after rendering new post
+- populate breeds table with external API
+
+## STRETCH
 - Modal new post form
+- Image/Video upload
 
 ## TO DONE
 - Change getElementById to querySelector
 
 ## QUESTIONS / ISSUES
 - Want to populate breeds table with external API
-- Is it a project requirement to display the has_many in the DOM?
-- .catch not displaying validation errors
-  ``` javascript
-  // function addNewPost(event) 
-  // ...
-  return fetch(endPoint, configObj)
-  .then(response => response.json())
-  .then(post => {
-    if (post.errors) {
-      alert(post.errors)
-    } else {
-      const newPost = new Post(post.data);
-      newPost.renderPost();
-      // reset form
-      document.querySelector("#new-post-form").reset();
-      alert("Thanks For The Love!")
-    }
-  })
-  .catch(error => {
-    alert(error.message)
-  })
-  ```
 - how to upload image/video
 
 ### RESCUEGROUPS API
