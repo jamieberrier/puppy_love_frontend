@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
   addBtn.addEventListener("click", renderNewPostForm)
   // fetch and load posts
   getPosts()
-  //getBreeds()
 });
 
 // GET request
@@ -150,9 +149,122 @@ function wantDog(event) {
   const postId = event.target.dataset.postId
   const breed = event.target.dataset.breed
   // fetch available dogs from rescuegroups.org api
-  fetchAdoptions(breed, postId)
+  //fetchAdoptions(breed, postId)
+  fetchPetFinder(breed, postId)
 }
 
+function fetchPetFinder(breed, postId) {
+  const wantOne = document.querySelector(`#want-one-${postId}`)
+  const page = document.querySelector("html")
+  const box = document.querySelector(`#box-${postId}`)
+  // create container for adoptable dogs
+  const adoptContainer = document.createElement("div")
+  adoptContainer.setAttribute("id", `adoption-container-${postId}`)
+  adoptContainer.setAttribute("class", "container")
+  const adoptHeader = document.createElement("h3")
+  adoptHeader.setAttribute("class", "heading is-size-3")
+  adoptContainer.appendChild(adoptHeader)
+
+  let configObj = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+      "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiJwMjg5aDg2S2JyNEVaOTlIRjEwb0g4YUtpc3duaUVVSFNvbk5lSHBHaFN1RE5DU2dJSiIsImp0aSI6ImM1Yzk0MjMwNWYzNWE4OGM3ODQwZTk0YzA5Y2RiYTBmZjJlZWJlZWU4ODg4NjUwZGE4YWMwYWZiZmE3NjAxNzBhMmQ1ZjNjMzVmOTc2NjY5IiwiaWF0IjoxNTk2MDQ3NTQ4LCJuYmYiOjE1OTYwNDc1NDgsImV4cCI6MTU5NjA1MTE0OCwic3ViIjoiIiwic2NvcGVzIjpbXX0.cwE9OHkcSJ0_25M-WG35yb5Da-5O_H9fiTfLGuBK4hRdPWu269mC5E-E3g5F6C5fupABDthTHvUuyxmmz5o7PYMwLlDMwiUm7x4nS9vlSMGYRIVhhYaZ1y_HqRzlX8XFoZcFubxHG5R2RRVWFV8naHk9vqLOyRYe4rPWuvG2FsyzRLLuVRTUXF6YgbCD3cFwIm-44ZGmjYdbhMg0pEVRW2gSZw0S2A_iUK3-XBaOmaR_EEeCcuf4URHLYTN6i-Q4pOlBcSSEi5BiwVyEjB1Bt2zdtNbOWXrEu32en171r5KaVMbY4KInn979Hb40M9KYuUlmfxZJ5ck4vC78ww6kMA"
+    }
+  };
+  
+  return fetch (`https://api.petfinder.com/v2/animals?type=dog&breed=${breed}&status=adoptable&limit=100`, configObj)
+  .then(response => response.json())
+  .then(dogs => {
+    console.log(dogs)
+    // change back text color & cursor
+    wantOne.setAttribute("class", "has-text-danger level-item like")
+    page.style.cursor = "auto"
+    
+    // if adoptable dog(s) found
+    if (dogs.animals.length > 0) {
+      // set header
+      adoptHeader.innerText = `Adoptable ${breed}s`
+      // add adoption div to post
+      box.appendChild(adoptContainer)
+      // get org info then render each adoptable dog
+      dogs.animals.forEach(dog => {
+        renderAdoptableDog(dog, postId)
+      })
+    } else { // no adoptable dog(s) found
+      // set header
+      adoptHeader.innerText = ` No Adoptable ${breed}s`
+      // add adoption div to post
+      box.appendChild(adoptContainer)
+    }
+  })
+  .catch(error => {
+    console.log("inside fetchPetFinder")
+    alert(error.message)
+  })
+}
+
+// generate html for each adoptable dog and append to adoptContainer
+function renderAdoptableDog(dog, postId) {
+  //debugger
+  const adoptContainer = document.querySelector(`#adoption-container-${postId}`)
+  const dogDiv = document.createElement("article")
+  dogDiv.setAttribute("class", "media")
+  // media-left
+  const figure = document.createElement("figure");
+  figure.setAttribute("class", "media-left mt-4 mb-4")
+  const picP = document.createElement("p")
+  picP.setAttribute("class", "image is-96x96")
+  const pic = document.createElement("img")
+  // if has primary photo
+  if (dog.primary_photo_cropped != null) {
+    pic.src = dog.primary_photo_cropped.medium
+  } else {
+    pic.src = 'dog.svg'
+  }
+  picP.appendChild(pic)
+  figure.appendChild(picP)
+  dogDiv.appendChild(figure)
+  // media-content
+  const mediaContent = document.createElement("div")
+  mediaContent.setAttribute("class", "media-content")
+  const content = document.createElement("div")
+  content.setAttribute("class", "content")
+  // <p> for name
+  const nameP = document.createElement("p")
+  nameP.setAttribute("class", "heading has-text-danger is-size-5")
+  nameP.innerText = dog.name
+  content.appendChild(nameP)
+  // <p> for url
+  const urlP = document.createElement("p")
+  // <a> for url
+  const url = document.createElement("a")
+  url.setAttribute("href", `${dog.url}`)
+  url.innerText = `Click To Learn More About ${dog.name}`
+  urlP.appendChild(url)
+  content.appendChild(urlP)
+  // <p> for description
+  const emailP = document.createElement("p")
+  // <a> for mailto
+  const mail = document.createElement("a")
+  mail.setAttribute("href", `mailto:${dog.contact.email}`)
+  mail.innerText = dog.contact.email
+  emailP.appendChild(mail)
+  content.appendChild(emailP)
+  mediaContent.appendChild(content)
+  dogDiv.appendChild(mediaContent)
+  // media-right
+  //const mediaRight = document.createElement("div")
+  //mediaRight.setAttribute("class", "media-right")
+  // // delete button
+  //const deleteBtn = document.createElement("button")
+  //deleteBtn.setAttribute("class", "delete")
+  //deleteBtn.addEventListener("click", removeDog)
+  //mediaRight.appendChild(deleteBtn)
+  //dogDiv.appendChild(mediaRight)
+  adoptContainer.appendChild(dogDiv)
+}
+/*
 // fetch available dogs from rescuegroups.org api
 function fetchAdoptions(breed, postId) {
   const wantOne = document.querySelector(`#want-one-${postId}`)
@@ -229,8 +341,8 @@ function fetchOrgInfo(orgId, dog, postId) {
     console.log("inside fetchOrgInfo")
     alert(error.message)
   })
-}
-
+}*/
+/*
 // generate html for each adoptable dog and append to adoptContainer
 function renderAdoptableDog(dog, orgName, url, postId) {
   const adoptContainer = document.querySelector(`#adoption-container-${postId}`)
@@ -271,7 +383,7 @@ function renderAdoptableDog(dog, orgName, url, postId) {
   //mediaRight.appendChild(deleteBtn)
   //dogDiv.appendChild(mediaRight)
   adoptContainer.appendChild(dogDiv)
-}
+}*/
 
 // GET dog breeds from dogceo api
 /*
