@@ -1,5 +1,7 @@
 ## TO DO
-- view by breed filter
+- reset to all posts
+- load breeds only once (shareb by filter and form select)
+    - breed class?
 - display thank you alert after rendering new post
 
 ## STRETCH
@@ -10,6 +12,7 @@
 - Change getElementById to querySelector
 - populate breeds table with external API
 - find new dog rescue/adoption api
+- view by breed filter
 
 ## QUESTIONS / ISSUES
 - How to hide api client key and secret

@@ -16,6 +16,24 @@
     <div class="content has-text-centered">
       <h1 class="heading is-size-1">Puppy Love</h1>
     </div>
+    <!-- filter posts by breed -->
+    <div class="content has-text-centered">
+      <div class="dropdown" id="breed-filter">
+        <div class="dropdown-trigger">
+          <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+            <span>Filter By Breed</span>
+            <span class="icon is-small">
+              <i class="fas fa-angle-down" aria-hidden="true"></i>
+            </span>
+          </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu" role="menu">
+          <div class="dropdown-content" id="breed-content">
+            <!-- add dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- new post button -->
     <div class="content has-text-centered">
       <button id="new-post-btn" class="button is-danger is-outlined">Show Some Love!</button>

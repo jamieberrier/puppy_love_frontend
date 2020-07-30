@@ -8,12 +8,89 @@ const secret = "ykSeN25BWR4Igz7sAmk9brfKbTHMB1pAl4ntTNi4";
 const postsEndPoint = "http://localhost:3000/api/v1/posts";
 const breedsEndPoint = "http://localhost:3000/api/v1/breeds";
 
+let breedFilter = false;
+
 document.addEventListener('DOMContentLoaded', () => {
+  // add new post
   const addBtn = document.querySelector("#new-post-btn")
   addBtn.addEventListener("click", renderNewPostForm)
+  // load filter dropdown
+  populateBreedFilter()
+  // filter by breed dropdown
+  const filterBreed = document.querySelector("#breed-filter")
+  filterBreed.addEventListener("click", toggleBreedFilter)
   // fetch and load posts
   getPosts()
 });
+
+// Populate dropdown with breeds
+function populateBreedFilter() {
+  const breedContent = document.querySelector("#breed-content")
+
+  fetch(breedsEndPoint)
+  .then(response => response.json())
+  .then(breeds => {
+    for (const breed of breeds.data) {
+      const option = document.createElement("a")
+      option.setAttribute("class", "dropdown-item")
+      option.setAttribute("id", `${breed.id}`)
+      //option.setAttribute("value", `${breed.id}`)
+      option.innerHTML = `${breed.attributes.name}`
+      option.addEventListener("click", handleFilterClick)
+      breedContent.appendChild(option)
+    }
+  })
+  .catch(error => {
+    console.log(error.message)
+  })
+}
+
+// GET selected breed & its posts
+function handleFilterClick(event) {
+  const breedId = parseInt(event.target.id)
+
+  fetch(`${breedsEndPoint}/${breedId}`)
+  .then(response => response.json())
+  .then(breed => {
+    const breedPosts = breed.data.attributes.posts
+
+    if (breedPosts.length > 0) {
+      renderBreedPosts(breedPosts)
+    } else {
+      alert("no posts")
+    }
+  })
+  .catch(error => {
+    alert(error.message)
+  })
+}
+
+function renderBreedPosts(breedPosts) {
+  const postContainer = document.querySelector("#post-container")
+  // clear post-container
+  while (postContainer.firstChild) {
+    postContainer.removeChild(postContainer.firstChild)
+  }
+  // loop through posts and call renderPost
+  breedPosts.forEach(breedPost => {
+    // find post
+    const post = Post.findById(breedPost.id)
+    // render post
+    post.renderPost()
+  })
+}
+
+// Activate Filter Posts By Breed
+function toggleBreedFilter(event) {
+  const filterBreed = document.querySelector("#breed-filter")
+  breedFilter = !breedFilter
+
+  if (breedFilter) {
+    filterBreed.setAttribute("class", "dropdown is-active")
+  } else {
+    filterBreed.setAttribute("class", "dropdown")
+  }
+}
 
 // GET request
 function getPosts() {
