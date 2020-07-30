@@ -12,7 +12,7 @@
 - find new dog rescue/adoption api
 
 ## QUESTIONS / ISSUES
-- Want to populate breeds table with external API
+- How to hide api client key and secret
 - how to upload image/video
 
 ### PETFINDER API
