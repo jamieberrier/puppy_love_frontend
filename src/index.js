@@ -31,6 +31,7 @@ function populateBreedFilter() {
   .then(response => response.json())
   .then(breeds => {
     for (const breed of breeds.data) {
+      new Breed(breed);
       const option = document.createElement("a")
       option.setAttribute("class", "dropdown-item")
       option.setAttribute("id", `${breed.id}`)
@@ -48,36 +49,13 @@ function populateBreedFilter() {
 // GET selected breed & its posts
 function handleFilterClick(event) {
   const breedId = parseInt(event.target.id)
+  const breed = Breed.findById(breedId)
 
-  fetch(`${breedsEndPoint}/${breedId}`)
-  .then(response => response.json())
-  .then(breed => {
-    const breedPosts = breed.data.attributes.posts
-
-    if (breedPosts.length > 0) {
-      renderBreedPosts(breedPosts)
-    } else {
-      alert("no posts")
-    }
-  })
-  .catch(error => {
-    alert(error.message)
-  })
-}
-
-function renderBreedPosts(breedPosts) {
-  const postContainer = document.querySelector("#post-container")
-  // clear post-container
-  while (postContainer.firstChild) {
-    postContainer.removeChild(postContainer.firstChild)
+  if (breed.posts.length > 0) {
+    breed.renderBreedPosts()
+  } else {
+    alert("no posts")
   }
-  // loop through posts and call renderPost
-  breedPosts.forEach(breedPost => {
-    // find post
-    const post = Post.findById(breedPost.id)
-    // render post
-    post.renderPost()
-  })
 }
 
 // Activate Filter Posts By Breed
@@ -92,7 +70,7 @@ function toggleBreedFilter(event) {
   }
 }
 
-// GET request
+// GET posts
 function getPosts() {
   fetch(postsEndPoint)
   .then(response => response.json())
@@ -107,19 +85,16 @@ function getPosts() {
 // GET request
 // populates select with dog breeds
 function populateBreedSelect() {
-  fetch(breedsEndPoint)
-  .then(response => response.json())
-  .then(breeds => {
-    const select = document.querySelector("select")
-    for (const breed of breeds.data) {
-      const option = document.createElement("option")
-      //option.setAttribute("class", "option")
-      option.setAttribute("id", `breed-${breed.id}`)
-      option.setAttribute("value", `${breed.id}`)
-      option.innerHTML = `${breed.attributes.name}`
-      select.appendChild(option)
-    }
-  })
+  const select = document.querySelector("select")
+
+  for (const breed of Breed.all) {
+    const option = document.createElement("option")
+    //option.setAttribute("class", "option")
+    option.setAttribute("id", `breed-${breed.id}`)
+    option.setAttribute("value", `${breed.id}`)
+    option.innerHTML = `${breed.name}`
+    select.appendChild(option)
+  }
 }
 
 // show form to create a new post
@@ -180,6 +155,8 @@ function addPostFetch(picture, breed_id) {
       // create confirmation
       alert("Thanks For The Love!")
       const newPost = new Post(post.data);
+      const breed = Breed.findById(newPost.breed.id);
+      breed.posts.push(newPost);
       newPost.renderPost();
       // reset form
       document.querySelector("#new-post-form").reset();
@@ -290,7 +267,6 @@ function fetchAdoptableDogs(breed, postId, tokenType, token) {
     // change back text color & cursor
     wantOne.setAttribute("class", "has-text-danger level-item like")
     page.style.cursor = "auto"
-    
     // if adoptable dog(s) found
     if (dogs.animals.length > 0) {
       // set header
@@ -309,8 +285,11 @@ function fetchAdoptableDogs(breed, postId, tokenType, token) {
     }
   })
   .catch(error => {
-    console.log("inside fetchAdoptableDogs")
-    alert(error.message)
+    console.log(error.message)
+    // set header
+    adoptHeader.innerText = ` No Adoptable ${breed}s`
+    // add adoption div to post
+    box.appendChild(adoptContainer)
   })
 }
 
