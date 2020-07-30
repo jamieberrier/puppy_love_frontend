@@ -183,12 +183,21 @@ function fetchAdoptableDogs(breed, postId, tokenType, token) {
   const page = document.querySelector("html")
   const box = document.querySelector(`#box-${postId}`)
   // create container for adoptable dogs
-  const adoptContainer = document.createElement("div")
+  const adoptContainer = document.createElement("article")
   adoptContainer.setAttribute("id", `adoption-container-${postId}`)
-  adoptContainer.setAttribute("class", "container")
-  const adoptHeader = document.createElement("h3")
-  adoptHeader.setAttribute("class", "heading is-size-3")
-  adoptContainer.appendChild(adoptHeader)
+  adoptContainer.setAttribute("class", "message is-danger")
+  // create header
+  const adoptHeaderDiv = document.createElement("div")
+  adoptHeaderDiv.setAttribute("class", "message-header heading is-size-5")
+  const adoptHeader = document.createElement("p")
+  adoptHeaderDiv.appendChild(adoptHeader)
+  // create close button
+  const closeBtn = document.createElement("button")
+  closeBtn.setAttribute("class", "delete")
+  closeBtn.setAttribute("aria-label", "delete")
+  closeBtn.addEventListener("click", handleCloseAdoptionContainer)
+  adoptHeaderDiv.appendChild(closeBtn)
+  adoptContainer.appendChild(adoptHeaderDiv)
 
   let configObj = {
     method: "GET",
@@ -288,4 +297,10 @@ function renderAdoptableDog(dog, postId) {
   //mediaRight.appendChild(deleteBtn)
   //dogDiv.appendChild(mediaRight)
   adoptContainer.appendChild(dogDiv)
+}
+
+// delete adoption container
+function handleCloseAdoptionContainer(event) {
+  const container = document.querySelector(`#${event.target.parentElement.parentElement.id}`)
+  container.remove()
 }
