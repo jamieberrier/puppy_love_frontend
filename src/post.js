@@ -85,7 +85,7 @@ class Post {
       body: JSON.stringify(bodyData)
     };
   
-    return fetch(`${endPoint}/${this.id}`, configObj)
+    return fetch(`${postsEndPoint}/${this.id}`, configObj)
     .then(response => response.json())
     .then(post => {
       const box = document.querySelector(`#box-${post.data.id}`)
