@@ -1,5 +1,6 @@
 ## TO DO
 - reset to all posts
+- make breed select dropdown
 - display thank you alert after rendering new post
 
 ## STRETCH
@@ -14,6 +15,7 @@
 - load breeds only once (shareb by filter and form select)
     - breed class?
 - push new post to breed
+- add close button to form
 
 ## QUESTIONS / ISSUES
 - How to hide api client key and secret
