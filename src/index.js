@@ -9,6 +9,7 @@ const postsEndPoint = "http://localhost:3000/api/v1/posts";
 const breedsEndPoint = "http://localhost:3000/api/v1/breeds";
 
 let breedFilter = false;
+//let breedSelect = false;
 
 document.addEventListener('DOMContentLoaded', () => {
   // add new post
@@ -82,14 +83,16 @@ function getPosts() {
   });
 }
 
-// GET request
-// populates select with dog breeds
+// Populates select with dog breeds
 function populateBreedSelect() {
+  //const select = document.querySelector("#select-content")
   const select = document.querySelector("select")
 
   for (const breed of Breed.all) {
+    //const option = document.createElement("a")
     const option = document.createElement("option")
-    //option.setAttribute("class", "option")
+  
+    //option.setAttribute("class", "dropdown-item")
     option.setAttribute("id", `breed-${breed.id}`)
     option.setAttribute("value", `${breed.id}`)
     option.innerHTML = `${breed.name}`
@@ -101,6 +104,11 @@ function populateBreedSelect() {
 function renderNewPostForm() {
   const addBtn = document.querySelector("#new-post-btn")
   const newPostContainer = document.querySelector("#new-post-container")
+  //const select = document.querySelector("#breeds")
+  const closeBtn = document.querySelector("#close-form")
+
+  //select.addEventListener("click", toggleSelectBreed)
+  closeBtn.addEventListener("click", handleCloseForm)
   
   // hide add new post button
   addBtn.setAttribute("class", "is-hidden")
@@ -110,6 +118,26 @@ function renderNewPostForm() {
   populateBreedSelect()
   // add submit event listener
   newPostContainer.addEventListener("submit", createPostHandler)
+}
+/*
+function toggleSelectBreed(event) {
+  const select = document.querySelector("#breeds")
+  breedSelect = !breedSelect
+
+  if (breedSelect) {
+    select.setAttribute("class", "dropdown is-active")
+  } else {
+    select.setAttribute("class", "dropdown")
+  }
+}
+*/
+function handleCloseForm(event) {
+  const addBtn = document.querySelector("#new-post-btn")
+  const newPostContainer = document.querySelector("#new-post-container")
+  // hide form container
+  newPostContainer.setAttribute("class", "is-hidden")
+  // show add button
+  addBtn.setAttribute("class", "button is-danger is-outlined")
 }
 
 // new post submit event handler
