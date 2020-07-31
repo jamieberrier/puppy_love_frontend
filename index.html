@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
   <script type="text/javascript" src="src/post.js" charset="utf-8"></script>
+  <script type="text/javascript" src="src/breed.js" charset="utf-8"></script>
   <script type="text/javascript" src="src/index.js" charset="utf-8"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 </head>
@@ -40,38 +41,56 @@
     </div>
     <!-- create new post form -->
     <div id="new-post-container" class="container is-fluid has-text-centered mb-4 is-hidden">
-      <form id="new-post-form">
-        <div class="field">
-          <div class="control">
-            <h3 class="heading has-text-danger is-size-4">Add Puppy Love!</h3>
-          </div>
-        </div>
-        <!-- select dog breed -->
-        <div class="field">
-          <label class="label heading">Select Dog Breed</label>
-          <div class="control">
-            <div class="select">
-              <select id="breeds">
-                <option value="" disabled="true" selected="true" hidden="true">Select Dog Breed</option>
-                <!-- filled dynamically -->
-              </select>
+      <div class="notification is-danger">
+        <button class="delete" id="close-form"></button>
+        <form id="new-post-form">
+          <div class="field">
+            <div class="control">
+              <h3 class="heading has-text-danger-light is-size-4">Add Puppy Love!</h3>
             </div>
           </div>
-        </div>
-        <!-- picture -->
-        <div class="field">
-          <label class="label heading">Picture</label>
-          <div class="control">
-            <input class="input" id="input-picture" type="text" placeholder="Enter Picture URL">
+          <!-- select dog breed -->
+          <div class="field">
+            <label class="label heading">Select Dog Breed</label>
+            <div class="control">
+              <div class="select">
+                <select id="breeds">
+                  <option value="" disabled="true" selected="true" hidden="true">Select Dog Breed</option>
+                  <!-- filled dynamically -->
+                </select>
+              </div>
+              <!--div class="dropdown" id="breeds">
+                <div class="dropdown-trigger" >
+                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                    <span>Select Dog Breed</span>
+                      <span class="icon is-small">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                      </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                  <div class="dropdown-content" id="select-content"-->
+                    <!-- added dynamically -->
+                  <!--/div>
+                </div>
+              </div-->
+            </div>
           </div>
-        </div>
-        <!-- submit -->
-        <div class="field">
-          <div class="control">
-            <button class="button is-danger is-light" type="submit">Create Love</button>
+          <!-- picture -->
+          <div class="field">
+            <label class="label heading">Picture</label>
+            <div class="control">
+              <input class="input" id="input-picture" type="text" placeholder="Enter Picture URL">
+            </div>
           </div>
-        </div>
-      </form>
+          <!-- submit -->
+          <div class="field">
+            <div class="control">
+              <button class="button is-danger is-light" type="submit">Create Love</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
     <!-- posts -->
     <div id="post-container" class="container is-fluid has-text-centered">

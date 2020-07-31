@@ -1,7 +1,6 @@
 ## TO DO
 - reset to all posts
-- load breeds only once (shareb by filter and form select)
-    - breed class?
+- make breed select dropdown
 - display thank you alert after rendering new post
 
 ## STRETCH
@@ -13,6 +12,10 @@
 - populate breeds table with external API
 - find new dog rescue/adoption api
 - view by breed filter
+- load breeds only once (shareb by filter and form select)
+    - breed class?
+- push new post to breed
+- add close button to form
 
 ## QUESTIONS / ISSUES
 - How to hide api client key and secret
