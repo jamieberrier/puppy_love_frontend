@@ -280,6 +280,8 @@ function fetchAdoptableDogs(breed, postId, tokenType, token) {
   closeBtn.addEventListener("click", handleCloseAdoptionContainer)
   adoptHeaderDiv.appendChild(closeBtn)
   adoptContainer.appendChild(adoptHeaderDiv)
+  // pluralize breed
+  const breedPlural = pluralize(breed)
 
   let configObj = {
     method: "GET",
@@ -296,9 +298,9 @@ function fetchAdoptableDogs(breed, postId, tokenType, token) {
     wantOne.setAttribute("class", "has-text-danger level-item like")
     page.style.cursor = "auto"
     // if adoptable dog(s) found
-    if (dogs.animals.length > 0) {
+    if (!!dogs.animals) {
       // set header
-      adoptHeader.innerText = `Adoptable ${breed}s`
+      adoptHeader.innerText = `Adoptable ${breedPlural}`
       // add adoption div to post
       box.appendChild(adoptContainer)
       // get org info then render each adoptable dog
@@ -307,7 +309,7 @@ function fetchAdoptableDogs(breed, postId, tokenType, token) {
       })
     } else { // no adoptable dog(s) found
       // set header
-      adoptHeader.innerText = ` No Adoptable ${breed}s`
+      adoptHeader.innerText = ` No Adoptable ${breedPlural}`
       // add adoption div to post
       box.appendChild(adoptContainer)
     }
@@ -315,7 +317,7 @@ function fetchAdoptableDogs(breed, postId, tokenType, token) {
   .catch(error => {
     console.log(error.message)
     // set header
-    adoptHeader.innerText = ` No Adoptable ${breed}s`
+    adoptHeader.innerText = ` No Adoptable ${breedPlural}`
     // add adoption div to post
     box.appendChild(adoptContainer)
   })
@@ -348,27 +350,46 @@ function renderAdoptableDog(dog, postId) {
   const content = document.createElement("div")
   content.setAttribute("class", "content")
   // <p> for name
-  const nameP = document.createElement("p")
-  nameP.setAttribute("class", "heading has-text-danger is-size-5")
-  nameP.innerText = dog.name
-  content.appendChild(nameP)
+  const name = document.createElement("p")
+  name.setAttribute("class", "has-text-danger is-size-5 mb-1")
+  name.innerText = dog.name
+  content.appendChild(name)
+  // <p> for details
+  const details = document.createElement("p")
+  details.innerHTML = `${dog.age} ` + '<i class="fas fa-paw"></i>' + ` ${dog.gender} ` + '<i class="fas fa-paw"></i>' + ` ${dog.size}`
+  content.appendChild(details)
+  // <p> for location
+  const location = document.createElement("p")
+  location.innerHTML = '<i class="fas fa-map-marked-alt"></i>' + ` ${dog.contact.address.city}` + ', ' + `${dog.contact.address.state}`
+  content.appendChild(location)
   // <p> for url
   const urlP = document.createElement("p")
+  urlP.setAttribute("class", "has-text-link")
   // <a> for url
   const url = document.createElement("a")
   url.setAttribute("href", `${dog.url}`)
   url.setAttribute("target", "_blank")
-  url.innerText = `Click To Learn More About ${dog.name}`
+  url.innerText = `Tell Me More About ${dog.name}!`
   urlP.appendChild(url)
   content.appendChild(urlP)
-  // <p> for description
-  const emailP = document.createElement("p")
+  // <p> for email
+  //const emailP = document.createElement("p")
+  //const emailS = document.createElement("span")
+  //emailS.setAttribute("class", "icon")
+  //const emailI = document.createElement("i")
+  //emailI.setAttribute("class", "fas fa-envelope")
+  //emailS.appendChild(emailI)
+  //emailP.appendChild(emailS)
   // <a> for mailto
-  const mail = document.createElement("a")
-  mail.setAttribute("href", `mailto:${dog.contact.email}`)
-  mail.innerText = dog.contact.email
-  emailP.appendChild(mail)
-  content.appendChild(emailP)
+  //const mail = document.createElement("a")
+  //if (dog.contact.email) {
+  //  mail.setAttribute("href", `mailto:${dog.contact.email}`)
+  //  mail.innerText = dog.contact.email
+ // } else {
+  //  mail.innerText = "No Email Address"
+  //}
+  //emailP.appendChild(mail)
+  //content.appendChild(emailP)
   mediaContent.appendChild(content)
   dogDiv.appendChild(mediaContent)
   // media-right
