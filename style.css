@@ -1,11 +1,18 @@
+/* changes cursor on heart and "I Want One!" */
 .like {
   cursor: pointer;
 }
-
-.wait {
-  cursor: wait;
-}
-
+/* changes heart color to red */
 .activated-heart {
   color: red;
+}
+/* scrollable 'Filter By Breed' dropdown menu */
+.dropdown-content {
+  max-height: 16em;
+  overflow: auto;
+}
+/* scrollable adoption container */
+.message {
+  max-height: 27em;
+  overflow: auto;
 }
