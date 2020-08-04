@@ -14,6 +14,7 @@ class Post {
     const postBox = document.createElement("div");
     postBox.setAttribute("class", "box");
     postBox.setAttribute("id", `box-${this.id}`);
+    postBox.setAttribute("data-breed-id", `${this.breed.id}`)
     // picture
     const figure = document.createElement("figure");
     figure.setAttribute("class", "image is-256x256")
