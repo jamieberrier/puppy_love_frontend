@@ -1,5 +1,5 @@
 ## TO DO
-- use petfinder api breeds to seed db
+- when filtering by breed, 'liked' heart disappears and num_of_likes doesn't carry over (if liked & num is 109, when filtered num is 108 and heart empty)
 - reset to all posts
 - make scrollbar visible - filter by breed and adoption container
 - display thank you alert after rendering new post
@@ -18,6 +18,7 @@
     - breed class?
 - push new post to breed
 - add close button to form
+- use petfinder api breeds to seed db
 
 ## QUESTIONS / ISSUES
 - How to hide api client key and secret
@@ -25,9 +26,12 @@
 
 ### PETFINDER API       
 #### DOG END POINT
-https://api.petfinder.com/v2/animals
+GET https://api.petfinder.com/v2/animals
+#### BREEDS END POINT
+type = Dog
+GET https://api.petfinder.com/v2/types/{type}/breeds
 #### ORGANIZATION END POINT
-https://api.petfinder.com/v2/organizations/{id}
+GET https://api.petfinder.com/v2/organizations/{id}
 
 #### dog object
 {id: 48674035, 
