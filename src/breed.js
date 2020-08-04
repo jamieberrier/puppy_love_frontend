@@ -13,17 +13,18 @@ class Breed {
 
   renderBreedPosts() {
     const postContainer = document.querySelector("#post-container")
-    // clear post-container
-    while (postContainer.firstChild) {
-      postContainer.removeChild(postContainer.firstChild)
+    const posts = Object.entries(postContainer.children)
+    // clear posts of other breeds from post-container
+    for (const index in posts) {
+      if (posts.hasOwnProperty(index)) {
+        const element = posts[index][1]
+        const postBreedId = parseInt(element.dataset.breedId)
+        
+        if (this.id !== postBreedId) {
+          postContainer.removeChild(element)
+        }
+      }
     }
-    // loop through posts and call renderPost
-    this.posts.forEach(breedPost => {
-      // find post
-      const post = Post.findById(breedPost.id)
-      // render post
-      post.renderPost()
-    })
   }
 }
 
