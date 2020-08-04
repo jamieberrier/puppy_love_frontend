@@ -88,8 +88,13 @@ class Post {
     return fetch(`${postsEndPoint}/${this.id}`, configObj)
     .then(response => response.json())
     .then(post => {
+      const likes = post.data.attributes.num_of_likes
       const box = document.querySelector(`#box-${post.data.id}`)
-      box.children[1].firstElementChild.children[1].innerText = post.data.attributes.num_of_likes
+      box.children[1].firstElementChild.children[1].innerText = likes
+      // update num_of_likes in Post.all
+      const postId = parseInt(post.data.id)
+      const p = Post.findById(postId)
+      p.num_of_likes = likes
     })
     .catch(error => console.log(error.message))
   }
