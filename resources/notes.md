@@ -1,5 +1,5 @@
 ## TO DO
-- when filtering by breed, 'liked' heart disappears and num_of_likes doesn't carry over (if liked & num is 109, when filtered num is 108 and heart empty)
+- when filtering by breed, 'liked' heart disappears (if liked, when filtered heart is empty)
 - reset to all posts
 - make scrollbar visible - filter by breed and adoption container
 - display thank you alert after rendering new post
@@ -19,6 +19,7 @@
 - push new post to breed
 - add close button to form
 - use petfinder api breeds to seed db
+- update num_of_likes in Post.all array when updating DOM
 
 ## QUESTIONS / ISSUES
 - How to hide api client key and secret
