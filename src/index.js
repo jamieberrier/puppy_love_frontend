@@ -54,9 +54,35 @@ function handleFilterClick(event) {
 
   if (breed.posts.length > 0) {
     breed.renderBreedPosts()
+    // hide filter by breed dropdown
+    const dropdown = document.querySelector("#breed-filter")
+    dropdown.parentElement.setAttribute("class", "is-hidden")
+    // show all posts button
+    const resetBtn = document.querySelector("#all-posts-btn")
+    resetBtn.parentElement.setAttribute("class", "content has-text-centered")
+    // add listener to show all posts button
+    resetBtn.addEventListener("click", showAllPosts)
   } else {
     alert("no posts")
   }
+}
+
+// handle show all posts
+function showAllPosts(event) {
+  // clear post container
+  const postContainer = document.querySelector("#post-container")
+
+  while(postContainer.firstChild) {
+    postContainer.removeChild(postContainer.firstChild)
+  }
+  // load posts
+  getPosts()
+  // show filter by breed dropdown
+  const dropdown = document.querySelector("#breed-filter")
+    dropdown.parentElement.setAttribute("class", "content has-text-centered")
+  // hide see all the love button
+  const resetBtn = document.querySelector("#all-posts-btn")
+    resetBtn.parentElement.setAttribute("class", "content has-text-centered is-hidden")
 }
 
 // Activate Filter Posts By Breed
