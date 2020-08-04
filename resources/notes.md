@@ -1,25 +1,29 @@
 ## TO DO
-- when filtering by breed, 'liked' heart disappears (if liked, when filtered heart is empty)
-- reset to all posts
+- hide show some love button when filtered?
 - make scrollbar visible - filter by breed and adoption container
 - display thank you alert after rendering new post
 
 ## STRETCH
-- Modal new post form
 - Image/Video upload
 - give breed select on form dropdown style?
+- Modal new post form
 
 ## TO DONE
 - Change getElementById to querySelector
 - populate breeds table with external API
 - find new dog rescue/adoption api
 - view by breed filter
-- load breeds only once (shareb by filter and form select)
+- load breeds only once (shared by filter and form select)
     - breed class?
 - push new post to breed
 - add close button to form
 - use petfinder api breeds to seed db
 - update num_of_likes in Post.all array when updating DOM
+- when filtering by breed, 'liked' heart disappears (if liked, when filtered heart is empty)
+- hide filter by breed dropdown when filtered
+- show a reset posts button
+- reset to all posts
+- bring back filter by breed dropdown after reset
 
 ## QUESTIONS / ISSUES
 - How to hide api client key and secret
