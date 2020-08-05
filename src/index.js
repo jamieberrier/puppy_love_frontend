@@ -7,9 +7,8 @@ const secret = "ykSeN25BWR4Igz7sAmk9brfKbTHMB1pAl4ntTNi4";
 
 const postsEndPoint = "http://localhost:3000/api/v1/posts";
 const breedsEndPoint = "http://localhost:3000/api/v1/breeds";
-
+// to toggle is-active on filter by breed dropdown menu
 let breedFilter = false;
-//let breedSelect = false;
 
 document.addEventListener('DOMContentLoaded', () => {
   // add new post
@@ -21,10 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const filterBreed = document.querySelector("#breed-filter")
   filterBreed.addEventListener("click", toggleBreedFilter)
   // fetch and load posts
-  getPosts()
+  fetchPosts()
 });
 
-// Populate dropdown with breeds
+// Populating dropdown menu with dog breeds
 function populateBreedFilter() {
   const breedContent = document.querySelector("#breed-content")
 
@@ -47,45 +46,48 @@ function populateBreedFilter() {
   })
 }
 
-// GET selected breed & its posts
+// Rendering posts of the selected dog breed
 function handleFilterClick(event) {
   const breedId = parseInt(event.target.id)
   const breed = Breed.findById(breedId)
 
   if (breed.posts.length > 0) {
+    const dropdown = document.querySelector("#breed-filter")
+    const resetBtn = document.querySelector("#all-posts-btn")
+    // render each post for the selected dog breed
     breed.renderBreedPosts()
     // hide filter by breed dropdown
-    const dropdown = document.querySelector("#breed-filter")
     dropdown.parentElement.setAttribute("class", "is-hidden")
     // show all posts button
-    const resetBtn = document.querySelector("#all-posts-btn")
     resetBtn.parentElement.setAttribute("class", "content has-text-centered")
     // add listener to show all posts button
-    resetBtn.addEventListener("click", showAllPosts)
+    resetBtn.addEventListener("click", handleShowAll)
   } else {
     alert("no posts")
   }
 }
 
-// handle show all posts
-function showAllPosts(event) {
-  // clear post container
-  const postContainer = document.querySelector("#post-container")
-
-  while(postContainer.firstChild) {
-    postContainer.removeChild(postContainer.firstChild)
-  }
-  // load posts
-  getPosts()
-  // show filter by breed dropdown
+// Handling show all posts click event - render posts of the other dog breeds
+function handleShowAll(event) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
   const dropdown = document.querySelector("#breed-filter")
-    dropdown.parentElement.setAttribute("class", "content has-text-centered")
-  // hide see all the love button
   const resetBtn = document.querySelector("#all-posts-btn")
-    resetBtn.parentElement.setAttribute("class", "content has-text-centered is-hidden")
+  const postContainer = document.querySelector("#post-container")
+  // get the fitlered breed's id
+  const breedId = parseInt(postContainer.firstChild.dataset.breedId)
+  // get the posts of the other dog breeds
+  const otherPosts = Post.all.filter(post => post.breed.id != breedId)
+  // iterate over the other posts
+  otherPosts.forEach(post => {
+    // render each post
+    post.renderPost()
+  })
+  // show filter by breed dropdown
+  dropdown.parentElement.setAttribute("class", "content has-text-centered")
+  // hide see all the love button
+  resetBtn.parentElement.setAttribute("class", "content has-text-centered is-hidden")
 }
 
-// Activate Filter Posts By Breed
+// Activating Filter Posts By Breed
 function toggleBreedFilter(event) {
   const filterBreed = document.querySelector("#breed-filter")
   breedFilter = !breedFilter
@@ -97,66 +99,57 @@ function toggleBreedFilter(event) {
   }
 }
 
-// GET posts
-function getPosts() {
+// GET request - all posts
+function fetchPosts() {
   fetch(postsEndPoint)
   .then(response => response.json())
   .then(posts => {
+    // for each post
     posts.data.forEach(post => {
+      // create new post object
       const newPost = new Post(post);
+      // render new post
       newPost.renderPost();
     })
   });
 }
 
-// Populates select with dog breeds
+// Populating form select with dog breeds
 function populateBreedSelect() {
-  //const select = document.querySelector("#select-content")
   const select = document.querySelector("select")
-
+  // for each breed
   for (const breed of Breed.all) {
-    //const option = document.createElement("a")
+    // create option
     const option = document.createElement("option")
-  
-    //option.setAttribute("class", "dropdown-item")
+    // set option id
     option.setAttribute("id", `breed-${breed.id}`)
+    // set option value
     option.setAttribute("value", `${breed.id}`)
+    // display breed name
     option.innerHTML = `${breed.name}`
+    // add to select
     select.appendChild(option)
   }
 }
 
-// show form to create a new post
+// Showing form to create a new post
 function renderNewPostForm() {
   const addBtn = document.querySelector("#new-post-btn")
   const newPostContainer = document.querySelector("#new-post-container")
-  //const select = document.querySelector("#breeds")
   const closeBtn = document.querySelector("#close-form")
-
-  //select.addEventListener("click", toggleSelectBreed)
+  // add listener to close button
   closeBtn.addEventListener("click", handleCloseForm)
-  
   // hide add new post button
   addBtn.setAttribute("class", "is-hidden")
   // show new post form container
   newPostContainer.setAttribute("class", "container is-fluid has-text-centered mb-4")
-  // fetch options from Breed
+  // populate select options from Breed
   populateBreedSelect()
   // add submit event listener
   newPostContainer.addEventListener("submit", createPostHandler)
 }
-/*
-function toggleSelectBreed(event) {
-  const select = document.querySelector("#breeds")
-  breedSelect = !breedSelect
 
-  if (breedSelect) {
-    select.setAttribute("class", "dropdown is-active")
-  } else {
-    select.setAttribute("class", "dropdown")
-  }
-}
-*/
+// Handling close form click event
 function handleCloseForm(event) {
   const addBtn = document.querySelector("#new-post-btn")
   const newPostContainer = document.querySelector("#new-post-container")
@@ -166,18 +159,18 @@ function handleCloseForm(event) {
   addBtn.setAttribute("class", "button is-danger is-outlined")
 }
 
-// new post submit event handler
+// Handling new post submit event
 function createPostHandler(event) {
   event.preventDefault()
 
   const picture = document.querySelector("#input-picture").value
   const breedId = parseInt(document.querySelector("#breeds").value)
 
-  addPostFetch(picture, breedId)
+  addNewPost(picture, breedId)
 }
 
-// POST request
-function addPostFetch(picture, breed_id) {
+// POST request - create new post
+function addNewPost(picture, breed_id) {
   let bodyData = {
     picture,
     breed_id,
@@ -196,7 +189,7 @@ function addPostFetch(picture, breed_id) {
   return fetch(postsEndPoint, configObj)
   .then(response => response.json())
   .then(post => {
-    // handle validation errors
+    // display validation errors
     if (post.errors) {
       alert(post.errors)
     } else {
@@ -206,14 +199,18 @@ function addPostFetch(picture, breed_id) {
       newPostContainer.setAttribute("class", "is-hidden")
       // show add button
       addBtn.setAttribute("class", "button is-danger is-outlined")
-      // create confirmation
-      alert("Thanks For The Love!")
+      // create new post
       const newPost = new Post(post.data);
+      // find breed by id
       const breed = Breed.findById(newPost.breed.id);
+      // push new post onto breed's posts
       breed.posts.push(newPost);
+      // render new post
       newPost.renderPost();
       // reset form
       document.querySelector("#new-post-form").reset();
+      // create confirmation
+      alert("Thanks For The Love!")
     }
   })
   .catch(error => {
@@ -221,6 +218,7 @@ function addPostFetch(picture, breed_id) {
   })
 }
 
+// Handling like post click event
 function likePost(event) {
   // preventDefault action
   event.preventDefault()
@@ -228,7 +226,7 @@ function likePost(event) {
   const heart = event.target
   const postId = parseInt(heart.dataset.id)
   let likes = parseInt(event.currentTarget.parentElement.children[1].innerText)
-  const p = Post.findById(postId)
+  const post = Post.findById(postId)
 
   if (heart.innerText == EMPTY_HEART) {
     // Change the heart to a full heart
@@ -237,7 +235,7 @@ function likePost(event) {
     heart.setAttribute("class", "like activated-heart")
     // increase post num_of_likes
     likes += 1
-    p.updateLikes(likes)
+    post.updateLikes(likes)
   } else { // When a user clicks on a full heart
     // Change the heart back to an empty heart
     heart.innerText = EMPTY_HEART
@@ -246,11 +244,11 @@ function likePost(event) {
     heart.setAttribute("class", "like")
     // decrease post num_of_likes
     likes -= 1
-    p.updateLikes(likes)
+    post.updateLikes(likes)
   }
 }
 
-// handle click on "I Want One!"
+// Handling "I Want One!" click event
 function wantDog(event) {
   // change cursor to wait
   const page = document.querySelector("html")
@@ -263,8 +261,8 @@ function wantDog(event) {
   fetchPetFinderToken(breed, postId)
 }
 
+// POST request - generate a new token from petfinder API
 function fetchPetFinderToken(breed, postId) {
-  // This is a POST request, because we need the API to generate a new token for us
   let configObjT = {
     method: "POST",
     headers: {
@@ -286,6 +284,7 @@ function fetchPetFinderToken(breed, postId) {
   })
 }
 
+// GET request - adoptale dogs of the same breed as the post from petfinder API
 function fetchAdoptableDogs(breed, postId, tokenType, token) {
   const wantOne = document.querySelector(`#want-one-${postId}`)
   const page = document.querySelector("html")
@@ -303,6 +302,7 @@ function fetchAdoptableDogs(breed, postId, tokenType, token) {
   const closeBtn = document.createElement("button")
   closeBtn.setAttribute("class", "delete")
   closeBtn.setAttribute("aria-label", "delete")
+  // add listener to close button
   closeBtn.addEventListener("click", handleCloseAdoptionContainer)
   adoptHeaderDiv.appendChild(closeBtn)
   adoptContainer.appendChild(adoptHeaderDiv)
@@ -349,7 +349,7 @@ function fetchAdoptableDogs(breed, postId, tokenType, token) {
   })
 }
 
-// generate html for each adoptable dog and append to adoptContainer
+// Generating HTML for each adoptable dog and appending to adoptContainer
 function renderAdoptableDog(dog, postId) {
   const adoptContainer = document.querySelector(`#adoption-container-${postId}`)
   const dogDiv = document.createElement("article")
@@ -357,6 +357,7 @@ function renderAdoptableDog(dog, postId) {
   // media-left
   const figure = document.createElement("figure");
   figure.setAttribute("class", "media-left mt-4 mb-4")
+  // <p> for picture
   const picP = document.createElement("p")
   picP.setAttribute("class", "image is-96x96")
   const pic = document.createElement("img")
@@ -364,7 +365,6 @@ function renderAdoptableDog(dog, postId) {
   if (dog.primary_photo_cropped != null) {
     pic.src = dog.primary_photo_cropped.medium
   } else {
-    //pic.src = 'dog.svg'
     pic.src = "https://dl5zpyw5k3jeb.cloudfront.net/photos/pets/48637918/1/?bust=1596122132&width=450"
   }
   picP.appendChild(pic)
@@ -398,39 +398,12 @@ function renderAdoptableDog(dog, postId) {
   url.innerText = `Tell Me More About ${dog.name}!`
   urlP.appendChild(url)
   content.appendChild(urlP)
-  // <p> for email
-  //const emailP = document.createElement("p")
-  //const emailS = document.createElement("span")
-  //emailS.setAttribute("class", "icon")
-  //const emailI = document.createElement("i")
-  //emailI.setAttribute("class", "fas fa-envelope")
-  //emailS.appendChild(emailI)
-  //emailP.appendChild(emailS)
-  // <a> for mailto
-  //const mail = document.createElement("a")
-  //if (dog.contact.email) {
-  //  mail.setAttribute("href", `mailto:${dog.contact.email}`)
-  //  mail.innerText = dog.contact.email
- // } else {
-  //  mail.innerText = "No Email Address"
-  //}
-  //emailP.appendChild(mail)
-  //content.appendChild(emailP)
   mediaContent.appendChild(content)
   dogDiv.appendChild(mediaContent)
-  // media-right
-  //const mediaRight = document.createElement("div")
-  //mediaRight.setAttribute("class", "media-right")
-  // // delete button
-  //const deleteBtn = document.createElement("button")
-  //deleteBtn.setAttribute("class", "delete")
-  //deleteBtn.addEventListener("click", removeDog)
-  //mediaRight.appendChild(deleteBtn)
-  //dogDiv.appendChild(mediaRight)
   adoptContainer.appendChild(dogDiv)
 }
 
-// delete adoption container
+// Handling delete adoption container event
 function handleCloseAdoptionContainer(event) {
   const container = document.querySelector(`#${event.target.parentElement.parentElement.id}`)
   container.remove()
