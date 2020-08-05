@@ -6,7 +6,7 @@ const tokenEndPoint = "http://localhost:3000/api/v1/petfinder";
 const postsEndPoint = "http://localhost:3000/api/v1/posts";
 const breedsEndPoint = "http://localhost:3000/api/v1/breeds";
 // to toggle is-active on filter by breed dropdown menu
-let breedFilter = false;
+let filterByBreed = false;
 
 document.addEventListener('DOMContentLoaded', () => {
   // have access to:
@@ -19,34 +19,30 @@ document.addEventListener('DOMContentLoaded', () => {
   // get modal content
   window.modalContent = document.querySelector("#modal-content")
   // // filter by breed dropdown
-  // // - const filterBreed = document.querySelector("#breed-filter")
-  // // show all posts button
+  window.breedFilter = document.querySelector("#breed-filter")
+  // // show all posts button - get 2x
   // // - const showAllBtn = document.querySelector("#all-posts-btn")
-  // // create new post button
-  // // - const addBtn = document.querySelector("#new-post-btn")
-  // // new post container
+  // // create new post button - get 4x
+  window.addBtn = document.querySelector("#new-post-btn")
+  // // new post container - get 3x
   // // - const newPostContainer = document.querySelector("#new-post-container")
-  // // close form button
+  // // close form button - get once
   // // - const closeBtn = document.querySelector("#close-form")
-  // // new post form
+  // // new post form - get once
   // // - const newPostForm = document.querySelector("#new-post-form")
-  // // breed select
+  // // breed select - get 2x
   // // - const breedSelect = document.querySelector("#breeds")
-  // // picture input
+  // // picture input - get once
   // // - const picture = document.querySelector("#input-picture")
-  // // posts container
+  // // posts container - get once
   // // - const postsContainer = document.querySelector("#posts-container")
   
-  // new post button
-  const addBtn = document.querySelector("#new-post-btn")
-  // filter by breed dropdown
-  const filterBreed = document.querySelector("#breed-filter")
   // add event listener to new post button
   addBtn.addEventListener("click", renderNewPostForm)
   // load dog breeds in filter by breed dropdown
   populateBreedFilter()
   // add event listener to filter by breed dropdown
-  filterBreed.addEventListener("click", toggleBreedFilter)
+  breedFilter.addEventListener("click", toggleBreedFilter)
   // fetch and render posts
   fetchPosts()
 });
@@ -111,12 +107,11 @@ function handleFilterClick(event) {
   const breedPlural = pluralize(breed.name)
   // if posts of the breed exists
   if (breed.posts.length > 0) {
-    const dropdown = document.querySelector("#breed-filter")
     const showAllBtn = document.querySelector("#all-posts-btn")
     // render each post for the selected dog breed
     breed.renderBreedPosts()
     // hide filter by breed dropdown
-    dropdown.parentElement.setAttribute("class", "is-hidden")
+    breedFilter.parentElement.setAttribute("class", "is-hidden")
     // show all posts button
     showAllBtn.parentElement.setAttribute("class", "content has-text-centered")
     // add listener to show all posts button
@@ -130,9 +125,8 @@ function handleFilterClick(event) {
 }
 
 // Handling show all posts click event - render posts of the other dog breeds
-function handleShowAll(event) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
-  const dropdown = document.querySelector("#breed-filter")
-  const resetBtn = document.querySelector("#all-posts-btn")
+function handleShowAll(event) {
+  const showAllBtn = document.querySelector("#all-posts-btn")
   const postsContainer = document.querySelector("#posts-container")
   // get the fitlered breed's id
   const breedId = parseInt(postsContainer.firstChild.dataset.breedId)
@@ -144,20 +138,19 @@ function handleShowAll(event) {
     post.renderPost()
   })
   // show filter by breed dropdown
-  dropdown.parentElement.setAttribute("class", "content has-text-centered")
+  breedFilter.parentElement.setAttribute("class", "content has-text-centered")
   // hide see all the love button
-  resetBtn.parentElement.setAttribute("class", "content has-text-centered is-hidden")
+  showAllBtn.parentElement.setAttribute("class", "content has-text-centered is-hidden")
 }
 
 // Activating Filter Posts By Breed
 function toggleBreedFilter(event) {
-  const filterBreed = document.querySelector("#breed-filter")
-  breedFilter = !breedFilter
+  filterByBreed = !filterByBreed
 
-  if (breedFilter) {
-    filterBreed.setAttribute("class", "dropdown is-active")
+  if (filterByBreed) {
+    breedFilter.setAttribute("class", "dropdown is-active")
   } else {
-    filterBreed.setAttribute("class", "dropdown")
+    breedFilter.setAttribute("class", "dropdown")
   }
 }
 
@@ -181,7 +174,6 @@ function populateBreedSelect() {
 
 // Showing form to create a new post
 function renderNewPostForm() {
-  const addBtn = document.querySelector("#new-post-btn")
   const newPostContainer = document.querySelector("#new-post-container")
   const closeBtn = document.querySelector("#close-form")
   // add listener to close button
@@ -198,7 +190,6 @@ function renderNewPostForm() {
 
 // Handling close form click event
 function handleCloseForm(event) {
-  const addBtn = document.querySelector("#new-post-btn")
   const newPostContainer = document.querySelector("#new-post-container")
   // hide form container
   newPostContainer.setAttribute("class", "is-hidden")
@@ -241,7 +232,6 @@ function addNewPost(picture, breed_id) {
       alert(post.errors)
     } else {
       const newPostContainer = document.querySelector("#new-post-container")
-      const addBtn = document.querySelector("#new-post-btn")
       // hide form container
       newPostContainer.setAttribute("class", "is-hidden")
       // show add button
