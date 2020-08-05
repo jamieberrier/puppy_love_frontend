@@ -46,6 +46,21 @@ function populateBreedFilter() {
   })
 }
 
+// GET request - all posts
+function fetchPosts() {
+  fetch(postsEndPoint)
+  .then(response => response.json())
+  .then(posts => {
+    // for each post
+    posts.data.forEach(post => {
+      // create new post object
+      const newPost = new Post(post);
+      // render new post
+      newPost.renderPost();
+    })
+  });
+}
+
 // Rendering posts of the selected dog breed
 function handleFilterClick(event) {
   const breedId = parseInt(event.target.id)
@@ -118,21 +133,6 @@ function toggleBreedFilter(event) {
   } else {
     filterBreed.setAttribute("class", "dropdown")
   }
-}
-
-// GET request - all posts
-function fetchPosts() {
-  fetch(postsEndPoint)
-  .then(response => response.json())
-  .then(posts => {
-    // for each post
-    posts.data.forEach(post => {
-      // create new post object
-      const newPost = new Post(post);
-      // render new post
-      newPost.renderPost();
-    })
-  });
 }
 
 // Populating form select with dog breeds
@@ -230,8 +230,26 @@ function addNewPost(picture, breed_id) {
       newPost.renderPost();
       // reset form
       document.querySelector("#new-post-form").reset();
-      // create confirmation
-      alert("Thanks For The Love!")
+      // get modal
+      const noPostsModal = document.querySelector("#modal")
+      // get modal background
+      const noPostsModalBg = document.querySelector("#modal-background")
+      // get modal close button
+      const noPostsModalCloseBtn = document.querySelector("#modal-close")
+      // get modal content
+      const noPostsModalContent = document.querySelector("#modal-content")
+      // set modal text
+      noPostsModalContent.innerText = "Thanks For The Love!"
+      // add listener to close button
+      noPostsModalCloseBtn.addEventListener("click", (e) => {
+        noPostsModal.setAttribute("class", "modal")
+      })
+      // add listener to background
+      noPostsModalBg.addEventListener("click", (e) => {
+        noPostsModal.setAttribute("class", "modal")
+      })
+      // activate modal
+      noPostsModal.setAttribute("class", "modal is-active is-clipped")
     }
   })
   .catch(error => {
