@@ -3,10 +3,11 @@
 - how to upload image/video
 
 ## TO DO
+- reuse modal code
+- make globals of commonly selected html
 - refactor with event delegation?
 - hide show some love button when filtered?
 - make scrollbar visible - filter by breed and adoption container
-- display thank you alert after rendering new post
 
 ## STRETCH
 - Image/Video upload
@@ -31,6 +32,7 @@
 - bring back filter by breed dropdown after reset
 - keep active hearts when rendering all posts after filter
 - hide api client key and secret
+- display thank you alert after rendering new post
 
 ### PETFINDER API       
 #### DOG END POINT
