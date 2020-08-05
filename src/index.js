@@ -50,7 +50,9 @@ function populateBreedFilter() {
 function handleFilterClick(event) {
   const breedId = parseInt(event.target.id)
   const breed = Breed.findById(breedId)
-
+  // pluralize breed
+  const breedPlural = pluralize(breed.name)
+  // if posts of the breed exists
   if (breed.posts.length > 0) {
     const dropdown = document.querySelector("#breed-filter")
     const resetBtn = document.querySelector("#all-posts-btn")
@@ -62,8 +64,27 @@ function handleFilterClick(event) {
     resetBtn.parentElement.setAttribute("class", "content has-text-centered")
     // add listener to show all posts button
     resetBtn.addEventListener("click", handleShowAll)
-  } else {
-    alert("no posts")
+  } else { // display modal
+    // get modal
+    const noPostsModal = document.querySelector("#modal")
+    // get modal background
+    const noPostsModalBg = document.querySelector("#modal-background")
+    // get modal close button
+    const noPostsModalCloseBtn = document.querySelector("#modal-close")
+    // get modal content
+    const noPostsModalContent = document.querySelector("#modal-content")
+    // set modal text
+    noPostsModalContent.innerText = `There are no posts of ${breedPlural}`
+    // add listener to close button
+    noPostsModalCloseBtn.addEventListener("click", (e) => {
+      noPostsModal.setAttribute("class", "modal")
+    })
+    // add listener to background
+    noPostsModalBg.addEventListener("click", (e) => {
+      noPostsModal.setAttribute("class", "modal")
+    })
+    // activate modal
+    noPostsModal.setAttribute("class", "modal is-active is-clipped")
   }
 }
 
