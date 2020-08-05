@@ -1,25 +1,25 @@
 // Defining text characters for the empty and full heart
 const EMPTY_HEART = '♡';
 const FULL_HEART = '♥';
-
-const key = "p289h86Kbr4EZ99HF10oH8aKiswniEUHSonNeHpGhSuDNCSgIJ";
-const secret = "ykSeN25BWR4Igz7sAmk9brfKbTHMB1pAl4ntTNi4";
-
+// Defining end points
+const tokenEndPoint = "http://localhost:3000/api/v1/petfinder";
 const postsEndPoint = "http://localhost:3000/api/v1/posts";
 const breedsEndPoint = "http://localhost:3000/api/v1/breeds";
 // to toggle is-active on filter by breed dropdown menu
 let breedFilter = false;
 
 document.addEventListener('DOMContentLoaded', () => {
-  // add new post
+  // new post button
   const addBtn = document.querySelector("#new-post-btn")
-  addBtn.addEventListener("click", renderNewPostForm)
-  // load filter dropdown
-  populateBreedFilter()
   // filter by breed dropdown
   const filterBreed = document.querySelector("#breed-filter")
+  // add event listener to new post button
+  addBtn.addEventListener("click", renderNewPostForm)
+  // load dog breeds in filter by breed dropdown
+  populateBreedFilter()
+  // add event listener to filter by breed dropdown
   filterBreed.addEventListener("click", toggleBreedFilter)
-  // fetch and load posts
+  // fetch and render posts
   fetchPosts()
 });
 
@@ -263,19 +263,11 @@ function wantDog(event) {
 
 // POST request - generate a new token from petfinder API
 function fetchPetFinderToken(breed, postId) {
-  let configObjT = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body: `grant_type=client_credentials&client_id=${key}&client_secret=${secret}`
-  };
-
-  fetch("https://api.petfinder.com/v2/oauth2/token", configObjT)
+  fetch(tokenEndPoint)
   .then(response => response.json())
   .then(tokenInfo => {
     const tokenType = tokenInfo.token_type
-    const token = tokenInfo.access_token
+    const token = tokenInfo.token
     fetchAdoptableDogs(breed, postId, tokenType, token)
   })
   .catch(error => {
