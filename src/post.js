@@ -9,7 +9,7 @@ class Post {
   }
 
   renderPost() {
-    const postContainer = document.querySelector("#post-container");
+    const postsContainer = document.querySelector("#posts-container");
     // create box
     const postBox = document.createElement("div");
     postBox.setAttribute("class", "box");
@@ -62,7 +62,7 @@ class Post {
     // add level to box
     postBox.appendChild(level);
     // add box to top of container
-    postContainer.prepend(postBox);
+    postsContainer.prepend(postBox);
     // return post
     return postBox
   }
