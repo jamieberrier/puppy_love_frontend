@@ -10,22 +10,14 @@ let breedFilter = false;
 
 document.addEventListener('DOMContentLoaded', () => {
   // have access to:
-  // // modal
+  // get modal
   window.modal = document.querySelector("#modal")
-  // // modal background
+  // get modal background
   window.modalBg = document.querySelector("#modal-background")
-  // // modal close button
+  // get modal close button
   window.modalCloseBtn = document.querySelector("#modal-close")
-  // / modal content
+  // get modal content
   window.modalContent = document.querySelector("#modal-content")
-  // add listener to close button
-  modalCloseBtn.addEventListener("click", (e) => {
-    modal.setAttribute("class", "modal")
-  })
-  // add listener to background
-  modalBg.addEventListener("click", (e) => {
-    modal.setAttribute("class", "modal")
-  })
   // // filter by breed dropdown
   // // - const filterBreed = document.querySelector("#breed-filter")
   // // show all posts button
@@ -59,8 +51,17 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchPosts()
 });
 
-// set modal class to is-active
+// Setting modal class to is-active and adding event listeners
 function activateModal() {
+  // add listener to modal background
+  modalBg.addEventListener("click", (e) => {
+    modal.setAttribute("class", "modal")
+  })
+  // add listener to modal close button
+  modalCloseBtn.addEventListener("click", (e) => {
+    modal.setAttribute("class", "modal")
+  })
+  // activate modal
   modal.setAttribute("class", "modal is-active is-clipped")
 }
 
