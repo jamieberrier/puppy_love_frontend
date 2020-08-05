@@ -9,6 +9,42 @@ const breedsEndPoint = "http://localhost:3000/api/v1/breeds";
 let breedFilter = false;
 
 document.addEventListener('DOMContentLoaded', () => {
+  // have access to:
+  // // modal
+  window.modal = document.querySelector("#modal")
+  // // modal background
+  window.modalBg = document.querySelector("#modal-background")
+  // // modal close button
+  window.modalCloseBtn = document.querySelector("#modal-close")
+  // / modal content
+  window.modalContent = document.querySelector("#modal-content")
+  // add listener to close button
+  modalCloseBtn.addEventListener("click", (e) => {
+    modal.setAttribute("class", "modal")
+  })
+  // add listener to background
+  modalBg.addEventListener("click", (e) => {
+    modal.setAttribute("class", "modal")
+  })
+  // // filter by breed dropdown
+  // // - const filterBreed = document.querySelector("#breed-filter")
+  // // show all posts button
+  // // - const showAllBtn = document.querySelector("#all-posts-btn")
+  // // create new post button
+  // // - const addBtn = document.querySelector("#new-post-btn")
+  // // new post container
+  // // - const newPostContainer = document.querySelector("#new-post-container")
+  // // close form button
+  // // - const closeBtn = document.querySelector("#close-form")
+  // // new post form
+  // // - const newPostForm = document.querySelector("#new-post-form")
+  // // breed select
+  // // - const breedSelect = document.querySelector("#breeds")
+  // // picture input
+  // // - const picture = document.querySelector("#input-picture")
+  // // posts container
+  // // - const postsContainer = document.querySelector("#posts-container")
+  
   // new post button
   const addBtn = document.querySelector("#new-post-btn")
   // filter by breed dropdown
@@ -22,6 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // fetch and render posts
   fetchPosts()
 });
+
+// set modal class to is-active
+function activateModal() {
+  modal.setAttribute("class", "modal is-active is-clipped")
+}
 
 // Populating dropdown menu with dog breeds
 function populateBreedFilter() {
@@ -70,36 +111,20 @@ function handleFilterClick(event) {
   // if posts of the breed exists
   if (breed.posts.length > 0) {
     const dropdown = document.querySelector("#breed-filter")
-    const resetBtn = document.querySelector("#all-posts-btn")
+    const showAllBtn = document.querySelector("#all-posts-btn")
     // render each post for the selected dog breed
     breed.renderBreedPosts()
     // hide filter by breed dropdown
     dropdown.parentElement.setAttribute("class", "is-hidden")
     // show all posts button
-    resetBtn.parentElement.setAttribute("class", "content has-text-centered")
+    showAllBtn.parentElement.setAttribute("class", "content has-text-centered")
     // add listener to show all posts button
-    resetBtn.addEventListener("click", handleShowAll)
+    showAllBtn.addEventListener("click", handleShowAll)
   } else { // display modal
-    // get modal
-    const noPostsModal = document.querySelector("#modal")
-    // get modal background
-    const noPostsModalBg = document.querySelector("#modal-background")
-    // get modal close button
-    const noPostsModalCloseBtn = document.querySelector("#modal-close")
-    // get modal content
-    const noPostsModalContent = document.querySelector("#modal-content")
     // set modal text
-    noPostsModalContent.innerText = `There are no posts of ${breedPlural}`
-    // add listener to close button
-    noPostsModalCloseBtn.addEventListener("click", (e) => {
-      noPostsModal.setAttribute("class", "modal")
-    })
-    // add listener to background
-    noPostsModalBg.addEventListener("click", (e) => {
-      noPostsModal.setAttribute("class", "modal")
-    })
+    modalContent.innerText = `There are no posts of ${breedPlural}`
     // activate modal
-    noPostsModal.setAttribute("class", "modal is-active is-clipped")
+    activateModal()
   }
 }
 
@@ -107,9 +132,9 @@ function handleFilterClick(event) {
 function handleShowAll(event) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
   const dropdown = document.querySelector("#breed-filter")
   const resetBtn = document.querySelector("#all-posts-btn")
-  const postContainer = document.querySelector("#post-container")
+  const postsContainer = document.querySelector("#posts-container")
   // get the fitlered breed's id
-  const breedId = parseInt(postContainer.firstChild.dataset.breedId)
+  const breedId = parseInt(postsContainer.firstChild.dataset.breedId)
   // get the posts of the other dog breeds
   const otherPosts = Post.all.filter(post => post.breed.id != breedId)
   // iterate over the other posts
@@ -137,7 +162,7 @@ function toggleBreedFilter(event) {
 
 // Populating form select with dog breeds
 function populateBreedSelect() {
-  const select = document.querySelector("select")
+  const breedSelect = document.querySelector("#breeds")
   // for each breed
   for (const breed of Breed.all) {
     // create option
@@ -149,7 +174,7 @@ function populateBreedSelect() {
     // display breed name
     option.innerHTML = `${breed.name}`
     // add to select
-    select.appendChild(option)
+    breedSelect.appendChild(option)
   }
 }
 
@@ -230,26 +255,10 @@ function addNewPost(picture, breed_id) {
       newPost.renderPost();
       // reset form
       document.querySelector("#new-post-form").reset();
-      // get modal
-      const noPostsModal = document.querySelector("#modal")
-      // get modal background
-      const noPostsModalBg = document.querySelector("#modal-background")
-      // get modal close button
-      const noPostsModalCloseBtn = document.querySelector("#modal-close")
-      // get modal content
-      const noPostsModalContent = document.querySelector("#modal-content")
       // set modal text
-      noPostsModalContent.innerText = "Thanks For The Love!"
-      // add listener to close button
-      noPostsModalCloseBtn.addEventListener("click", (e) => {
-        noPostsModal.setAttribute("class", "modal")
-      })
-      // add listener to background
-      noPostsModalBg.addEventListener("click", (e) => {
-        noPostsModal.setAttribute("class", "modal")
-      })
+      modalContent.innerText = "Thanks For The Love!"
       // activate modal
-      noPostsModal.setAttribute("class", "modal is-active is-clipped")
+      activateModal()
     }
   })
   .catch(error => {
