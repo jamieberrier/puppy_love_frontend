@@ -24,6 +24,7 @@
 - show a reset posts button
 - reset to all posts
 - bring back filter by breed dropdown after reset
+- keep active hearts when rendering all posts after filter
 
 ## QUESTIONS / ISSUES
 - How to hide api client key and secret
