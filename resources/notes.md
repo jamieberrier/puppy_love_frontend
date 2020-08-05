@@ -1,4 +1,12 @@
+## QUESTIONS / ISSUES
+- refactor with event delegation?
+- How to hide api client key and secret
+    - back end yaml file
+    - git 
+- how to upload image/video
+
 ## TO DO
+- refactor with event delegation?
 - hide show some love button when filtered?
 - make scrollbar visible - filter by breed and adoption container
 - display thank you alert after rendering new post
@@ -25,10 +33,6 @@
 - reset to all posts
 - bring back filter by breed dropdown after reset
 - keep active hearts when rendering all posts after filter
-
-## QUESTIONS / ISSUES
-- How to hide api client key and secret
-- how to upload image/video
 
 ### PETFINDER API       
 #### DOG END POINT
