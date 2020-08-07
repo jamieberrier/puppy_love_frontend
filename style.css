@@ -6,10 +6,23 @@
 .activated-heart {
   color: red;
 }
+/* fullwidth 'Filter By Breed' dropdown */
+.dropdown {
+  width: 100%;
+}
+/* fullwidth 'Filter By Breed' dropdown */
+.dropdown-trigger {
+  width: 100%;
+}
+/* fullwidth 'Filter By Breed' dropdown */
+.dropdown-menu {
+  width: 100%;
+}
 /* scrollable 'Filter By Breed' dropdown menu */
 .dropdown-content {
-  max-height: 16em;
+  max-height: 20em;
   overflow: auto;
+  width: 100%;
 }
 /* scrollable adoption container */
 .message {
