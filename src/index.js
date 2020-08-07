@@ -5,7 +5,7 @@ const FULL_HEART = '♥';
 const tokenEndPoint = "http://localhost:3000/api/v1/petfinder";
 const postsEndPoint = "http://localhost:3000/api/v1/posts";
 const breedsEndPoint = "http://localhost:3000/api/v1/breeds";
-// to toggle is-active on filter by breed dropdown menu
+// Toggling is-active on filter by breed dropdown menu
 let filterByBreed = false;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,14 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // // - const showAllBtn = document.querySelector("#all-posts-btn")
   // // new post container - get 3x
   // // - const newPostContainer = document.querySelector("#new-post-container")
-  // // close form button - get once
-  // // - const closeBtn = document.querySelector("#close-form")
-  // // new post form - get once
-  // // - const newPostForm = document.querySelector("#new-post-form")
   // // breed select - get 2x
   // // - const breedSelect = document.querySelector("#breeds")
-  // // picture input - get once
-  // // - const picture = document.querySelector("#input-picture")
   // // posts container - get 3x
   // // - const postsContainer = document.querySelector("#posts-container")
 
@@ -182,7 +176,7 @@ function handleCloseForm(event) {
   // hide form container
   newPostContainer.setAttribute("class", "is-hidden")
   // show add button
-  addBtn.setAttribute("class", "button is-danger is-outlined")
+  addBtn.setAttribute("class", "button is-fullwidth is-danger is-outlined")
 }
 
 // Populating form select with dog breeds
@@ -256,7 +250,7 @@ function addNewPost(picture, breed_id) {
       // hide form container
       newPostContainer.setAttribute("class", "is-hidden")
       // show add button
-      addBtn.setAttribute("class", "button is-danger is-outlined")
+      addBtn.setAttribute("class", "button is-fullwidth is-danger is-outlined")
       // create new post
       const newPost = new Post(post.data);
       // find breed by id
