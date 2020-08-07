@@ -176,7 +176,7 @@ function handleCloseForm(event) {
   // hide form container
   newPostContainer.setAttribute("class", "is-hidden")
   // show add button
-  addBtn.setAttribute("class", "button is-fullwidth is-danger is-outlined")
+  addBtn.setAttribute("class", "button is-medium is-fullwidth is-danger is-outlined")
 }
 
 // Populating form select with dog breeds
@@ -250,7 +250,7 @@ function addNewPost(picture, breed_id) {
       // hide form container
       newPostContainer.setAttribute("class", "is-hidden")
       // show add button
-      addBtn.setAttribute("class", "button is-fullwidth is-danger is-outlined")
+      addBtn.setAttribute("class", "button is-medium is-fullwidth is-danger is-outlined")
       // create new post
       const newPost = new Post(post.data);
       // find breed by id
