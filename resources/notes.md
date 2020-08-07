@@ -5,6 +5,8 @@
 - make scrollbar visible - filter by breed and adoption container
 
 ## QUESTIONS / ISSUES
+- are my use of globals ok?
+- is my use of async/await appropriate?
 - refactor with event delegation?
 - how to upload image/video
 - make scrollbar visible
