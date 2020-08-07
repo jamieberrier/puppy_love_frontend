@@ -24,7 +24,7 @@ class Post {
     postBox.appendChild(figure);
     // create level for Likes & I Want One
     const level = document.createElement("nav");
-    level.setAttribute("class", "level is-mobile");
+    level.setAttribute("class", "level is-mobile mt-2");
     level.setAttribute("id", "level")
     // left
     const left = document.createElement("div");
