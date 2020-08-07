@@ -1,18 +1,39 @@
-## QUESTIONS / ISSUES
-- refactor with event delegation?
-- how to upload image/video
-
 ## TO DO
-- reuse modal code
 - make globals of commonly selected html
 - refactor with event delegation?
 - hide show some love button when filtered?
 - make scrollbar visible - filter by breed and adoption container
 
-## STRETCH
+## QUESTIONS / ISSUES
+- refactor with event delegation?
+- how to upload image/video
+- make scrollbar visible
+
+## STRETCH GOALS
 - Image/Video upload
 - give breed select on form dropdown style?
 - Modal new post form
+- add picture caption
+
+## THINGS TO REMEMBER
+- js == prototyple inheritance vs ruby == class inheritance 
+- functions can be invoked (called), have properties, and prototype methods
+- function declaration vs function expression 
+    - function declaration (must be named) 
+        - does not evaluate return value of itself
+        - create a new function object in memory and scoped according to where it's been declared
+    - function expression (can be anonymomus) arrow function
+        - evaluates to a value
+- JS 2 phases
+    1. compilation
+        - variables and function DECLARATIONS are read and stored into memory (hoisted to top of scope)
+    2. execution
+        - assignments and executions happen top to bottom
+- scope (of something)
+    - where it's available (context)
+- this
+    - contextual reference
+    - references the current object in which we are running code
 
 ## TO DONE
 - Change getElementById to querySelector
@@ -33,6 +54,10 @@
 - keep active hearts when rendering all posts after filter
 - hide api client key and secret
 - display thank you alert after rendering new post
+- reuse modal code
+- use modal for new post errors
+- refactor fetchAdoptableDogs to post instance method
+- refactor renderAdoptableDog to post instance method
 
 ### PETFINDER API       
 #### DOG END POINT
