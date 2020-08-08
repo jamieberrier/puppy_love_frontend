@@ -288,7 +288,7 @@ function likePost(event) {
     // change the heart to a full heart
     heart.innerText = FULL_HEART
     // add the .activated-heart class to make the heart appear red
-    heart.setAttribute("class", "like activated-heart")
+    heart.setAttribute("class", "like has-text-danger")
     // increase post num_of_likes
     likes += 1
     // update post
