@@ -49,13 +49,15 @@ class Post {
     const right = document.createElement("div");
     right.setAttribute("class", "level-right")
     // I Want One
-    const wantOne = document.createElement('p');
+    // <i class="fas fa-dog"></i>
+    const wantOne = document.createElement("p");
     wantOne.setAttribute("class", "has-text-danger level-item like")
     wantOne.setAttribute("id", `want-one-${this.id}`)
     wantOne.setAttribute("data-post-id", this.id)
     wantOne.setAttribute("data-breed", this.breed.name)
-    wantOne.innerText = "I Want One!";
-    wantOne.style = "text-decoration: underline"
+    // <i class="far fa-grin-hearts"></i>
+    wantOne.innerHTML = 'I Want ' + '<i class="far fa-grin-hearts"></i>' + 'ne!'
+    //wantOne.style = "text-decoration: underline"
     wantOne.addEventListener("click", wantDog)
     right.appendChild(wantOne);
     level.appendChild(right);
