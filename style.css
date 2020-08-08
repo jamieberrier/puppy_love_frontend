@@ -2,10 +2,6 @@
 .like {
   cursor: pointer;
 }
-/* changes heart color to red */
-.activated-heart {
-  color: red;
-}
 /* fullwidth 'Filter By Breed' dropdown */
 .dropdown {
   width: 100%;
