@@ -342,3 +342,25 @@ function handleCloseAdoptionContainer(event) {
   const container = document.querySelector(`#${event.target.parentElement.parentElement.id}`)
   container.remove()
 }
+
+// Rendering notification if no adoptable dogs found
+function renderNoAdoptionsNotification(box, breedPlural) {
+  // create notification for no adoptable dogs
+  const adoptNotification = document.createElement("div")
+  adoptNotification.setAttribute("class", "notification is-danger")
+  // create delete button for notification
+  const closeNotificationBtn = document.createElement("button")
+  closeNotificationBtn.setAttribute("class", "delete")
+  closeNotificationBtn.setAttribute("aria-label", "delete")
+  adoptNotification.appendChild(closeNotificationBtn)
+  // create h2 for notification
+  const adoptNotificationText = document.createElement("h2")
+  adoptNotificationText.setAttribute("class", "heading is-size-5 has-text-weight-bold")
+  adoptNotification.appendChild(adoptNotificationText)
+  // set notification text
+  adoptNotificationText.innerText = `No Adoptable ${breedPlural}`
+  // add event listener to close notification button
+  closeNotificationBtn.addEventListener("click", (e) => e.target.parentElement.remove())
+  // add adoption notification to post
+  box.appendChild(adoptNotification)
+}
