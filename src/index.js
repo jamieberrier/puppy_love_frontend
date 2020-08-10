@@ -310,8 +310,8 @@ async function wantDog(event) {
   // change cursor to wait
   const page = document.querySelector("html")
   page.style.cursor = "wait"
-  // change text color
-  event.target.setAttribute("class", "has-text-primary level-item")
+  // make button static and change color during wait
+  event.target.setAttribute("class", "level-item button is-static is-success is-light is-rounded")
   // get post id
   const postId = parseInt(event.target.dataset.postId)
   // get dog breed
@@ -335,12 +335,6 @@ function fetchPetFinderToken() {
     console.log("inside fetchPetFinderToken")
     alert(error.message)
   })
-}
-
-// Handling delete adoption container event
-function handleCloseAdoptionContainer(event) {
-  const container = document.querySelector(`#${event.target.parentElement.parentElement.id}`)
-  container.remove()
 }
 
 // Rendering notification if no adoptable dogs found
