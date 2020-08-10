@@ -50,13 +50,13 @@ class Post {
     right.setAttribute("class", "level-right")
     // I Want One
     // <i class="fas fa-dog"></i>
-    const wantOne = document.createElement("p");
-    wantOne.setAttribute("class", "has-text-danger level-item like")
+    const wantOne = document.createElement("button");
+    wantOne.setAttribute("class", "level-item button is-danger is-light is-rounded")
     wantOne.setAttribute("id", `want-one-${this.id}`)
     wantOne.setAttribute("data-post-id", this.id)
     wantOne.setAttribute("data-breed", this.breed.name)
     // <i class="far fa-grin-hearts"></i>
-    wantOne.innerHTML = 'I Want ' + '<i class="far fa-grin-hearts"></i>' + 'ne!'
+    wantOne.innerText = 'I Want One!'
     //wantOne.style = "text-decoration: underline"
     wantOne.addEventListener("click", wantDog)
     right.appendChild(wantOne);
@@ -107,23 +107,6 @@ class Post {
     const wantOne = document.querySelector(`#want-one-${this.id}`)
     const page = document.querySelector("html")
     const box = document.querySelector(`#box-${this.id}`)
-    // create container for adoptable dogs
-    const adoptContainer = document.createElement("article")
-    adoptContainer.setAttribute("id", `adoption-container-${this.id}`)
-    adoptContainer.setAttribute("class", "message is-danger")
-    // create header
-    const adoptHeaderDiv = document.createElement("div")
-    adoptHeaderDiv.setAttribute("class", "message-header heading is-size-5")
-    const adoptHeader = document.createElement("p")
-    adoptHeaderDiv.appendChild(adoptHeader)
-    // create close button
-    const closeBtn = document.createElement("button")
-    closeBtn.setAttribute("class", "delete")
-    closeBtn.setAttribute("aria-label", "delete")
-    // add listener to close button
-    closeBtn.addEventListener("click", handleCloseAdoptionContainer)
-    adoptHeaderDiv.appendChild(closeBtn)
-    adoptContainer.appendChild(adoptHeaderDiv)
     // pluralize breed
     const breedPlural = pluralize(breed)
 
@@ -142,7 +125,24 @@ class Post {
       wantOne.setAttribute("class", "has-text-danger level-item like")
       page.style.cursor = "auto"
       // if adoptable dog(s) found
-      if (!!dogs.animals) {
+      if (dogs.animals.length > 0) {
+        // create container for adoptable dogs
+        const adoptContainer = document.createElement("article")
+        adoptContainer.setAttribute("id", `adoption-container-${this.id}`)
+        adoptContainer.setAttribute("class", "message is-danger")
+        // create header
+        const adoptHeaderDiv = document.createElement("div")
+        adoptHeaderDiv.setAttribute("class", "message-header heading is-size-5")
+        const adoptHeader = document.createElement("p")
+        adoptHeaderDiv.appendChild(adoptHeader)
+        // create close button
+        const closeBtn = document.createElement("button")
+        closeBtn.setAttribute("class", "delete")
+        closeBtn.setAttribute("aria-label", "delete")
+        // add listener to close button
+        closeBtn.addEventListener("click", handleCloseAdoptionContainer)
+        adoptHeaderDiv.appendChild(closeBtn)
+        adoptContainer.appendChild(adoptHeaderDiv)
         // set header
         adoptHeader.innerText = `Adoptable ${breedPlural}`
         // add adoption div to post
@@ -153,18 +153,12 @@ class Post {
           this.renderAdoptableDog(dog)
         })
       } else { // no adoptable dog(s) found
-        // set header
-        adoptHeader.innerText = ` No Adoptable ${breedPlural}`
-        // add adoption div to post
-        box.appendChild(adoptContainer)
+        renderNoAdoptionsNotification(box, breedPlural)
       }
     })
     .catch(error => {
       console.log(error.message)
-      // set header
-      adoptHeader.innerText = ` No Adoptable ${breedPlural}`
-      // add adoption div to post
-      box.appendChild(adoptContainer)
+      renderNoAdoptionsNotification(box, breedPlural)
     })
   }
 
