@@ -28,7 +28,7 @@ class Post {
     level.setAttribute("id", "level")
     // left
     const left = document.createElement("div");
-    left.setAttribute("class", "level-left")
+    left.setAttribute("class", "level-left is-size-5")
     // heart
     //<i class="far fa-heart"></i>
     //const heart = document.createElement("i");
