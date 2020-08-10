@@ -121,8 +121,9 @@ class Post {
     fetch (`https://api.petfinder.com/v2/animals?type=dog&breed=${breed}&status=adoptable&limit=100`, configObj)
     .then(response => response.json())
     .then(dogs => {
-      // change back text color & cursor
-      wantOne.setAttribute("class", "has-text-danger level-item like")
+      // hide 'I Want One!' button
+      wantOne.setAttribute("class", "is-hidden")
+      // change back cursor
       page.style.cursor = "auto"
       // if adoptable dog(s) found
       if (dogs.animals.length > 0) {
@@ -140,7 +141,12 @@ class Post {
         closeBtn.setAttribute("class", "delete")
         closeBtn.setAttribute("aria-label", "delete")
         // add listener to close button
-        closeBtn.addEventListener("click", handleCloseAdoptionContainer)
+        closeBtn.addEventListener("click", (e) => {
+          // remove adoptable dogs
+          adoptContainer.remove()
+          // bring back 'I Want One!' button
+          wantOne.setAttribute("class", "level-item button is-danger is-light is-rounded")
+        })
         adoptHeaderDiv.appendChild(closeBtn)
         adoptContainer.appendChild(adoptHeaderDiv)
         // set header
