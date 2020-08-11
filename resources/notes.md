@@ -1,21 +1,19 @@
 ## TO DO
 - make globals of commonly selected html
-- refactor with event delegation?
 - hide show some love button when filtered?
-- make scrollbar visible - filter by breed and adoption container
 
 ## QUESTIONS / ISSUES
 - are my use of globals ok?
 - is my use of async/await appropriate?
 - refactor with event delegation?
-- how to upload image/video
-- make scrollbar visible
+- encrypt json - access token
 
 ## STRETCH GOALS
 - Image/Video upload
 - give breed select on form dropdown style?
 - Modal new post form
 - add picture caption
+- make scrollbar visible - filter by breed and adoption container
 
 ## THINGS TO REMEMBER
 - js == prototyple inheritance vs ruby == class inheritance 
