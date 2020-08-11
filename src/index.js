@@ -13,13 +13,13 @@ document.addEventListener('DOMContentLoaded', () => {
   getModal()
   // get 'filter by breed' dropdown and set to global variable
   window.breedFilter = document.querySelector("#breed-filter")
-  // get 'create new post' button and set to global variable
+  // get 'show some love' button and set to global variable
   window.addBtn = document.querySelector("#new-post-btn")
   // get 'new post container' and set to global variable
   window.newPostContainer = document.querySelector("#new-post-container")
   // get 'posts container' and set to global variable
   window.postsContainer = document.querySelector("#posts-container")
-  // add event listener to 'create new post' button
+  // add event listener to 'show some love' button
   addBtn.addEventListener("click", renderNewPostForm)
   // load dog breeds in 'filter by breed' dropdown
   populateBreedFilter()
@@ -56,19 +56,23 @@ function activateModal() {
 }
 
 // Populating dropdown menu with dog breeds
+// // GET request - all dog breeds
 function populateBreedFilter() {
+  // get 'filter by breed' dropdown menu content
   const breedContent = document.querySelector("#breed-content")
 
   fetch(BREEDS_END_POINT)
   .then(response => response.json())
   .then(breeds => {
     for (const breed of breeds.data) {
+      // create new breed object instance
       new Breed(breed);
+      // create breed <a>
       const option = document.createElement("a")
       option.setAttribute("class", "dropdown-item")
       option.setAttribute("id", `${breed.id}`)
-      //option.setAttribute("value", `${breed.id}`)
       option.innerHTML = `${breed.attributes.name}`
+      // add event listener to breed name
       option.addEventListener("click", handleFilterClick)
       breedContent.appendChild(option)
     }
@@ -89,14 +93,15 @@ function toggleBreedFilter(event) {
   }
 }
 
-// GET request - all posts
+// Fetching posts
+// // GET request - all posts
 function fetchPosts() {
   fetch(POSTS_END_POINT)
   .then(response => response.json())
   .then(posts => {
     // for each post
     posts.data.forEach(post => {
-      // create new post object
+      // create new post object instance
       const newPost = new Post(post);
       // render new post
       newPost.renderPost();
@@ -110,16 +115,17 @@ function handleFilterClick(event) {
   const breed = Breed.findById(breedId)
   // pluralize breed
   const breedPlural = pluralize(breed.name)
-  // if posts of the breed exists
+  // if posts of the breed exist
   if (breed.posts.length > 0) {
+    // get 'see all the love' button
     const showAllBtn = document.querySelector("#all-posts-btn")
     // render each post for the selected dog breed
     breed.renderBreedPosts()
-    // hide filter by breed dropdown
+    // hide 'filter by breed' dropdown
     breedFilter.parentElement.setAttribute("class", "is-hidden")
-    // show all posts button
+    // show 'see all the love' button
     showAllBtn.parentElement.setAttribute("class", "content has-text-centered")
-    // add listener to show all posts button
+    // add listener to 'see all the love' button
     showAllBtn.addEventListener("click", handleShowAll)
   } else { // display modal
     // set modal text
@@ -131,34 +137,36 @@ function handleFilterClick(event) {
 
 // Handling show all posts click event - render posts of the other dog breeds
 function handleShowAll(event) {
+  // get 'see all the love' button
   const showAllBtn = document.querySelector("#all-posts-btn")
   // get the fitlered breed's id
   const breedId = parseInt(postsContainer.firstChild.dataset.breedId)
   // get the posts of the other dog breeds
   const otherPosts = Post.all.filter(post => post.breed.id != breedId)
-  // iterate over the other posts
+  // iterate over the other breeds' posts
   otherPosts.forEach(post => {
     // render each post
     post.renderPost()
   })
-  // show filter by breed dropdown
+  // show 'filter by breed' dropdown
   breedFilter.parentElement.setAttribute("class", "content has-text-centered")
-  // hide see all the love button
+  // hide 'see all the love' button
   showAllBtn.parentElement.setAttribute("class", "is-hidden")
-  // show add new post button
+  // show 'show some love' button
   addBtn.parentElement.setAttribute("class", "content has-text-centered")
 }
 
 // Showing form to create a new post
 function renderNewPostForm() {
+  // get 'close form button'
   const closeBtn = document.querySelector("#close-form")
-  // add listener to close button
+  // add listener to 'close form button'
   closeBtn.addEventListener("click", handleCloseForm)
-  // hide add new post button
+  // hide 'show some love' button
   addBtn.setAttribute("class", "is-hidden")
-  // show new post form container
+  // show 'new post form container'
   newPostContainer.setAttribute("class", "container is-fluid has-text-centered mb-4")
-  // populate select options from Breed
+  // populate select options from Breed.all
   populateBreedSelect()
   // add submit event listener
   newPostContainer.addEventListener("submit", createPostHandler)
@@ -168,7 +176,7 @@ function renderNewPostForm() {
 function handleCloseForm(event) {
   // hide new post form container
   newPostContainer.setAttribute("class", "is-hidden")
-  // show add new post button
+  // show 'show some love' button
   addBtn.setAttribute("class", "button is-medium is-fullwidth is-danger is-outlined")
 }
 
@@ -200,7 +208,8 @@ function createPostHandler(event) {
   addNewPost(picture, breedId)
 }
 
-// POST request - create new post
+// Creating a new post
+// // POST request - create new post
 function addNewPost(picture, breed_id) {
   let bodyData = {
     picture,
@@ -239,9 +248,9 @@ function addNewPost(picture, breed_id) {
       // activate modal
       activateModal()
     } else {
-      // hide new post form container
+      // hide 'new post form container'
       newPostContainer.setAttribute("class", "is-hidden")
-      // show add new post button
+      // show 'show some love' button
       addBtn.setAttribute("class", "button is-medium is-fullwidth is-danger is-outlined")
       // create new post
       const newPost = new Post(post.data);
@@ -279,7 +288,7 @@ function likePost(event) {
   if (heart.innerText == EMPTY_HEART) {
     // change the heart to a full heart
     heart.innerText = FULL_HEART
-    // add the .activated-heart class to make the heart appear red
+    // make the heart red
     heart.setAttribute("class", "like has-text-danger")
     // increase post num_of_likes
     likes += 1
@@ -288,7 +297,7 @@ function likePost(event) {
   } else { // user clicks on a full heart
     // change the heart back to an empty heart
     heart.innerText = EMPTY_HEART
-    // remove the .activated-heart class
+    // make the heart outlined
     heart.setAttribute("class", "like")
     // decrease post num_of_likes
     likes -= 1
@@ -302,21 +311,22 @@ async function wantDog(event) {
   // change cursor to wait
   const page = document.querySelector("html")
   page.style.cursor = "wait"
-  // make button static and change color during wait
+  // make 'I Want One' button static and change color during wait
   event.target.setAttribute("class", "level-item button is-static is-success is-light is-rounded")
   // get post id
   const postId = parseInt(event.target.dataset.postId)
   // get dog breed
   const breed = event.target.dataset.breed
-  // get token to fetch available dogs from petfinder api
-  const token = await fetchPetFinderToken();
   // get post
   const post = Post.findById(postId)
+  // get token to fetch available dogs from petfinder api
+  const token = await fetchPetFinderToken();
   // get adoptale dogs of the same breed as the post from petfinder API
   post.fetchAdoptableDogs(breed, token)
 }
 
-// POST request - generate a new token from petfinder API
+// Fetching petfinder access token
+// // GET request
 function fetchPetFinderToken() {
   return fetch(TOKEN_END_POINT)
   .then(response => response.json())
@@ -331,15 +341,15 @@ function fetchPetFinderToken() {
 
 // Rendering notification if no adoptable dogs found
 function renderNoAdoptionsNotification(box, breedPlural) {
-  // create notification for no adoptable dogs
+  // create no adoptable dogs notification
   const adoptNotification = document.createElement("div")
   adoptNotification.setAttribute("class", "notification is-danger")
-  // create delete button for notification
+  // create notification delete button
   const closeNotificationBtn = document.createElement("button")
   closeNotificationBtn.setAttribute("class", "delete")
   closeNotificationBtn.setAttribute("aria-label", "delete")
   adoptNotification.appendChild(closeNotificationBtn)
-  // create h2 for notification
+  // create notification <h2>
   const adoptNotificationText = document.createElement("h2")
   adoptNotificationText.setAttribute("class", "heading is-size-5 has-text-weight-bold")
   adoptNotification.appendChild(adoptNotificationText)
