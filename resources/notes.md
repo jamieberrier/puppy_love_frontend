@@ -1,5 +1,9 @@
 ## TO DO
 - encrypt json - access token
+- speed up external fetch
+- populateBreedSelect - Breed class method
+- fetchPosts() - Post class method?
+- renderNoAdoptionsNotification - Post class method?
 
 ## QUESTIONS / ISSUES
 - semi-colons?
