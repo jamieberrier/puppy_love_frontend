@@ -88,7 +88,7 @@ class Post {
       body: JSON.stringify(bodyData)
     };
   
-    fetch(`${postsEndPoint}/${this.id}`, configObj)
+    fetch(`${POSTS_END_POINT}/${this.id}`, configObj)
     .then(response => response.json())
     .then(post => {
       const likes = post.data.attributes.num_of_likes

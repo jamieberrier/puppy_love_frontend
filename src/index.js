@@ -2,9 +2,9 @@
 const EMPTY_HEART = '♡';
 const FULL_HEART = '♥';
 // Defining end points
-const tokenEndPoint = "http://localhost:3000/api/v1/petfinder";
-const postsEndPoint = "http://localhost:3000/api/v1/posts";
-const breedsEndPoint = "http://localhost:3000/api/v1/breeds";
+const TOKEN_END_POINT = "http://localhost:3000/api/v1/petfinder";
+const POSTS_END_POINT = "http://localhost:3000/api/v1/posts";
+const BREEDS_END_POINT = "http://localhost:3000/api/v1/breeds";
 // Toggling is-active on filter by breed dropdown menu
 let filterByBreed = false;
 
@@ -65,7 +65,7 @@ function activateModal() {
 function populateBreedFilter() {
   const breedContent = document.querySelector("#breed-content")
 
-  fetch(breedsEndPoint)
+  fetch(BREEDS_END_POINT)
   .then(response => response.json())
   .then(breeds => {
     for (const breed of breeds.data) {
@@ -97,7 +97,7 @@ function toggleBreedFilter(event) {
 
 // GET request - all posts
 function fetchPosts() {
-  fetch(postsEndPoint)
+  fetch(POSTS_END_POINT)
   .then(response => response.json())
   .then(posts => {
     // for each post
@@ -151,7 +151,9 @@ function handleShowAll(event) {
   // show filter by breed dropdown
   breedFilter.parentElement.setAttribute("class", "content has-text-centered")
   // hide see all the love button
-  showAllBtn.parentElement.setAttribute("class", "content has-text-centered is-hidden")
+  showAllBtn.parentElement.setAttribute("class", "is-hidden")
+  // show add new post button
+  addBtn.parentElement.setAttribute("class", "content has-text-centered")
 }
 
 // Showing form to create a new post
@@ -224,7 +226,7 @@ function addNewPost(picture, breed_id) {
     body: JSON.stringify(bodyData)
   };
 
-  fetch(postsEndPoint, configObj)
+  fetch(POSTS_END_POINT, configObj)
   .then(response => response.json())
   .then(post => {
     // display validation errors
@@ -326,7 +328,7 @@ async function wantDog(event) {
 
 // POST request - generate a new token from petfinder API
 function fetchPetFinderToken() {
-  return fetch(tokenEndPoint)
+  return fetch(TOKEN_END_POINT)
   .then(response => response.json())
   .then(tokenInfo => {
     return tokenInfo.token
