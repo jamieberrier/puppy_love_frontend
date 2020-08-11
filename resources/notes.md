@@ -1,8 +1,8 @@
 ## TO DO
-- make globals of commonly selected html
-- hide show some love button when filtered?
+- encrypt json - access token
 
 ## QUESTIONS / ISSUES
+- semi-colons?
 - are my use of globals ok?
 - is my use of async/await appropriate?
 - refactor with event delegation?
@@ -58,6 +58,8 @@
 - use modal for new post errors
 - refactor fetchAdoptableDogs to post instance method
 - refactor renderAdoptableDog to post instance method
+- make globals of commonly selected html
+- hide show some love button when filtered
 
 ### PETFINDER API       
 #### DOG END POINT
