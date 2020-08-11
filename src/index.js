@@ -304,25 +304,3 @@ function fetchPetFinderToken() {
     alert(error.message)
   })
 }
-
-// Rendering notification if no adoptable dogs found
-function renderNoAdoptionsNotification(box, breedPlural) {
-  // create no adoptable dogs notification
-  const adoptNotification = document.createElement("div")
-  adoptNotification.setAttribute("class", "notification is-danger")
-  // create notification delete button
-  const closeNotificationBtn = document.createElement("button")
-  closeNotificationBtn.setAttribute("class", "delete")
-  closeNotificationBtn.setAttribute("aria-label", "delete")
-  adoptNotification.appendChild(closeNotificationBtn)
-  // create notification <h2>
-  const adoptNotificationText = document.createElement("h2")
-  adoptNotificationText.setAttribute("class", "heading is-size-5 has-text-weight-bold")
-  adoptNotification.appendChild(adoptNotificationText)
-  // set notification text
-  adoptNotificationText.innerText = `No Adoptable ${breedPlural}`
-  // add event listener to close notification button
-  closeNotificationBtn.addEventListener("click", (e) => e.target.parentElement.remove())
-  // add adoption notification to post
-  box.appendChild(adoptNotification)
-}
