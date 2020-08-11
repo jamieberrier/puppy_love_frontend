@@ -9,20 +9,14 @@ const BREEDS_END_POINT = "http://localhost:3000/api/v1/breeds";
 let filterByBreed = false;
 
 document.addEventListener('DOMContentLoaded', () => {
-  // have access to:
-  // // show all posts button - get 2x
-  // // - const showAllBtn = document.querySelector("#all-posts-btn")
-  // // new post container - get 3x
-  // // - const newPostContainer = document.querySelector("#new-post-container")
-  // // breed select - get 2x
-  // // - const breedSelect = document.querySelector("#breeds")
-
   // get modal
   getModal()
   // get 'filter by breed' dropdown and set to global variable
   window.breedFilter = document.querySelector("#breed-filter")
   // get 'create new post' button and set to global variable
   window.addBtn = document.querySelector("#new-post-btn")
+  // get 'new post container' and set to global variable
+  window.newPostContainer = document.querySelector("#new-post-container")
   // get 'posts container' and set to global variable
   window.postsContainer = document.querySelector("#posts-container")
   // add event listener to 'create new post' button
@@ -157,7 +151,6 @@ function handleShowAll(event) {
 
 // Showing form to create a new post
 function renderNewPostForm() {
-  const newPostContainer = document.querySelector("#new-post-container")
   const closeBtn = document.querySelector("#close-form")
   // add listener to close button
   closeBtn.addEventListener("click", handleCloseForm)
@@ -173,10 +166,9 @@ function renderNewPostForm() {
 
 // Handling close form click event
 function handleCloseForm(event) {
-  const newPostContainer = document.querySelector("#new-post-container")
-  // hide form container
+  // hide new post form container
   newPostContainer.setAttribute("class", "is-hidden")
-  // show add button
+  // show add new post button
   addBtn.setAttribute("class", "button is-medium is-fullwidth is-danger is-outlined")
 }
 
@@ -247,10 +239,9 @@ function addNewPost(picture, breed_id) {
       // activate modal
       activateModal()
     } else {
-      const newPostContainer = document.querySelector("#new-post-container")
-      // hide form container
+      // hide new post form container
       newPostContainer.setAttribute("class", "is-hidden")
-      // show add button
+      // show add new post button
       addBtn.setAttribute("class", "button is-medium is-fullwidth is-danger is-outlined")
       // create new post
       const newPost = new Post(post.data);
