@@ -10,7 +10,6 @@ class Post {
 
   // Generating HTML for a post
   renderPost() {
-    const postsContainer = document.querySelector("#posts-container");
     // create box
     const postBox = document.createElement("div");
     postBox.setAttribute("class", "box");

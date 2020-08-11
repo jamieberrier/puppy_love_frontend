@@ -16,8 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // // - const newPostContainer = document.querySelector("#new-post-container")
   // // breed select - get 2x
   // // - const breedSelect = document.querySelector("#breeds")
-  // // posts container - get 3x
-  // // - const postsContainer = document.querySelector("#posts-container")
 
   // get modal
   getModal()
@@ -25,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
   window.breedFilter = document.querySelector("#breed-filter")
   // get 'create new post' button and set to global variable
   window.addBtn = document.querySelector("#new-post-btn")
+  // get 'posts container' and set to global variable
+  window.postsContainer = document.querySelector("#posts-container")
   // add event listener to 'create new post' button
   addBtn.addEventListener("click", renderNewPostForm)
   // load dog breeds in 'filter by breed' dropdown
@@ -138,7 +138,6 @@ function handleFilterClick(event) {
 // Handling show all posts click event - render posts of the other dog breeds
 function handleShowAll(event) {
   const showAllBtn = document.querySelector("#all-posts-btn")
-  const postsContainer = document.querySelector("#posts-container")
   // get the fitlered breed's id
   const breedId = parseInt(postsContainer.firstChild.dataset.breedId)
   // get the posts of the other dog breeds

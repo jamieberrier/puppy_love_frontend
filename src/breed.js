@@ -14,8 +14,6 @@ class Breed {
 
   // Rendering a breed's posts
   renderBreedPosts() {
-    // get posts container
-    const postsContainer = document.querySelector("#posts-container")
     // get posts in an array
     const posts = Object.entries(postsContainer.children)
     // hide add new post button
