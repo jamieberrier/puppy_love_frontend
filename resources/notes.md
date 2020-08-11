@@ -1,7 +1,6 @@
 ## TO DO
 - encrypt json - access token
 - speed up external fetch
-- renderNoAdoptionsNotification - Post class method?
 
 ## QUESTIONS / ISSUES
 - semi-colons?
@@ -64,6 +63,7 @@
 - hide show some love button when filtered
 - populateBreedSelect - Breed class method
 - fetchPosts() - Post class method
+- renderNoAdoptionsNotification - Post instance method
 
 ### PETFINDER API       
 #### DOG END POINT
