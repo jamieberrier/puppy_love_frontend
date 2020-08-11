@@ -7,10 +7,12 @@ class Breed {
     Breed.all.push(this);
   }
 
+  // Finding breed by id
   static findById(id) {
     return this.all.find(breed => breed.id === id);
   }
 
+  // Rendering a breed's posts
   renderBreedPosts() {
     // get posts container
     const postsContainer = document.querySelector("#posts-container")
