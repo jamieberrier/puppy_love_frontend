@@ -8,6 +8,22 @@ class Post {
     Post.all.push(this);
   }
 
+  // Fetching posts
+  // // GET request - all posts
+  static fetchPosts() {
+    fetch(POSTS_END_POINT)
+    .then(response => response.json())
+    .then(posts => {
+      // for each post
+      posts.data.forEach(post => {
+        // create new post object instance
+        const newPost = new Post(post);
+        // render new post
+        newPost.renderPost();
+      })
+    });
+  }
+
   // Generating HTML for a post
   renderPost() {
     // create box

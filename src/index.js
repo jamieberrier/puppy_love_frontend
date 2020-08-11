@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // add event listener to 'filter by breed' dropdown
   breedFilter.addEventListener("click", toggleBreedFilter)
   // fetch posts
-  fetchPosts()
+  Post.fetchPosts()
 });
 
 // Getting modal elements and setting to global variables
@@ -91,22 +91,6 @@ function toggleBreedFilter(event) {
   } else {
     breedFilter.setAttribute("class", "dropdown")
   }
-}
-
-// Fetching posts
-// // GET request - all posts
-function fetchPosts() {
-  fetch(POSTS_END_POINT)
-  .then(response => response.json())
-  .then(posts => {
-    // for each post
-    posts.data.forEach(post => {
-      // create new post object instance
-      const newPost = new Post(post);
-      // render new post
-      newPost.renderPost();
-    })
-  });
 }
 
 // Rendering posts of the selected dog breed
