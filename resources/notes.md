@@ -1,8 +1,6 @@
 ## TO DO
 - encrypt json - access token
 - speed up external fetch
-- populateBreedSelect - Breed class method
-- fetchPosts() - Post class method?
 - renderNoAdoptionsNotification - Post class method?
 
 ## QUESTIONS / ISSUES
@@ -64,6 +62,8 @@
 - refactor renderAdoptableDog to post instance method
 - make globals of commonly selected html
 - hide show some love button when filtered
+- populateBreedSelect - Breed class method
+- fetchPosts() - Post class method
 
 ### PETFINDER API       
 #### DOG END POINT
