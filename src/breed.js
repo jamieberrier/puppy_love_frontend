@@ -12,14 +12,20 @@ class Breed {
   }
 
   renderBreedPosts() {
+    // get posts container
     const postsContainer = document.querySelector("#posts-container")
+    // get posts in an array
     const posts = Object.entries(postsContainer.children)
-    // clear posts of other breeds from post-container
+    // hide add new post button
+    addBtn.parentElement.setAttribute("class", "is-hidden")
+    // clear posts of other breeds from posts-container
     for (const index in posts) {
       if (posts.hasOwnProperty(index)) {
+        // get post
         const element = posts[index][1]
+        // get post's breed id
         const postBreedId = parseInt(element.dataset.breedId)
-        
+        // remove post if breed id doesn't match the post's breed id
         if (this.id !== postBreedId) {
           postsContainer.removeChild(element)
         }
