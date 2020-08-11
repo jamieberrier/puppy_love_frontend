@@ -167,7 +167,7 @@ function renderNewPostForm() {
   // show 'new post form container'
   newPostContainer.setAttribute("class", "container is-fluid has-text-centered mb-4")
   // populate select options from Breed.all
-  populateBreedSelect()
+  Breed.populateBreedSelect()
   // add submit event listener
   newPostContainer.addEventListener("submit", createPostHandler)
 }
@@ -179,7 +179,7 @@ function handleCloseForm(event) {
   // show 'show some love' button
   addBtn.setAttribute("class", "button is-medium is-fullwidth is-danger is-outlined")
 }
-
+/*
 // Populating form select with dog breeds
 function populateBreedSelect() {
   const breedSelect = document.querySelector("#breeds")
@@ -196,7 +196,7 @@ function populateBreedSelect() {
     // add to select
     breedSelect.appendChild(option)
   }
-}
+}*/
 
 // Handling new post submit event
 function createPostHandler(event) {

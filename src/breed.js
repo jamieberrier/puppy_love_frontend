@@ -32,6 +32,24 @@ class Breed {
       }
     }
   }
+
+  // Populating form select with dog breeds
+  static populateBreedSelect() {
+    const breedSelect = document.querySelector("#breeds")
+    // for each breed
+    for (const breed of this.all) {
+      // create option
+      const option = document.createElement("option")
+      // set option id
+      option.setAttribute("id", `breed-${breed.id}`)
+      // set option value
+      option.setAttribute("value", `${breed.id}`)
+      // display breed name
+      option.innerHTML = `${breed.name}`
+      // add to select
+      breedSelect.appendChild(option)
+    }
+  }
 }
 
 Breed.all = [];
