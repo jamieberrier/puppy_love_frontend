@@ -179,24 +179,6 @@ function handleCloseForm(event) {
   // show 'show some love' button
   addBtn.setAttribute("class", "button is-medium is-fullwidth is-danger is-outlined")
 }
-/*
-// Populating form select with dog breeds
-function populateBreedSelect() {
-  const breedSelect = document.querySelector("#breeds")
-  // for each breed
-  for (const breed of Breed.all) {
-    // create option
-    const option = document.createElement("option")
-    // set option id
-    option.setAttribute("id", `breed-${breed.id}`)
-    // set option value
-    option.setAttribute("value", `${breed.id}`)
-    // display breed name
-    option.innerHTML = `${breed.name}`
-    // add to select
-    breedSelect.appendChild(option)
-  }
-}*/
 
 // Handling new post submit event
 function createPostHandler(event) {
