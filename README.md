@@ -6,7 +6,7 @@ A single page application disguised as a dog photo/video sharing application, bu
 * A user can filter posts by dog breed.
 * A user can click on a post's 'heart' to *love* the post.
 * A user can click on a post's 'I Want One!' button to view adoptable dogs of the same breed as the dog in the post.
-* A user can scroll through the adoptable dogs' photos & information and click on a link to learn more about adopting that dog.  
+* A user can scroll through the adoptable dogs' photos & information and click on a link to learn more about adopt that dog.  
 
 > [Frontend Repo](https://github.com/jamieberrier/puppy_love_frontend)
 
