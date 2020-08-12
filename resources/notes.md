@@ -1,14 +1,11 @@
 ## TO DO
-- encrypt json - access token
-- speed up external fetch
+- 
 
 ## QUESTIONS / ISSUES
-- seed data and deployment
+- how to speed up external fetch?
 - semi-colons?
-- are my use of globals ok?
 - is my use of async/await appropriate?
 - refactor with event delegation?
-- encrypt json - access token
 
 ## STRETCH GOALS
 - Image/Video upload
@@ -16,6 +13,7 @@
 - Modal new post form
 - add picture caption
 - make scrollbar visible - filter by breed and adoption container
+- encrypt json - access token -- cors -- deployment issue
 
 ## THINGS TO REMEMBER
 - js == prototyple inheritance vs ruby == class inheritance 
@@ -65,6 +63,8 @@
 - populateBreedSelect - Breed class method
 - fetchPosts() - Post class method
 - renderNoAdoptionsNotification - Post instance method
+- are my use of globals ok? yes
+- seed data stay with deployment? yes
 
 ### PETFINDER API       
 #### DOG END POINT
