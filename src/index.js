@@ -141,7 +141,7 @@ function handleShowAll(event) {
 }
 
 // Showing form to create a new post
-function renderNewPostForm() {
+function renderNewPostForm(event) {
   // get 'close form button'
   const closeBtn = document.querySelector("#close-form")
   // add listener to 'close form button'
@@ -153,7 +153,7 @@ function renderNewPostForm() {
   // populate select options from Breed.all
   Breed.populateBreedSelect()
   // add submit event listener
-  newPostContainer.addEventListener("submit", createPostHandler)
+  newPostContainer.addEventListener("submit", handleCreatePost)
 }
 
 // Handling close form click event
@@ -165,7 +165,7 @@ function handleCloseForm(event) {
 }
 
 // Handling new post submit event
-function createPostHandler(event) {
+function handleCreatePost(event) {
   event.preventDefault()
 
   const picture = document.querySelector("#input-picture").value
