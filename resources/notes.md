@@ -3,6 +3,7 @@
 - speed up external fetch
 
 ## QUESTIONS / ISSUES
+- seed data and deployment
 - semi-colons?
 - are my use of globals ok?
 - is my use of async/await appropriate?
