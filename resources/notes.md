@@ -1,5 +1,5 @@
 ## TO DO
-- 
+- Image/Video upload
 
 ## QUESTIONS / ISSUES
 - how to speed up external fetch?
@@ -10,7 +10,6 @@
 ## STRETCH GOALS
 - Image/Video upload
 - give breed select on form dropdown style?
-- Modal new post form
 - add picture caption
 - make scrollbar visible - filter by breed and adoption container
 - encrypt json - access token -- cors -- deployment issue
