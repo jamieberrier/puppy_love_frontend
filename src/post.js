@@ -8,6 +8,11 @@ class Post {
     Post.all.push(this);
   }
 
+  // Finding post by id
+  static findById(id) {
+    return this.all.find(post => post.id === id);
+  }
+
   // Fetching posts
   // // GET request - all posts
   static fetchPosts() {
@@ -22,6 +27,71 @@ class Post {
         newPost.renderPost();
       })
     });
+  }
+
+  // Creating a new post
+  // // POST request - create new post
+  static createNewPost(picture, breed_id) {
+    let bodyData = {
+      picture,
+      breed_id,
+      num_of_likes: 0
+    };
+
+    let configObj = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(bodyData)
+    };
+
+    fetch(POSTS_END_POINT, configObj)
+    .then(response => response.json())
+    .then(post => {
+      // display validation errors
+      if (post.errors) {
+        // customize error message(s)
+        const errorMessages = post.errors.map(element => {
+          if (element.includes("Breed")) {
+            return element = "Please Select a Dog Breed"
+          } else {
+            return element = "Please Add a Picture"
+          }
+        })
+        // set modal text
+        if (errorMessages.length === 2) {
+          modalContent.innerText = `${errorMessages[0]} \n & \n ${errorMessages[1]}`
+        } else {
+          modalContent.innerText = `${errorMessages[0]}`
+        }
+        // activate modal
+        activateModal()
+      } else {
+        // hide 'new post form container'
+        newPostContainer.setAttribute("class", "is-hidden")
+        // show 'show some love' button
+        addBtn.setAttribute("class", "button is-medium is-fullwidth is-danger is-outlined")
+        // create new post
+        const newPost = new Post(post.data);
+        // find breed by id
+        const breed = Breed.findById(newPost.breed.id);
+        // push new post onto breed's posts
+        breed.posts.push(newPost);
+        // render new post
+        newPost.renderPost();
+        // reset 'new post' form
+        document.querySelector("#new-post-form").reset();
+        // set modal text
+        modalContent.innerText = "Thanks For The Love!"
+        // activate modal
+        activateModal()
+      }
+    })
+    .catch(error => {
+      alert(error.message)
+    })
   }
 
   // Generating HTML for a post
@@ -50,7 +120,7 @@ class Post {
     heart.setAttribute("class", "like-glyph like")
     heart.setAttribute("data-id", this.id)
     heart.innerHTML = '&#x2661';
-    heart.addEventListener("click", likePost)
+    heart.addEventListener("click", handleLikePost)
     left.appendChild(heart)
     // create number of likes
     const postLikes = document.createElement('p');
@@ -68,7 +138,7 @@ class Post {
     wantOne.setAttribute("data-post-id", this.id)
     wantOne.setAttribute("data-breed", this.breed.name)
     wantOne.innerText = 'I Want One!'
-    wantOne.addEventListener("click", wantDog)
+    wantOne.addEventListener("click", handleWantDog)
     right.appendChild(wantOne);
     level.appendChild(right);
     // add level to box
@@ -77,11 +147,6 @@ class Post {
     postsContainer.prepend(postBox);
     // return post
     return postBox
-  }
-
-  // Finding post by id
-  static findById(id) {
-    return this.all.find(post => post.id === id);
   }
 
   // Updating a post's number of likes
