@@ -12,191 +12,191 @@ let token, tokenType, expires;
 
 document.addEventListener('DOMContentLoaded', () => {
   // get modal
-  getModal()
+  getModal();
   // get 'filter by breed' dropdown and set to global variable
-  window.breedFilter = document.querySelector("#breed-filter")
+  window.breedFilter = document.querySelector("#breed-filter");
   // get 'show some love' button and set to global variable
-  window.addBtn = document.querySelector("#new-post-btn")
+  window.addBtn = document.querySelector("#new-post-btn");
   // get 'new post container' and set to global variable
-  window.newPostContainer = document.querySelector("#new-post-container")
+  window.newPostContainer = document.querySelector("#new-post-container");
   // get 'posts container' and set to global variable
-  window.postsContainer = document.querySelector("#posts-container")
+  window.postsContainer = document.querySelector("#posts-container");
   // add event listener to 'show some love' button
-  addBtn.addEventListener("click", handleRenderForm)
+  addBtn.addEventListener("click", handleRenderForm);
   // load dog breeds in 'filter by breed' dropdown
-  Breed.populateBreedFilter()
+  Breed.populateBreedFilter();
   // add event listener to 'filter by breed' dropdown
-  breedFilter.addEventListener("click", handleToggleFilter)
+  breedFilter.addEventListener("click", handleToggleFilter);
   // fetch posts
-  Post.fetchPosts()
+  Post.fetchPosts();
 });
 
 // Getting modal elements and setting to global variables
 function getModal() {
   // get modal
-  window.modal = document.querySelector("#modal")
+  window.modal = document.querySelector("#modal");
   // get modal background
-  window.modalBg = document.querySelector("#modal-background")
+  window.modalBg = document.querySelector("#modal-background");
   // get modal close button
-  window.modalCloseBtn = document.querySelector("#modal-close")
+  window.modalCloseBtn = document.querySelector("#modal-close");
   // get modal content
-  window.modalContent = document.querySelector("#modal-content")
+  window.modalContent = document.querySelector("#modal-content");
 }
 
 // Setting modal class to is-active and adding event listeners
 function activateModal() {
   // add listener to modal background
-  modalBg.addEventListener("click", (e) => modal.setAttribute("class", "modal"))
+  modalBg.addEventListener("click", (e) => modal.setAttribute("class", "modal"));
   // add listener to modal close button
-  modalCloseBtn.addEventListener("click", (e) => modal.setAttribute("class", "modal"))
+  modalCloseBtn.addEventListener("click", (e) => modal.setAttribute("class", "modal"));
   // activate modal
-  modal.setAttribute("class", "modal is-active is-clipped")
+  modal.setAttribute("class", "modal is-active is-clipped");
 }
 
 // Activating Filter Posts By Breed
 function handleToggleFilter() {
-  filterByBreed = !filterByBreed
+  filterByBreed = !filterByBreed;
   // if filter is not currently displayed
   if (filterByBreed) {
     // activate dropdown
-    breedFilter.setAttribute("class", "dropdown is-active")
+    breedFilter.setAttribute("class", "dropdown is-active");
   } else { // filter is currently displayed
     // deactivate dropdown
-    breedFilter.setAttribute("class", "dropdown")
+    breedFilter.setAttribute("class", "dropdown");
   }
 }
 
 // Rendering posts of the selected dog breed
 function handleFilterClick(event) {
-  const breedId = parseInt(event.target.id)
-  const breed = Breed.findById(breedId)
+  const breedId = parseInt(event.target.id);
+  const breed = Breed.findById(breedId);
   // pluralize breed
-  const breedPlural = pluralize(breed.name)
+  const breedPlural = pluralize(breed.name);
   // if posts of the breed exist
   if (breed.posts.length > 0) {
     // get 'see all the love' button
-    const showAllBtn = document.querySelector("#all-posts-btn")
+    const showAllBtn = document.querySelector("#all-posts-btn");
     // render each post for the selected dog breed
-    breed.renderBreedPosts()
+    breed.renderBreedPosts();
     // hide 'filter by breed' dropdown
-    breedFilter.parentElement.setAttribute("class", "is-hidden")
+    breedFilter.parentElement.setAttribute("class", "is-hidden");
     // show 'see all the love' button
-    showAllBtn.parentElement.setAttribute("class", "content has-text-centered")
+    showAllBtn.parentElement.setAttribute("class", "content has-text-centered");
     // add listener to 'see all the love' button
-    showAllBtn.addEventListener("click", handleShowAll)
+    showAllBtn.addEventListener("click", handleShowAll);
   } else { // display modal
     // set modal text
-    modalContent.innerText = `There are no posts of ${breedPlural}`
+    modalContent.innerText = `There are no posts of ${breedPlural}`;
     // activate modal
-    activateModal()
+    activateModal();
   }
 }
 
 // Handling show all posts click event - render posts of the other dog breeds
 function handleShowAll() {
   // get 'see all the love' button
-  const showAllBtn = document.querySelector("#all-posts-btn")
+  const showAllBtn = document.querySelector("#all-posts-btn");
   // get the fitlered breed's id
-  const breedId = parseInt(postsContainer.firstChild.dataset.breedId)
+  const breedId = parseInt(postsContainer.firstChild.dataset.breedId);
   // get the posts of the other dog breeds
-  const otherPosts = Post.all.filter(post => post.breed.id != breedId)
+  const otherPosts = Post.all.filter(post => post.breed.id != breedId);
   // iterate over the other breeds' posts and render each post
-  otherPosts.forEach(post => post.renderPost())
+  otherPosts.forEach(post => post.renderPost());
   // show 'filter by breed' dropdown
-  breedFilter.parentElement.setAttribute("class", "content has-text-centered")
+  breedFilter.parentElement.setAttribute("class", "content has-text-centered");
   // hide 'see all the love' button
-  showAllBtn.parentElement.setAttribute("class", "is-hidden")
+  showAllBtn.parentElement.setAttribute("class", "is-hidden");
   // show 'show some love' button
-  addBtn.parentElement.setAttribute("class", "content has-text-centered")
+  addBtn.parentElement.setAttribute("class", "content has-text-centered");
 }
 
 // Showing form to create a new post
 function handleRenderForm() {
   // add event listener to 'close form' button
-  document.querySelector("#close-form").addEventListener("click", handleCloseForm)
+  document.querySelector("#close-form").addEventListener("click", handleCloseForm);
   // hide 'show some love' button
-  addBtn.setAttribute("class", "is-hidden")
+  addBtn.setAttribute("class", "is-hidden");
   // show 'new post form' container
-  newPostContainer.setAttribute("class", "container is-fluid has-text-centered mb-4")
+  newPostContainer.setAttribute("class", "container is-fluid has-text-centered mb-4");
   // populate select options
-  Breed.populateBreedSelect()
+  Breed.populateBreedSelect();
   // add submit event listener to 'new post' form
-  document.querySelector("#new-post-form").addEventListener("submit", handleCreatePost)
+  document.querySelector("#new-post-form").addEventListener("submit", handleCreatePost);
 }
 
 // Handling close form click event
 function handleCloseForm() {
   // hide 'new post form' container
-  newPostContainer.setAttribute("class", "is-hidden")
+  newPostContainer.setAttribute("class", "is-hidden");
   // show 'show some love' button
-  addBtn.setAttribute("class", "button is-medium is-fullwidth is-danger is-outlined")
+  addBtn.setAttribute("class", "button is-medium is-fullwidth is-danger is-outlined");
 }
 
 // Handling new post submit event
 function handleCreatePost(event) {
   // prevent default action
-  event.preventDefault()
+  event.preventDefault();
   // get user entered values from form
-  const picture = document.querySelector("#input-picture").value
-  const breedId = parseInt(document.querySelector("#breeds").value)
+  const picture = document.querySelector("#input-picture").value;
+  const breedId = parseInt(document.querySelector("#breeds").value);
   // create new post
-  Post.createNewPost(picture, breedId)
+  Post.createNewPost(picture, breedId);
 }
 
 // Handling like post click event
 function handleLikePost(event) {
   // get heart
-  const heart = event.target
+  const heart = event.target;
   // get post id
-  const postId = parseInt(heart.dataset.id)
+  const postId = parseInt(heart.dataset.id);
   // get new number of likes
-  let likes = parseInt(event.currentTarget.parentElement.children[1].innerText)
+  let likes = parseInt(event.currentTarget.parentElement.children[1].innerText);
   // get post
-  const post = Post.findById(postId)
+  const post = Post.findById(postId);
   // user clicks on an empty heart
   if (heart.innerText == EMPTY_HEART) {
     // change the heart to a full heart
-    heart.innerText = FULL_HEART
+    heart.innerText = FULL_HEART;
     // make the heart red
-    heart.setAttribute("class", "like has-text-danger")
+    heart.setAttribute("class", "like has-text-danger");
     // increase post num_of_likes
-    likes += 1
+    likes += 1;
     // update post
-    post.updateLikes(likes)
+    post.updateLikes(likes);
   } else { // user clicks on a full heart
     // change the heart back to an empty heart
-    heart.innerText = EMPTY_HEART
+    heart.innerText = EMPTY_HEART;
     // make the heart outlined
-    heart.setAttribute("class", "like")
+    heart.setAttribute("class", "like");
     // decrease post num_of_likes
-    likes -= 1
+    likes -= 1;
     // update post
-    post.updateLikes(likes)
+    post.updateLikes(likes);
   }
 }
 
 // Handling "I Want One!" click event
 function handleWantDog(event) {
   // change cursor to wait
-  const page = document.querySelector("html")
-  page.style.cursor = "wait"
+  const page = document.querySelector("html");
+  page.style.cursor = "wait";
   // make 'I Want One' button static and change color during wait
-  event.target.setAttribute("class", "level-item button is-static is-success is-light is-rounded")
+  event.target.setAttribute("class", "level-item button is-static is-success is-light is-rounded");
   // get post id
-  const postId = parseInt(event.target.dataset.postId)
+  const postId = parseInt(event.target.dataset.postId);
   // get dog breed
-  const breed = event.target.dataset.breed
+  const breed = event.target.dataset.breed;
   // get post
-  const post = Post.findById(postId)
+  const post = Post.findById(postId);
   // if access token is undefined or expired, get a new one
   
   if (!expires || expires - new Date().getTime() < 1) {
     fetchPetFinderToken().then(() => {
       // then get adoptale dogs of the breed in the post
-      post.fetchAdoptableDogs(breed)
-    })
+      post.fetchAdoptableDogs(breed);
+    });
   } else { // get adoptale dogs of the breed in the post
-    post.fetchAdoptableDogs(breed)
+    post.fetchAdoptableDogs(breed);
   }
 }
 
@@ -206,12 +206,10 @@ function fetchPetFinderToken() {
   return fetch(TOKEN_END_POINT)
   .then(response => response.json())
   .then(tokenInfo => {
-    token = tokenInfo.token
-    tokenType = tokenInfo.token_type
+    token = tokenInfo.token;
+    tokenType = tokenInfo.token_type;
     // Unix timestamp for when the token expires = (Unix timestamp of the current time, in milliseconds) + (amount of time the token is good for in seconds, converted to milliseconds)
-    expires = new Date().getTime() + (tokenInfo.expires * 1000)
+    expires = new Date().getTime() + (tokenInfo.expires * 1000);
   })
-  .catch(error => {
-    alert(error.message)
-  })
+  .catch(error => alert(error.message));
 }
