@@ -185,7 +185,7 @@ class Post {
 
   // Fetching adoptale dogs of the same breed as the post from petfinder API
   // // GET request
-  fetchAdoptableDogs(breed, token) {
+  fetchAdoptableDogs(breed) {
     const wantOne = document.querySelector(`#want-one-${this.id}`)
     const page = document.querySelector("html")
     const box = document.querySelector(`#box-${this.id}`)
@@ -196,7 +196,7 @@ class Post {
       method: "GET",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-        "Authorization": `Bearer ${token}`
+        "Authorization": `${tokenType} ${token}`
       }
     };
     
