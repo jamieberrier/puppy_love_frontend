@@ -7,6 +7,8 @@ const POSTS_END_POINT = "http://localhost:3000/api/v1/posts";
 const BREEDS_END_POINT = "http://localhost:3000/api/v1/breeds";
 // Toggling is-active on filter by breed dropdown menu
 let filterByBreed = false;
+// Petfinder API access token info
+let token, tokenType, expires;
 
 document.addEventListener('DOMContentLoaded', () => {
   // get modal
@@ -174,7 +176,7 @@ function handleLikePost(event) {
 }
 
 // Handling "I Want One!" click event
-async function handleWantDog(event) {
+function handleWantDog(event) {
   // change cursor to wait
   const page = document.querySelector("html")
   page.style.cursor = "wait"
@@ -186,10 +188,16 @@ async function handleWantDog(event) {
   const breed = event.target.dataset.breed
   // get post
   const post = Post.findById(postId)
-  // get token to fetch available dogs from petfinder api
-  const token = await fetchPetFinderToken();
-  // get adoptale dogs of the same breed as the post from petfinder API
-  post.fetchAdoptableDogs(breed, token)
+  // if access token is undefined or expired, get a new one
+  
+  if (!expires || expires - new Date().getTime() < 1) {
+    fetchPetFinderToken().then(() => {
+      // then get adoptale dogs of the breed in the post
+      post.fetchAdoptableDogs(breed)
+    })
+  } else { // get adoptale dogs of the breed in the post
+    post.fetchAdoptableDogs(breed)
+  }
 }
 
 // Fetching petfinder access token
@@ -198,10 +206,12 @@ function fetchPetFinderToken() {
   return fetch(TOKEN_END_POINT)
   .then(response => response.json())
   .then(tokenInfo => {
-    return tokenInfo.token
+    token = tokenInfo.token
+    tokenType = tokenInfo.token_type
+    // Unix timestamp for when the token expires = (Unix timestamp of the current time, in milliseconds) + (amount of time the token is good for in seconds, converted to milliseconds)
+    expires = new Date().getTime() + (tokenInfo.expires * 1000)
   })
   .catch(error => {
-    console.log("inside fetchPetFinderToken")
     alert(error.message)
   })
 }
