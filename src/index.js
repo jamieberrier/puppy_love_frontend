@@ -202,6 +202,7 @@ function handleWantDog(event) {
   // get post
   const post = Post.findById(postId);
   // if access token is undefined or expired, get a new one
+  console.log("expires in ", expires - new Date().getTime(), "milliseconds")
   if (!expires || expires - new Date().getTime() < 1) {
     fetchPetFinderToken().then(() => {
       // then get adoptale dogs of the breed in the post
@@ -213,9 +214,9 @@ function handleWantDog(event) {
 }
 
 // Fetching petfinder access token
-// // GET request
+// // GET request - petfinder API access token
 function fetchPetFinderToken() {
-  // get petfinder API access token
+  // GET /api/v1/petfinder
   return fetch(TOKEN_END_POINT)
   .then(response => response.json())
   .then(tokenInfo => {
