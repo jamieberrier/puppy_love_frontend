@@ -68,28 +68,24 @@ class Post {
         } else {
           modalContent.innerText = `${errorMessages[0]}`;
         }
-        // activate modal
-        activateModal();
       } else {
-        // hide 'new post form container'
-        newPostContainer.setAttribute("class", "is-hidden");
-        // show 'show some love' button
-        addBtn.setAttribute("class", "button is-medium is-fullwidth is-danger is-outlined");
         // create new post
         const newPost = new Post(post.data);
         // find breed by id
         const breed = Breed.findById(newPost.breed.id);
-        // push new post onto breed's posts
-        breed.posts.push(newPost);
         // render new post
         newPost.renderPost();
+        // push new post onto breed's posts
+        breed.posts.push(newPost);
         // reset 'new post' form
         document.querySelector("#new-post-form").reset();
         // set modal text
         modalContent.innerText = "Thanks For The Love!";
-        // activate modal
-        activateModal();
+        // hide 'new post form container' & show 'show some love' button
+        handleCloseForm();
       }
+      // activate modal
+      activateModal();
     })
     .catch(error => alert(error.message));
   }
