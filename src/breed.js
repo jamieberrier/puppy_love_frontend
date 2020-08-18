@@ -59,8 +59,6 @@ class Breed {
   renderBreedPosts() {
     // get posts in an array
     const posts = Object.entries(postsContainer.children);
-    // hide add new post button
-    addBtn.parentElement.setAttribute("class", "is-hidden");
     // clear posts of other breeds from posts-container
     for (const index in posts) {
       if (posts.hasOwnProperty(index)) {
