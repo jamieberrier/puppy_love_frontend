@@ -55,6 +55,31 @@ function activateModal() {
   modal.setAttribute("class", "modal is-active is-clipped");
 }
 
+// Hiding / Showing 'see all the love' & 'add new post' buttons and 'filter by breed' dropdown
+function toggleControls() {
+  breedPosts = !breedPosts;
+  // get 'see all the love' button
+  const showAllBtn = document.querySelector("#all-posts-btn");
+  // if displaying only posts of one breed
+  if (breedPosts) {
+    // hide 'filter by breed' dropdown
+    breedFilter.parentElement.setAttribute("class", "is-hidden");
+    // hide 'show some love' button
+    addBtn.parentElement.setAttribute("class", "is-hidden");
+    // show 'see all the love' button
+    showAllBtn.parentElement.setAttribute("class", "content has-text-centered");
+    // add listener to 'see all the love' button
+    showAllBtn.addEventListener("click", handleShowAll);
+  } else { // displaying all posts
+    // show 'filter by breed' dropdown
+    breedFilter.parentElement.setAttribute("class", "content has-text-centered");
+    // hide 'see all the love' button
+    showAllBtn.parentElement.setAttribute("class", "is-hidden");
+    // show 'show some love' button
+    addBtn.parentElement.setAttribute("class", "content has-text-centered");
+  }
+}
+
 // Activating Filter Posts By Breed
 function handleToggleFilter() {
   filterByBreed = !filterByBreed;
@@ -98,31 +123,6 @@ function handleShowAll() {
   otherPosts.forEach(post => post.renderPost());
   // show 'filter by breed' dropdown, hide 'see all the love' button, and show 'show some love' button
   toggleControls();
-}
-
-// Hiding / Showing 'see all the love' & 'add new post' buttons and 'filter by breed' dropdown
-function toggleControls() {
-  breedPosts = !breedPosts;
-  // get 'see all the love' button
-  const showAllBtn = document.querySelector("#all-posts-btn");
-  // if displaying only posts of one breed
-  if (breedPosts) {
-    // hide 'filter by breed' dropdown
-    breedFilter.parentElement.setAttribute("class", "is-hidden");
-    // hide 'show some love' button
-    addBtn.parentElement.setAttribute("class", "is-hidden");
-    // show 'see all the love' button
-    showAllBtn.parentElement.setAttribute("class", "content has-text-centered");
-    // add listener to 'see all the love' button
-    showAllBtn.addEventListener("click", handleShowAll);
-  } else { // displaying all posts
-    // show 'filter by breed' dropdown
-    breedFilter.parentElement.setAttribute("class", "content has-text-centered");
-    // hide 'see all the love' button
-    showAllBtn.parentElement.setAttribute("class", "is-hidden");
-    // show 'show some love' button
-    addBtn.parentElement.setAttribute("class", "content has-text-centered");
-  }
 }
 
 // Showing form to create a new post
@@ -176,8 +176,6 @@ function handleLikePost(event) {
     heart.setAttribute("class", "like has-text-danger");
     // increase post num_of_likes
     likes += 1;
-    // update post
-    post.updateLikes(likes);
   } else { // user clicks on a full heart
     // change the heart back to an empty heart
     heart.innerText = EMPTY_HEART;
@@ -185,9 +183,9 @@ function handleLikePost(event) {
     heart.setAttribute("class", "like");
     // decrease post num_of_likes
     likes -= 1;
-    // update post
-    post.updateLikes(likes);
   }
+  // update post
+  post.updateLikes(likes);
 }
 
 // Handling "I Want One!" click event
@@ -204,7 +202,6 @@ function handleWantDog(event) {
   // get post
   const post = Post.findById(postId);
   // if access token is undefined or expired, get a new one
-  
   if (!expires || expires - new Date().getTime() < 1) {
     fetchPetFinderToken().then(() => {
       // then get adoptale dogs of the breed in the post
