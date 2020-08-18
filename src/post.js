@@ -26,7 +26,8 @@ class Post {
         // render new post
         newPost.renderPost();
       })
-    });
+    })
+    .catch(error => alert(error.message));
   }
 
   // Creating a new post
@@ -178,7 +179,7 @@ class Post {
       const p = Post.findById(postId)
       p.num_of_likes = likes
     })
-    .catch(error => console.log(error.message));
+    .catch(error => alert(error.message));
   }
 
   // Fetching adoptale dogs of the same breed as the post from petfinder API
@@ -242,7 +243,7 @@ class Post {
       }
     })
     .catch(error => {
-      console.log(error.message);
+      alert(error.message);
       this.renderNoAdoptionsNotification(box, breedPlural);
     });
   }

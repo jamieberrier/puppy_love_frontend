@@ -34,7 +34,7 @@ class Breed {
         breedContent.appendChild(option);
       }
     })
-    .catch(error => console.log(error.message));
+    .catch(error => alert(error.message));
   }
 
   // Populating form select with dog breeds
