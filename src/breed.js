@@ -25,13 +25,17 @@ class Breed {
         // create new breed object instance
         new Breed(breed);
         // create breed <a>
-        const option = document.createElement("a");
-        option.setAttribute("class", "dropdown-item");
-        option.setAttribute("id", `${breed.id}`);
-        option.innerHTML = `${breed.attributes.name}`;
-        // add event listener to breed name
-        option.addEventListener("click", handleFilterClick);
-        breedContent.appendChild(option);
+        const breedLink = document.createElement("a");
+        // set link class
+        breedLink.setAttribute("class", "dropdown-item");
+        // set link id
+        breedLink.setAttribute("id", `${breed.id}`);
+        // display breed name
+        breedLink.innerHTML = `${breed.attributes.name}`;
+        // add event listener to link
+        breedLink.addEventListener("click", handleFilterClick);
+        // apend link to dropdown menu content
+        breedContent.appendChild(breedLink);
       }
     })
     .catch(error => alert(error.message));
@@ -39,6 +43,7 @@ class Breed {
 
   // Populating form select with dog breeds
   static populateBreedSelect() {
+    // get <select> dog breed
     const breedSelect = document.querySelector("#breeds");
     // for each breed
     for (const breed of this.all) {
@@ -50,24 +55,26 @@ class Breed {
       option.setAttribute("value", `${breed.id}`);
       // display breed name
       option.innerHTML = `${breed.name}`;
-      // add to select
+      // add option to select
       breedSelect.appendChild(option);
     }
   }
 
-  // Rendering a breed's posts
+  // Clearing the posts of other breeds from the posts-container
   renderBreedPosts() {
     // get posts in an array
     const posts = Object.entries(postsContainer.children);
-    // clear posts of other breeds from posts-container
+    // iterate over all posts
     for (const index in posts) {
+      // if posts has index as its own property
       if (posts.hasOwnProperty(index)) {
-        // get post
+        // get post <div>
         const element = posts[index][1];
         // get post's breed id
         const postBreedId = parseInt(element.dataset.breedId);
-        // remove post if breed id doesn't match the post's breed id
-        if (this.id !== postBreedId) {
+        // if the post's breed id doesn't match the selected breed's id
+        if (postBreedId !== this.id) {
+          // remove post <div>
           postsContainer.removeChild(element);
         }
       }
