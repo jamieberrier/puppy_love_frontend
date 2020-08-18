@@ -215,6 +215,7 @@ function handleWantDog(event) {
 // Fetching petfinder access token
 // // GET request
 function fetchPetFinderToken() {
+  // get petfinder API access token
   return fetch(TOKEN_END_POINT)
   .then(response => response.json())
   .then(tokenInfo => {
