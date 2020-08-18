@@ -5,8 +5,10 @@ const FULL_HEART = '♥';
 const TOKEN_END_POINT = "http://localhost:3000/api/v1/petfinder";
 const POSTS_END_POINT = "http://localhost:3000/api/v1/posts";
 const BREEDS_END_POINT = "http://localhost:3000/api/v1/breeds";
-// Toggling is-active on filter by breed dropdown menu
+// Toggling is-active on 'filter by breed' dropdown menu
 let filterByBreed = false;
+// Toggling 'see all the love' & 'add new post' buttons and 'filter by breed' dropdown
+let breedPosts = false;
 // Petfinder API access token info
 let token, tokenType, expires;
 
@@ -74,16 +76,10 @@ function handleFilterClick(event) {
   const breedPlural = pluralize(breed.name);
   // if posts of the breed exist
   if (breed.posts.length > 0) {
-    // get 'see all the love' button
-    const showAllBtn = document.querySelector("#all-posts-btn");
+    // hide 'filter by breed' dropdown, hide 'show some love' button, and show 'see all the love' button & add listener
+    toggleControls();
     // render each post for the selected dog breed
     breed.renderBreedPosts();
-    // hide 'filter by breed' dropdown
-    breedFilter.parentElement.setAttribute("class", "is-hidden");
-    // show 'see all the love' button
-    showAllBtn.parentElement.setAttribute("class", "content has-text-centered");
-    // add listener to 'see all the love' button
-    showAllBtn.addEventListener("click", handleShowAll);
   } else { // display modal
     // set modal text
     modalContent.innerText = `There are no posts of ${breedPlural}`;
@@ -94,20 +90,39 @@ function handleFilterClick(event) {
 
 // Handling show all posts click event - render posts of the other dog breeds
 function handleShowAll() {
-  // get 'see all the love' button
-  const showAllBtn = document.querySelector("#all-posts-btn");
   // get the fitlered breed's id
   const breedId = parseInt(postsContainer.firstChild.dataset.breedId);
   // get the posts of the other dog breeds
   const otherPosts = Post.all.filter(post => post.breed.id != breedId);
   // iterate over the other breeds' posts and render each post
   otherPosts.forEach(post => post.renderPost());
-  // show 'filter by breed' dropdown
-  breedFilter.parentElement.setAttribute("class", "content has-text-centered");
-  // hide 'see all the love' button
-  showAllBtn.parentElement.setAttribute("class", "is-hidden");
-  // show 'show some love' button
-  addBtn.parentElement.setAttribute("class", "content has-text-centered");
+  // show 'filter by breed' dropdown, hide 'see all the love' button, and show 'show some love' button
+  toggleControls();
+}
+
+// Hiding / Showing 'see all the love' & 'add new post' buttons and 'filter by breed' dropdown
+function toggleControls() {
+  breedPosts = !breedPosts;
+  // get 'see all the love' button
+  const showAllBtn = document.querySelector("#all-posts-btn");
+  // if displaying only posts of one breed
+  if (breedPosts) {
+    // hide 'filter by breed' dropdown
+    breedFilter.parentElement.setAttribute("class", "is-hidden");
+    // hide 'show some love' button
+    addBtn.parentElement.setAttribute("class", "is-hidden");
+    // show 'see all the love' button
+    showAllBtn.parentElement.setAttribute("class", "content has-text-centered");
+    // add listener to 'see all the love' button
+    showAllBtn.addEventListener("click", handleShowAll);
+  } else { // displaying all posts
+    // show 'filter by breed' dropdown
+    breedFilter.parentElement.setAttribute("class", "content has-text-centered");
+    // hide 'see all the love' button
+    showAllBtn.parentElement.setAttribute("class", "is-hidden");
+    // show 'show some love' button
+    addBtn.parentElement.setAttribute("class", "content has-text-centered");
+  }
 }
 
 // Showing form to create a new post
