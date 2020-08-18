@@ -16,6 +16,7 @@ class Post {
   // Fetching posts
   // // GET request - all posts
   static fetchPosts() {
+    // get all posts
     fetch(POSTS_END_POINT)
     .then(response => response.json())
     .then(posts => {
