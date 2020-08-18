@@ -16,7 +16,7 @@ class Post {
   // Fetching posts
   // // GET request - all posts
   static fetchPosts() {
-    // get all posts
+    // GET /api/v1/posts
     fetch(POSTS_END_POINT)
     .then(response => response.json())
     .then(posts => {
@@ -48,7 +48,7 @@ class Post {
       },
       body: JSON.stringify(bodyData)
     };
-
+    // POST /api/v1/posts
     fetch(POSTS_END_POINT, configObj)
     .then(response => response.json())
     .then(post => {
@@ -165,7 +165,7 @@ class Post {
       },
       body: JSON.stringify(bodyData)
     };
-  
+    // PATCH /api/v1/posts/:id
     fetch(`${POSTS_END_POINT}/${this.id}`, configObj)
     .then(response => response.json())
     .then(post => {
@@ -184,12 +184,15 @@ class Post {
   }
 
   // Fetching adoptale dogs of the same breed as the post from petfinder API
-  // // GET request
+  // // GET request - adoptable dogs that match breed
   fetchAdoptableDogs(breed) {
+    // get 'I Want One!' button
     const wantOne = document.querySelector(`#want-one-${this.id}`);
+    // get web page
     const page = document.querySelector("html");
+    // get post <div>
     const box = document.querySelector(`#box-${this.id}`);
-    // pluralize breed
+    // pluralize breed name
     const breedPlural = pluralize(breed);
 
     let configObj = {
@@ -205,48 +208,59 @@ class Post {
     .then(dogs => {
       // hide 'I Want One!' button
       wantOne.setAttribute("class", "is-hidden");
-      // change cursor back
+      // set web page cursor to auto
       page.style.cursor = "auto";
       // if adoptable dog(s) found
       if (dogs.animals.length > 0) {
-        // create container for adoptable dogs
-        const adoptContainer = document.createElement("article");
-        adoptContainer.setAttribute("id", `adoption-container-${this.id}`);
-        adoptContainer.setAttribute("class", "message is-danger");
-        // create header <div>
-        const adoptHeaderDiv = document.createElement("div");
-        adoptHeaderDiv.setAttribute("class", "message-header heading is-size-5");
-        // create header <p>
-        const adoptHeader = document.createElement("p");
-        adoptHeader.innerText = `Adoptable ${breedPlural}`;
-        adoptHeaderDiv.appendChild(adoptHeader);
-        // create close button
-        const closeBtn = document.createElement("button");
-        closeBtn.setAttribute("class", "delete");
-        closeBtn.setAttribute("aria-label", "delete");
-        // add listener to close button
-        closeBtn.addEventListener("click", (e) => {
-          // remove adoptable dogs container
-          adoptContainer.remove();
-          // show 'I Want One!' button
-          wantOne.setAttribute("class", "level-item button is-danger is-light is-rounded");
-        });
-        adoptHeaderDiv.appendChild(closeBtn);
-        adoptContainer.appendChild(adoptHeaderDiv);
-        // add adoption container to post
-        box.appendChild(adoptContainer);
-        // render each adoptable dog
+        // render adoptable dogs container
+        this.renderAdoptableContainer(breedPlural, wantOne, box);
+        // for each adoptable dog
         dogs.animals.forEach(dog => {
+          // render adoptable dog
           this.renderAdoptableDog(dog);
         })
       } else { // no adoptable dog(s) found
+        // render no adoptable dogs notification
         this.renderNoAdoptionsNotification(box, breedPlural);
       }
     })
     .catch(error => {
       alert(error.message);
+      // render no adoptable dogs notification
       this.renderNoAdoptionsNotification(box, breedPlural);
     });
+  }
+
+  // Generating HTML for adoptable dogs container
+  renderAdoptableContainer(breedPlural, wantOne, box) {
+    // create container for adoptable dogs
+    const adoptContainer = document.createElement("article");
+    adoptContainer.setAttribute("id", `adoption-container-${this.id}`);
+    adoptContainer.setAttribute("class", "message is-danger");
+    // create header <div>
+    const adoptHeaderDiv = document.createElement("div");
+    adoptHeaderDiv.setAttribute("class", "message-header heading is-size-5");
+    // create header <p>
+    const adoptHeader = document.createElement("p");
+    adoptHeader.innerText = `Adoptable ${breedPlural}`;
+    adoptHeaderDiv.appendChild(adoptHeader);
+    // create close button
+    const closeBtn = document.createElement("button");
+    closeBtn.setAttribute("class", "delete");
+    closeBtn.setAttribute("aria-label", "delete");
+    // add listener to close button
+    closeBtn.addEventListener("click", (e) => {
+      // remove adoptable dogs container
+      adoptContainer.remove();
+      // show 'I Want One!' button
+      wantOne.setAttribute("class", "level-item button is-danger is-light is-rounded");
+    });
+    // add close button to header
+    adoptHeaderDiv.appendChild(closeBtn);
+    // add header to adoption container
+    adoptContainer.appendChild(adoptHeaderDiv);
+    // add adoption container to post
+    box.appendChild(adoptContainer);
   }
 
   // Generating HTML for each adoptable dog and appending to adoptContainer
