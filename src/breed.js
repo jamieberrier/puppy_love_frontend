@@ -17,7 +17,7 @@ class Breed {
   static populateBreedFilter() {
     // get 'filter by breed' dropdown menu content
     const breedContent = document.querySelector("#breed-content");
-    // get all dog breeds
+    // GET /api/v1/breeds
     fetch(BREEDS_END_POINT)
     .then(response => response.json())
     .then(breeds => {
