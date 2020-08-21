@@ -14,7 +14,7 @@ class Breed {
 
   // Populating dropdown menu with dog breeds
   // // GET request - all dog breeds
-  static populateBreedFilter() {
+  static get populateBreedFilter() {
     // get 'filter by breed' dropdown menu content
     const breedContent = document.querySelector("#breed-content");
     // GET /api/v1/breeds
@@ -42,7 +42,7 @@ class Breed {
   }
 
   // Populating form select with dog breeds
-  static populateBreedSelect() {
+  static get populateBreedSelect() {
     // get <select> dog breed
     const breedSelect = document.querySelector("#breeds");
     // for each breed
@@ -61,7 +61,7 @@ class Breed {
   }
 
   // Clearing the posts of other breeds from the posts-container
-  renderBreedPosts() {
+  get renderBreedPosts() {
     // get posts in an array
     const posts = Object.entries(postsContainer.children);
     // iterate over all posts
