@@ -1,5 +1,4 @@
 ## TO DO
-- Image/Video upload
 
 ## QUESTIONS / ISSUES
 - how to speed up external fetch?
