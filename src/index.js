@@ -26,11 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // add event listener to 'show some love' button
   addBtn.addEventListener("click", handleRenderForm);
   // load dog breeds in 'filter by breed' dropdown
-  Breed.populateBreedFilter();
+  Breed.populateBreedFilter;
   // add event listener to 'filter by breed' dropdown
   breedFilter.addEventListener("click", handleToggleFilter);
   // fetch posts
-  Post.fetchPosts();
+  Post.fetchPosts;
 });
 
 // Getting modal elements and setting to global variables
@@ -104,7 +104,7 @@ function handleFilterClick(event) {
     // hide 'filter by breed' dropdown, hide 'show some love' button, and show 'see all the love' button & add listener
     toggleControls();
     // render each post for the selected dog breed
-    breed.renderBreedPosts();
+    breed.renderBreedPosts;
   } else { // display modal
     // set modal text
     modalContent.innerText = `There are no posts of ${breedPlural}`;
@@ -120,7 +120,7 @@ function handleShowAll() {
   // get the posts of the other dog breeds
   const otherPosts = Post.all.filter(post => post.breed.id != breedId);
   // iterate over the other breeds' posts and render each post
-  otherPosts.forEach(post => post.renderPost());
+  otherPosts.forEach(post => post.renderPost);
   // show 'filter by breed' dropdown, hide 'see all the love' button, and show 'show some love' button
   toggleControls();
 }
@@ -134,7 +134,7 @@ function handleRenderForm() {
   // show 'new post form' container
   newPostContainer.setAttribute("class", "container is-fluid has-text-centered mb-4");
   // populate select options
-  Breed.populateBreedSelect();
+  Breed.populateBreedSelect;
   // add submit event listener to 'new post' form
   document.querySelector("#new-post-form").addEventListener("submit", handleCreatePost);
 }
@@ -202,7 +202,6 @@ function handleWantDog(event) {
   // get post
   const post = Post.findById(postId);
   // if access token is undefined or expired, get a new one
-  console.log("expires in ", expires - new Date().getTime(), "milliseconds")
   if (!expires || expires - new Date().getTime() < 1) {
     fetchPetFinderToken().then(() => {
       // then get adoptale dogs of the breed in the post
