@@ -15,7 +15,7 @@ class Post {
 
   // Fetching posts
   // // GET request - all posts
-  static fetchPosts() {
+  static get fetchPosts() {
     // GET /api/v1/posts
     fetch(POSTS_END_POINT)
     .then(response => response.json())
@@ -25,7 +25,7 @@ class Post {
         // create new post object instance
         const newPost = new Post(post);
         // render new post
-        newPost.renderPost();
+        newPost.renderPost;
       })
     })
     .catch(error => alert(error.message));
@@ -74,7 +74,7 @@ class Post {
         // find breed by id
         const breed = Breed.findById(newPost.breed.id);
         // render new post
-        newPost.renderPost();
+        newPost.renderPost;
         // push new post onto breed's posts
         breed.posts.push(newPost);
         // reset 'new post' form
@@ -91,7 +91,7 @@ class Post {
   }
 
   // Generating HTML for a post
-  renderPost() {
+  get renderPost() {
     // create box
     const postBox = document.createElement("div");
     postBox.setAttribute("class", "box");
@@ -217,13 +217,13 @@ class Post {
         })
       } else { // no adoptable dog(s) found
         // render no adoptable dogs notification
-        this.renderNoAdoptionsNotification(box, breedPlural);
+        this.renderNoAdoptionsNotification(breedPlural, wantOne, box);
       }
     })
     .catch(error => {
       alert(error.message);
       // render no adoptable dogs notification
-      this.renderNoAdoptionsNotification(box, breedPlural);
+      this.renderNoAdoptionsNotification(breedPlural, wantOne, box);
     });
   }
 
@@ -320,7 +320,7 @@ class Post {
   }
 
   // Rendering notification if no adoptable dogs found
-  renderNoAdoptionsNotification(box, breedPlural) {
+  renderNoAdoptionsNotification(breedPlural, wantOne, box) {
     // create no adoptable dogs notification
     const adoptNotification = document.createElement("div");
     adoptNotification.setAttribute("class", "notification is-danger");
@@ -336,7 +336,12 @@ class Post {
     // set notification text
     adoptNotificationText.innerText = `No Adoptable ${breedPlural}`;
     // add event listener to close notification button
-    closeNotificationBtn.addEventListener("click", (e) => e.target.parentElement.remove());
+    closeNotificationBtn.addEventListener("click", (e) => {
+      // remove notification
+      e.target.parentElement.remove();
+      // show 'I Want One!' button
+      wantOne.setAttribute("class", "level-item button is-danger is-light is-rounded");
+    });
     // add adoption notification to post
     box.appendChild(adoptNotification);
   }
